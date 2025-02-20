@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "visualstudioexptteam.vscodeintellicode",
+        "batisteo.vscode-django",
+        "pkief.material-icon-theme",
+        "github.copilot",
+        "ms-python.python"
+    ]
+}
