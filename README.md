@@ -1,2 +1,2 @@
-# gulag
-An IoT project for Vietnamese-German University
+### Gulag
+VGU labor camp for multi-disciplinary project
