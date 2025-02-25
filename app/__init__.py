@@ -1,4 +1,3 @@
-
 def create_app_with_blueprint():
     from flask import Flask
     app = Flask(__name__)
@@ -16,7 +15,7 @@ def create_app_with_blueprint():
     # ======================
     from .routes.auth import auth_bp
     from .routes.api import api_bp
-    app.register_blueprint(auth_bp, url_prefix='/')
+    app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp, url_prefix='/api')
 
     # ======================
