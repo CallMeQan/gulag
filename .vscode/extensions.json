@@ -4,6 +4,7 @@
         "batisteo.vscode-django",
         "pkief.material-icon-theme",
         "github.copilot",
-        "ms-python.python"
+        "ms-python.python",
+        "esbenp.prettier-vscode"
     ]
 }
