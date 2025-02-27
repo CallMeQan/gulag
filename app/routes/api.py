@@ -7,7 +7,16 @@ api_bp = Blueprint('api', __name__)
 def ping():
     return jsonify({'message': 'pong!'})
 
-@api_bp.route('/upload', methods=['GET','POST'])
+@api_bp.route('/upload', methods=['POST'])
 def upload():
-    print(current_app.config['UPLOAD_FOLDER'])
-    return jsonify({'message': 'uploading...'})
+    if 'file' not in request.files:
+        return jsonify({'message': 'Missing file part'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+    
+    if file.content_length > current_app.config['MAX_CONTENT_LENGTH']:
+        return jsonify({'message': 'File too large'}), 400
+    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename))
+    return jsonify({'message': 'Ok', 'filename': file.filename}), 200
