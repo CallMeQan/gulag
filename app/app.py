@@ -37,16 +37,16 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(nullable=False)
     nickname: Mapped[str] = mapped_column(nullable=False)
 
+# Create a database
+with app.app_context():
+    db.create_all()
+
 # Homepage
 @app.route("/")
 def index():
     if "username" in session:
         return render_template("index_logged.html")
     return redirect(url_for("login"))
-
-# Create a database
-with app.app_context():
-    db.create_all()
 
 # Register account
 @app.route("/register", methods = ["GET", "POST"])
