@@ -1,7 +1,170 @@
-h1{
-    color: red;
+/* Decoding UTF-8 to import styles.css into .hmtl files */
+@charset "UTF-8";
+
+/* main */
+:root {
+    --red: red;
+    --dark-red: darkred;
+}
+form {
+    margin-top: 50px;
+}
+input {
+    display: block;
+    color: white;
+    width: 93%;
+    padding: 10px;
+    margin: 10px 0px;
+    background: rgb(41, 40, 40);
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    border-bottom: 2px solid white;
+}
+input + input {
+    margin-top: 20px;
+}
+input:hover {
+    border-bottom: 2px solid lightgreen;
+}
+button {
+    width: 120px;
+    height: 40px;
+    background-color: rgb(41, 40, 40);
+    color: rgb(103, 16, 135);
+    border: crimson;
+    border-radius: 25px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: rgb(58, 54, 54);
+}
+.button-border{
+    /* Center a div */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 120px;
+    height: 40px;
+    margin: auto;
+    margin-top: 40px; /* Nên để margin-top sau margin */
+    padding: 2px;
+    border-radius: 25px;
+    background: gray;
+    z-index: 1000; /* Đặt border phía sau .login-container */
+}
+.body-login{
+    /* Center a div */
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; */
+    /* align-items theo chiều ngang */
+    display: grid;
+    grid-template-rows: 1fr auto 1fr; /* Tạo 3 hàng, với login ở giữa */
+    justify-items: center; /* Căn giữa các phần tử theo chiều ngang */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+
+    font-family: Arial, sans-serif;
+    background-color: rgb(0, 0, 0);
+    height: 100vh;
+    margin: 0;
+}
+/* Class border bao quanh container login */
+.login-border {
+    /* Center a div */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: auto;
+    margin: auto;
+    padding: 3px;
+    border-radius: 15px;
+    background: linear-gradient(224deg, #7922a8 10.77%, #837a87 40%, #1C1C1C 85%);
+    z-index: 1000; /* Đặt border phía sau .login-container */
+}
+/* Class container chính cho login */
+.login-container {
+    width: 250px;
+    height: 350px;
+    padding: 20px;
+    background: rgb(41, 40, 40);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    align-content: center;
+    position: relative; /* Để cho border nằm đúng vị trí */
+}
+p {
+    color: gray;
+    margin-top: 30px;
+}
+/* Vòng cung avatar */
+.circle {
+    position: relative;
+    width: 200px; /* Đường kính của vòng tròn */
+    height: 200px;
+    border-radius: 50%;
+    margin: 50px auto;
+    transform-style: preserve-3d;
 }
 
-body{
-    background-color: yellow;
+.avatar {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform-origin: 50% 50%;
+}
+
+/* Sắp xếp các avatar thành vòng cung */
+.semi-circle {
+    position: relative;
+    width: 300px; /* Độ rộng của bán nguyệt */
+    height: 150px; /* Chiều cao của bán nguyệt */
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.avatar {
+    position: absolute;
+    width: 50px; /* Kích thước avatar */
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    top: 50%; /* Đặt avatar ở giữa theo chiều dọc */
+    left: 50%; /* Đặt avatar ở giữa theo chiều ngang */
+    transform-origin: center bottom; /* Dựa vào dưới của hình tròn */
+}
+
+/* Căn chỉnh các avatar thành bán nguyệt */
+.semi-circle .avatar:nth-child(1) {
+    transform: translateX(-50%) translateX(-70px) translateY(12px);
+}
+
+.semi-circle .avatar:nth-child(2) {
+    transform: translateX(-50%) translateX(-35px) translateY(5px);
+}
+
+.semi-circle .avatar:nth-child(3) {
+    transform: translateX(-50%) translateX(0px) translateY(0px);
+}
+
+.semi-circle .avatar:nth-child(4) {
+    transform: translateX(-50%) translateX(35px) translateY(5px);
+}
+
+.semi-circle .avatar:nth-child(5) {
+    transform: translateX(-50%) translateX(70px) translateY(12px);
+}
+
+.semi-circle + .semi-circle {
+    margin-left: 20px;
 }

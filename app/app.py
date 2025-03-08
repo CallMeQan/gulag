@@ -7,19 +7,18 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from env import DATABASE_URI, SECRET_KEY
+from .env import DATABASE_URI, SECRET_KEY
 
 # ====================================================================== #
 
 ### MAIN
 # Config
+SESSION_TYPE = "filesystem" # Read doc for more info
 app = Flask(__name__, static_folder = "static")
 app.config.from_object(__name__)
 app.secret_key = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-table_name = "users_tb"
-SESSION_TYPE = "filesystem" # Read doc for more info, have yet to use
 Session(app)
 
 # Create objects
@@ -28,14 +27,19 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 
+# User loader to get user object from the session when a request is made
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 # Define User table
 class User(db.Model, UserMixin):
-    __tablename__ = table_name
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True, nullable=False)
+    __tablename__ = "users" # Do not use global var for performance
+    username: Mapped[str] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     nickname: Mapped[str] = mapped_column(nullable=False)
+    vip_status: Mapped[bool] = mapped_column()
 
 # Create a database
 with app.app_context():
@@ -93,7 +97,7 @@ def logout():
 @app.route("/Something")
 def something():
     if "username" in session:
-        return "This do something"
+        return redirect(url_for("index.html"))
     return redirect(url_for("login"))
 
 # Run cmd: "flask --app app run"

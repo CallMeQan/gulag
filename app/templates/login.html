@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="body-login">
+    <br></br>
+    <div class="login-border">
+        <div class="login-container">
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Enter username..." required>
+                <input type="password" name="password" placeholder="Enter password..." required>
+                <div class="button-border"><button type="submit"><strong>Login</strong></button></div>
+            </form>
+            <p>No account? Click here to <a href = "{{ url_for('register') }}">Sign In</a>.</p>
+        </div>
+    </div>
+    <div class="semi-circle">
+        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
+        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
+        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
+        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
+        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
+    </div>
+    <p style="color: gray; margin-top: -50px;">We <b style="color: white;">made</b> it!</p>
+</body>
+</html>
