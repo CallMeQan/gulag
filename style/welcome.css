@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding/border are included in element size */
+}
+
+/* Disable scrolling */
+html, body {
+    overflow: hidden; /* Prevents scrolling */
+    height: 100%; /* Ensure full-page coverage */
+}
+
+body {
+    background-color: #8A0B16; 
+}
+
+/* Container holds the two images */
+.container {
+    position: relative; /* Parent for absolute positioning */
+}
+
+/* First image (background image) */
+.container .xam {
+    display: block; /* Removes space under images */
+    width: 50vw; 
+    height: 100vh; 
+}
+
+/* Second image (overlay image) */
+.container .nhat {
+    position: absolute; /* Position relative to .container */
+    top: 0; /* Aligns with the top */
+    left: 0; /* Aligns with the left */
+    z-index: 10; /* Higher z-index means it's on top */
+    width: 100vw; /* Full viewport width */
+    height: 100vh;
+}
+.container .logo
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: 100vw;
+    height: 100vh;
+}
+.welcome-to-escape {
+    width: 861px;
+    position: absolute;
+    font-size: 50px;
+    font-family: 'Inknut Antiqua';
+    color: #fff;
+    text-align: left;
+    display: inline-block;
+    top: 355px;
+    left: 1032px;
+}
+.discover-the-thrilling {
+    width: 635px;
+    position: absolute;
+    font-size: 25px;
+    font-family: 'Inria Serif';
+    color: #fff;
+    text-align: left;
+    display: inline-block;
+    top : 900px;
+    left: 1350px;
+  }
+.button {
+    position: relative;
+    line-height: 100%;
+}
+.button-danger {
+    position: absolute;
+    top: 500px;
+    left: 1400px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid #740200;
+    box-sizing: border-box;
+    width: 177px;
+    height: 45px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #740200;
+}
+    
