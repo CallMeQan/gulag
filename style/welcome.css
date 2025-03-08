@@ -44,3 +44,28 @@ body {
     width: 100vw;
     height: 100vh;
 }
+.welcome-to-escape {
+    width: 861px;
+    position: absolute;
+    font-size: 50px;
+    font-family: 'Inknut Antiqua';
+    color: #fff;
+    text-align: left;
+    display: inline-block;
+    top: 350px;
+    left: 1025px;
+}
+.discover-the-thrilling {
+    width: 635px;
+    position: absolute;
+    font-size: 25px;
+    font-family: 'Inria Serif';
+    color: #fff;
+    text-align: left;
+    display: inline-block;
+    top : 900px;
+    left: 1350px;
+  }
+  
+  
+    
