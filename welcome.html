@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style/welcome.css" >
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <script>
+            // Disable zoom (CTRL + mouse wheel, keyboard shortcuts)
+            document.addEventListener('wheel', function(event) {
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+    
+            document.addEventListener('keydown', function(event) {
+                if ((event.ctrlKey || event.metaKey) && (event.key === '+' || event.key === '-' || event.key === '0')) {
+                    event.preventDefault();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <img src="./Images/Welcome/Rectangle 1.png">
+            <div class="nhat">
+                <img src="./Images/Welcome/Rectangle 2.png">
+            </div> 
+            <div class="logo">
+                <img id="Logo" src="Images/Welcome/Logo.png">
+            </div>
+        </div>
+        
+    </body>
+</html>
