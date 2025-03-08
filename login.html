@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./style/login.css" >
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inknut Antiqua:wght@400&display=swap" />
+        <script>
+            document.addEventListener('wheel', function(event) {
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+    
+            document.addEventListener('keydown', function(event) {
+                if ((event.ctrlKey || event.metaKey) && (event.key === '+' || event.key === '-' || event.key === '0')) {
+                    event.preventDefault();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="login">
+            <div class="container">
+                <img src="./Images/Welcome/Rectangle 1.png">
+                <div class="nhat">
+                    <img src="./Images/Welcome/Rectangle 2.png">
+                </div> 
+                <div class="logo">
+                    <img id="Logo" src="Images/Welcome/Logo.png">
+                </div>
+            </div>
+            <div class="rectangle-parent">
+                <div class="group-child">
+                </div>
+                <b class="begin-running">Begin Running</b>
+            </div>
+            
+            <div class="password-inner"> 
+
+            </div>
+            <div class="username">Username</div>
+            <div class="password">Password</div>
+            <div class="create-a-new">Create a new account</div>
+            <div class="forgot-password">Forgot Password?</div>
+        </div>
+            
+    </body>
+</html>
