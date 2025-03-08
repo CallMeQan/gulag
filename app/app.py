@@ -35,7 +35,8 @@ def load_user(user_id):
 # Define User table
 class User(db.Model, UserMixin):
     __tablename__ = "users" # Do not use global var for performance
-    username: Mapped[str] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(unique=True, nullable=False)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     nickname: Mapped[str] = mapped_column(nullable=False)
@@ -63,7 +64,7 @@ def register():
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(username = username, email = email, password = hashed_password, nickname = nickname)
+        new_user = User(username = username, email = email, password = hashed_password, nickname = nickname, vip_status = False)
         db.session.add(new_user)
         db.session.commit()
         print(username)
@@ -94,10 +95,10 @@ def logout():
     return redirect(url_for("login"))
 
 # Page to do something that require registered user session
-@app.route("/Something")
+@app.route("/something")
 def something():
     if "username" in session:
-        return redirect(url_for("index.html"))
+        return "This page do something"
     return redirect(url_for("login"))
 
 # Run cmd: "flask --app app run"
