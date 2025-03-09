@@ -1,8 +1,6 @@
 import polars as pls
 from zipfile import ZipFile
-from os.path import exists
 from os import makedirs
-import json
 
 """
 What does this do:
@@ -36,7 +34,7 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
 
     # Linear
     linear_lazy = pls.scan_csv(source = join_path(dir_path, filenames[0]), has_header = False, skip_rows = 1) # Lazy scan, does not do anything (lol)
-    linear_lazy = linear_lazy.rename({"column_1": "time", "column_2": "lin. accel."})
+    linear_lazy = linear_lazy.rename({"column_1": "time", "column_2": "acc linear"})
 
     # Acce. X
     acc_x_lazy = pls.scan_csv(join_path(dir_path, filenames[1]), has_header = False, skip_rows = 1)
@@ -49,9 +47,21 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     # Acce. Z
     acc_z_lazy = pls.scan_csv(join_path(dir_path, filenames[3]), has_header = False, skip_rows = 1)
     acc_z_lazy = acc_z_lazy.rename({"column_1": "time", "column_2": "acc z"})
+    
+    # Accelerometer Z has been tripped of G value, so there is no need for minusing 10
+    # acc_z_lazy = (
+    #     acc_z_lazy.with_columns(
+    #         pls.col("column_1").alias("time")
+    #     )
+    #     .drop("column_1")
+    #     .with_columns(
+    #         (pls.col("column_2") - 9.81).alias("acc z")
+    #     )
+    #     .drop("column_2")
+    # )
 
     # GPS
-    gps_lazy = pls.scan_csv(r".\data\UserA\2025\Pixel 8 Pro Thing-Gps.csv", has_header = False, skip_rows = 1)
+    gps_lazy = pls.scan_csv(join_path(dir_path, filenames[4]), has_header = False, skip_rows = 1)
     gps_lazy = gps_lazy.with_columns([
         pls.col("column_2")
         .str.extract(r'"lat":([\d\.]+)')
@@ -69,11 +79,12 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     res_df = linear_lazy.join(acc_x_lazy, on = "time", how = "inner")
     res_df = res_df.join(acc_y_lazy, on = "time", how = "inner")
     res_df = res_df.join(acc_z_lazy, on = "time", how = "inner")
+
     res_df = res_df.join(gps_lazy, on = "time", how = "inner")
 
     res_df = res_df.with_columns(
         pls.col("time"),
-        pls.col("lin. accel.").cast(pls.Float32),
+        pls.col("acc linear").cast(pls.Float32),
         pls.col("acc x").cast(pls.Float32),
         pls.col("acc y").cast(pls.Float32),
         pls.col("acc z").cast(pls.Float32),
@@ -83,14 +94,19 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
 
     return res_df
 
+def velocity_count(acceleration) -> list:
+    velocity = [0] * len(acceleration)
+    for i in range(1, len(acceleration)):
+        velocity[i] = velocity[i-1] + acceleration[i-1]
+    return velocity
+
 if __name__ == "__main__":
     # Parameters
     username = "UserB"
     device = "Pixel 8 Pro"
-    time_stamp = "historic-data-20250227T082337Z"
+    time_stamp = "historic-data 2025 03 09"
     res_df = read_and_join(username, device, time_stamp)
     
-    print(res_df.collect())
     import matplotlib.pyplot as plt
     sample_num = len(res_df.collect())
 
@@ -99,8 +115,8 @@ if __name__ == "__main__":
 
     plt.figure(figsize = (7, 7))
     plt.subplot(2, 2, 1)
-    plt.plot(res_df.collect()["lin. accel."])
-    plt.plot([mean["lin. accel."] for _ in range(sample_num)])
+    plt.plot(res_df.collect()["acc linear"])
+    plt.plot([mean["acc linear"] for _ in range(sample_num)])
     plt.title("Linear Accelerometer")
 
     plt.subplot(2, 2, 2)

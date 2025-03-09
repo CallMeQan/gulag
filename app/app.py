@@ -49,9 +49,7 @@ with app.app_context():
 # Homepage
 @app.route("/")
 def index():
-    if "username" in session:
-        return render_template("index_logged.html")
-    return redirect(url_for("login"))
+    return render_template("index.html")
 
 # Register account
 @app.route("/register", methods = ["GET", "POST"])
@@ -60,11 +58,14 @@ def register():
         username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
-        nickname = request.form["nickname"]
+        password_confirm = request.form["password_confirm"]
+
+        if password != password_confirm:
+            return render_template("register-not-confirmed.html")
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(username = username, email = email, password = hashed_password, nickname = nickname, vip_status = False)
+        new_user = User(username = username, email = email, password = hashed_password, nickname = username, vip_status = False)
         db.session.add(new_user)
         db.session.commit()
         print(username)
@@ -85,21 +86,22 @@ def login():
             return redirect(url_for("index"))
     return render_template("login.html")
 
-# Log out
-@app.route("/logout")
-@login_required # Should not used in place of "username" in session
-def logout():
-    logout_user()
-    session.pop('username', None)
-    session.clear()
-    return redirect(url_for("login"))
+# # Log out
+# @app.route("/logout")
+# @login_required # Should not used in place of "username" in session
+# def logout():
+#     logout_user()
+#     session.pop('username', None)
+#     session.clear()
+#     return redirect(url_for("login"))
 
 # Page to do something that require registered user session
-@app.route("/something")
-def something():
-    if "username" in session:
-        return "This page do something"
-    return redirect(url_for("login"))
+@app.route("/forgot_password", methods = ["GET", "POST"])
+def forgot_password(): # Endpoint of this route is forgot_password, which is the function's name
+    if request.method == "POST":
+        email = request.form["email"]
+        return render_template("result.html")
+    return render_template("forgot_password.html")
 
 # Run cmd: "flask --app app run"
 if __name__ == "__main__":

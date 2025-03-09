@@ -1,30 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Vollkorn&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chào mừng</title>
+  <!-- Liên kết đến file CSS trong thư mục static/css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-<body class="body-login">
-    <br></br>
-    <div class="login-border">
-        <div class="login-container">
-            <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Enter username..." required>
-                <input type="password" name="password" placeholder="Enter password..." required>
-                <div class="button-border"><button type="submit"><strong>Login</strong></button></div>
-            </form>
-            <p>No account? Click here to <a href = "{{ url_for('register') }}">Sign Up</a>.</p>
+<body>
+  <div class="container">
+
+    <!-- Phần bên trái: logo -->
+    <div class="left">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+    </div>
+    
+    <!-- Phần bên phải: form đăng nhập -->
+    <div class="right">
+      <form action="" method="post">
+        <h1>LOG IN</h1>
+        
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Nhập username">
         </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Nhập password">
+        </div>
+        
+        <div class="links">
+          <a href="{{ url_for('register') }}" class="create">Create new account</a>
+          <a href="{{ url_for('forgot_password') }}" class="forgot">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn">Begin Running</button>
+      
+      </form>
     </div>
-    <div class="semi-circle">
-        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
-        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
-        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
-        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
-        <div class="avatar" style="background-image: url('/static/images/avatar.png');"></div>
-    </div>
-    <p style="color: gray; margin-top: -50px;">We <b style="color: white;">made</b> it!</p>
+  </div>
 </body>
 </html>

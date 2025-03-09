@@ -1,170 +1,150 @@
-/* Decoding UTF-8 to import styles.css into .hmtl files */
-@charset "UTF-8";
-
-/* main */
-:root {
-    --red: red;
-    --dark-red: darkred;
+/* Reset cơ bản */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* Không cho trang scroll */
+  font-family: 'Vollkorn', serif;
+}
+
+/* Container chính với background là hình ảnh từ máy */
+.container {
+  display: flex;
+  height: 100%;
+  background: url("../images/background.png") no-repeat center center/cover;
+}
+
+/* Phần bên trái chứa logo */
+.left {
+  margin-right: 5%;
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 80%;
+  height: auto;
+}
+
+/* Phần bên phải chứa form đăng nhập */
+.right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style cho form đăng nhập */
 form {
-    margin-top: 50px;
-}
-input {
-    display: block;
-    color: white;
-    width: 93%;
-    padding: 10px;
-    margin: 10px 0px;
-    background: rgb(41, 40, 40);
-    border-right: none;
-    border-left: none;
-    border-top: none;
-    border-bottom: 2px solid white;
-}
-input + input {
-    margin-top: 20px;
-}
-input:hover {
-    border-bottom: 2px solid lightgreen;
-}
-button {
-    width: 120px;
-    height: 40px;
-    background-color: rgb(41, 40, 40);
-    color: rgb(103, 16, 135);
-    border: crimson;
-    border-radius: 25px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: rgb(58, 54, 54);
-}
-.button-border{
-    /* Center a div */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 120px;
-    height: 40px;
-    margin: auto;
-    margin-top: 40px; /* Nên để margin-top sau margin */
-    padding: 2px;
-    border-radius: 25px;
-    background: gray;
-    z-index: 1000; /* Đặt border phía sau .login-container */
-}
-.body-login{
-    /* Center a div */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center; */
-    /* align-items theo chiều ngang */
-    display: grid;
-    grid-template-rows: 1fr auto 1fr; /* Tạo 3 hàng, với login ở giữa */
-    justify-items: center; /* Căn giữa các phần tử theo chiều ngang */
-    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
-
-    font-family: Arial, sans-serif;
-    background-color: rgb(0, 0, 0);
-    height: 100vh;
-    margin: 0;
-}
-/* Class border bao quanh container login */
-.login-border {
-    /* Center a div */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: auto;
-    margin: auto;
-    padding: 3px;
-    border-radius: 15px;
-    background: linear-gradient(224deg, #7922a8 10.77%, #837a87 40%, #1C1C1C 85%);
-    z-index: 1000; /* Đặt border phía sau .login-container */
-}
-/* Class container chính cho login */
-.login-container {
-    width: 250px;
-    height: 350px;
-    padding: 20px;
-    background: rgb(41, 40, 40);
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    align-content: center;
-    position: relative; /* Để cho border nằm đúng vị trí */
-}
-p {
-    color: gray;
-    margin-top: 30px;
-}
-/* Vòng cung avatar */
-.circle {
-    position: relative;
-    width: 200px; /* Đường kính của vòng tròn */
-    height: 200px;
-    border-radius: 50%;
-    margin: 50px auto;
-    transform-style: preserve-3d;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 112%;
+  max-width: 500px;
 }
 
-.avatar {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform-origin: 50% 50%;
+form h1 {
+  color: white;
+  font-family: "Garamond";
+  font-size: 300%;
+  text-align: center;
+  margin-bottom: 5%;
 }
 
-/* Sắp xếp các avatar thành vòng cung */
-.semi-circle {
-    position: relative;
-    width: 300px; /* Độ rộng của bán nguyệt */
-    height: 150px; /* Chiều cao của bán nguyệt */
-    margin: 50px auto;
-    overflow: hidden;
+.form-group {
+  margin-bottom: 1rem;
 }
 
-.avatar {
-    position: absolute;
-    width: 50px; /* Kích thước avatar */
-    height: 50px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-    top: 50%; /* Đặt avatar ở giữa theo chiều dọc */
-    left: 50%; /* Đặt avatar ở giữa theo chiều ngang */
-    transform-origin: center bottom; /* Dựa vào dưới của hình tròn */
+label {
+  color: #fff;
+  font-family: "Garamond";
+  font-size: 1.8rem; /* Tăng kích thước chữ */
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-/* Căn chỉnh các avatar thành bán nguyệt */
-.semi-circle .avatar:nth-child(1) {
-    transform: translateX(-50%) translateX(-70px) translateY(12px);
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  font-family: "Garamond";
+  padding: 1.0rem;
+  font-size: 1.2rem;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  background-color: #ffffff;
+  outline: none;
+  color: #000; /* Giữ màu chữ input là đen để dễ đọc */
 }
 
-.semi-circle .avatar:nth-child(2) {
-    transform: translateX(-50%) translateX(-35px) translateY(5px);
+/* Các liên kết "Create new account" và "Forgot password?" */
+.links {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 1.0rem;
 }
 
-.semi-circle .avatar:nth-child(3) {
-    transform: translateX(-50%) translateX(0px) translateY(0px);
+.links a {
+  text-decoration: underline;
+  color: #ffffff;
 }
 
-.semi-circle .avatar:nth-child(4) {
-    transform: translateX(-50%) translateX(35px) translateY(5px);
+/* Button Begin Running với nền trắng có transparency cao */
+.btn {
+width: 100%;
+padding: 0.8rem;
+border: none;
+border-radius: 0px;
+background-color: rgba(255, 255, 255, 0.2); /* Nền trắng nhưng rất trong suốt */
+color: #fff;
+font-family: "Garamond";
+font-size: 1.5rem;
+font-weight: bold;
+cursor: pointer;
 }
 
-.semi-circle .avatar:nth-child(5) {
-    transform: translateX(-50%) translateX(70px) translateY(12px);
+/* Responsive: khi màn hình nhỏ, chuyển layout thành cột */
+@media (max-width: 800px) {
+.logo {
+  width: 40%;
+  height: auto;
 }
 
-.semi-circle + .semi-circle {
-    margin-left: 20px;
+.container {
+  display: flex;
+  flex-direction: column;
+  background: #911818; /* Đổi background image thành màu đơn */
+  align-items: center;
+  justify-content: center;
+}
+
+.left {
+  margin-right: 0%;
+  width: 120%;
+  height: 20%;
+  flex: 0 0 25%;
+  border-right: none;
+  background-color: rgb(255, 255, 255);
+  padding: 1rem;
+}
+
+.right {
+  width: 80%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style cho form đăng nhập */
+form {
+  width: 100%;
+  max-width: 500px;
+}
 }
