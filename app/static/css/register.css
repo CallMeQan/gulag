@@ -28,7 +28,7 @@ html, body {
 }
 
 .logo {
-  max-width: 80%;
+  max-width: 60%;
   height: auto;
 }
 
@@ -111,8 +111,9 @@ cursor: pointer;
 }
 
 /* Responsive: khi màn hình nhỏ, chuyển layout thành cột */
-@media (max-width: 750px) and (min-height: 665px) {
+@media (max-width: 800px) {
 .logo {
+  margin-top: 5%;
   width: 35%;
   height: auto;
 }
@@ -129,10 +130,10 @@ cursor: pointer;
   margin-right: 0%;
   width: 100%;
   height: 20%;
-  flex: 0 0 20%;
+  flex: 0 0 25%;
   border-right: none;
   background-color: rgb(255, 255, 255);
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .right {
@@ -153,44 +154,46 @@ form {
 }
 
 /* Responsive: khi màn hình nhỏ, chuyển layout thành cột */
-@media (max-width: 750px) and (max-height: 660px) {
+@media (max-width: 800px) and (max-height: 660px) {
   html, body {
     position: fixed;
     overflow: auto;
   }
-.logo {
-  width: 35%;
-  height: auto;
+  .logo {
+    width: 35%;
+    height: auto;
+  }
+
+  .container {
+    height: 660px;
+    background: #911818; /* Đổi background image thành màu đơn */
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Style cho form đăng nhập */
+  form {
+    width: 100%;
+    max-width: 500px;
+  }
 }
 
-.container {
-  display: grid;
-  background: #911818; /* Đổi background image thành màu đơn */
-  align-items: center;
-  justify-content: center;
-}
 
-.left {
-  margin-right: 0%;
-  width: 100%;
-  height: 150px;
-  border-right: none;
-  background-color: rgb(255, 255, 255);
-  padding: 1rem;
-}
+/* Khi màn hình chính bị giảm height nhưng width vẫn cao */
+@media (min-width: 800px) and (max-height: 565px) {
+  html, body {
+    overflow: auto;
+    position: fixed;
+  }
 
-.right {
-  max-height: 600px;
-  padding: 0rem;
-  background: #911818;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Style cho form đăng nhập */
-form {
-  width: 100%;
-  max-width: 500px;
-}
+  .logo {
+    width: 60%; /* 40% của 660px */
+    height: auto;
+  }
+  
+  .container {
+    height: 565px;
+    align-items: center;
+    justify-content: center;
+  }
 }
