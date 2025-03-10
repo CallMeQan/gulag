@@ -23,7 +23,7 @@ def register():
         password_confirm = request.form["password_confirm"]
 
         if password != password_confirm:
-            return render_template("register-not-confirmed.html")
+            return render_template("auth/register-not-confirmed.html")
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")

@@ -174,3 +174,13 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Google
+credentials.json
+token.json
+
+# Data files
+.csv
+*.csv
+*.zip
+*.txt

@@ -3,8 +3,6 @@ from flask_login import UserMixin
 
 from .extensions import db
 
-# login_manager.login_view = "login"
-
 # Define User table
 class User(db.Model, UserMixin):
     __tablename__ = "users" # Do not use global var for performance

@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Vollkorn&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chào mừng</title>
-  <!-- Liên kết đến file CSS trong thư mục static/css -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-</head>
-<body>
-  <div class="container">
-    <!-- Phần bên trái: logo -->
-    <div class="left">
-      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
-    </div>
-    <!-- Phần bên phải: form đăng nhập -->
-    <div class="right">
-      <h1>Welcome to escape from Gulag</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <link href="https://fonts.googleapis.com/css2?family=Vollkorn&display=swap" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chào mừng</title>
+        <!-- Liên kết đến file CSS trong thư mục static/css -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Phần bên trái: logo -->
+            <div class="left">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" />
+            </div>
+            <!-- Phần bên phải: form đăng nhập -->
+            <div class="right">
+                <h1>Welcome to escape from Gulag</h1>
 
       <a href="{{ url_for('auth.login') }}"><button type="button" class="btn">Get Started</button></a>
     </div>
