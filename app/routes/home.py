@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template
 
-app = Blueprint('home', __name__)
+home_bp = Blueprint('home', __name__)
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+@home_bp.route('/')
+def index():
+    return render_template('home/index.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+# @app.route('/about')
+# def about():
+#     return render_template('about.html')

@@ -1,3 +1,6 @@
+# Data
+**/data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -64,6 +67,7 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
+**/flask_session/
 
 # Scrapy stuff:
 .scrapy
@@ -87,7 +91,6 @@ ipython_config.py
 #   intended to run in multiple environments; otherwise, check them in:
 # .python-version
 **/env.py
-**/flask_session/
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.

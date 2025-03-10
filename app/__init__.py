@@ -1,22 +1,37 @@
+# app.py
+from flask import Flask
+from .config import Config
+from .extensions import db, bcrypt, login_manager, session
+from .models import User
+from .routes import home_bp, auth_bp, admin_bp
+
 def create_app_with_blueprint():
-    from flask import Flask
-    app = Flask(__name__)
 
     # ======================
     # |    Configuration   |
     # ======================
-    from .models import db
-    from .config import Config
+    app = Flask(__name__, static_folder="static")
+    app.config.from_object(__name__)
     app.config.from_object(Config)
+
+    # Initialize extensions
     db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    session.init_app(app)
+
+    login_manager.login_view = "api.login"
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     # ======================
     # |    Blueprint       |
     # ======================
-    from .routes.auth import auth_bp
-    from .routes.api import api_bp
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(api_bp, url_prefix='/api')
+    app.register_blueprint(home_bp, url_prefix = "/")
+    app.register_blueprint(auth_bp, url_prefix = "/auth")
+    app.register_blueprint(admin_bp, url_prefix = "/admin")
 
     # ======================
     # |    Final stuff     |
@@ -24,3 +39,7 @@ def create_app_with_blueprint():
     with app.app_context():
         db.create_all()
     return app
+
+if __name__ == "__main__":
+    app = create_app_with_blueprint()
+    app.run(debug=True, port=5000)
