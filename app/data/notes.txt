@@ -1,4 +1,0 @@
-Sau khi ấn nút bấm, máy sẽ gửi token, cookie lên cloud.
-Cloud gửi lên server AWS, Qan dùng API đọc thông tin của file.
-
-Đọc file Accele
