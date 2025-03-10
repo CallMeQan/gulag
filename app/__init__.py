@@ -15,10 +15,9 @@ def create_app_with_blueprint():
     # ======================
     # |    Blueprint       |
     # ======================
-    from .routes.api import api_bp
-    from .routes.admin import admin_bp
-    from .routes.home import home_bp
+    from .routes import auth_bp, home_bp, admin_bp, api_bp
     app.register_blueprint(home_bp, url_prefix='/')
+    app.register_blueprint(auth_bp, url_prefix='/')
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(api_bp, url_prefix='/api')
 
