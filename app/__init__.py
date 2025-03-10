@@ -1,5 +1,6 @@
 # app.py
-from flask import Flask
+from flask import Flask #, session
+from flask_session import Session
 from .config import Config
 from .extensions import db, bcrypt, login_manager, session
 from .models import User
@@ -13,6 +14,7 @@ def create_app_with_blueprint():
     app = Flask(__name__, static_folder="static")
     app.config.from_object(__name__)
     app.config.from_object(Config)
+    Session(app)
 
     # Initialize extensions
     db.init_app(app)

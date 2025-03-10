@@ -27,12 +27,12 @@ def register():
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(username = username, email = email, password = hashed_password, nickname = username, vip_status = False)
+        new_user = User(username = username, email = email, password = hashed_password, name = username, admin = False)
         db.session.add(new_user)
         db.session.commit()
         print(username)
         print(password)
-        return redirect(url_for("login"))
+        return redirect(url_for("auth.login"))
     return render_template("auth/register.html")
 
 # Log in

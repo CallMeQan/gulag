@@ -10,5 +10,5 @@ class User(db.Model, UserMixin):
     username: Mapped[str] = mapped_column(unique=True, nullable=False)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    nickname: Mapped[str] = mapped_column(nullable=False)
-    vip_status: Mapped[bool] = mapped_column()
+    name: Mapped[str] = mapped_column(nullable=False)
+    admin: Mapped[bool] = mapped_column()
