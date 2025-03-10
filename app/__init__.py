@@ -1,5 +1,6 @@
 def create_app_with_blueprint():
     from flask import Flask
+    import os
     app = Flask(__name__)
 
     # ======================
@@ -7,17 +8,18 @@ def create_app_with_blueprint():
     # ======================
     from .models import db
     from .config import Config
+    app.secret_key = os.getenv('SECRET_KEY')
     app.config.from_object(Config)
     db.init_app(app)
 
     # ======================
     # |    Blueprint       |
     # ======================
-    from .routes.auth import auth_bp
-    from .routes.home import app as home_bp
     from .routes.api import api_bp
-    app.register_blueprint(home_bp)
-    app.register_blueprint(auth_bp)
+    from .routes.admin import admin_bp
+    from .routes.home import home_bp
+    app.register_blueprint(home_bp, url_prefix='/')
+    app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(api_bp, url_prefix='/api')
 
     # ======================
@@ -25,4 +27,5 @@ def create_app_with_blueprint():
     # ======================
     with app.app_context():
         db.create_all()
+    
     return app
