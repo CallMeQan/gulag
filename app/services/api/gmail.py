@@ -1,5 +1,4 @@
 import os.path
-import json
 import base64
 from bs4 import BeautifulSoup
 from google.auth.transport.requests import Request
