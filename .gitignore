@@ -175,3 +175,9 @@ cython_debug/
 # Google
 credentials.json
 token.json
+
+# Data files
+.csv
+*.csv
+*.zip
+*.txt
