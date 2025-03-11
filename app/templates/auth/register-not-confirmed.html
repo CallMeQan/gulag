@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đăng ký</title>
-  <!-- Sử dụng cùng file CSS của trang login -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Đăng ký</title>
+        <!-- Sử dụng cùng file CSS của trang login -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
+    </head>
 
 <body>
 
@@ -42,19 +42,12 @@
     
             <div class="form-group">
               <label for="confirm_password">Confirm your Password</label>
-              <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirm password">
+              <input type="password" id="password_confirm" name="password_confirm" placeholder="Passwords must be the same">
             </div>
 
             <div class="links">
               <a href="{{ url_for('auth.login') }}" class="create">Already got an account?</a>
             </div>
-            
-            <button type="submit" class="btn">Register</button>
-          </form>
-    
         </div>
-      </div>
-    </div>
-  </div>
-</body>
+    </body>
 </html>

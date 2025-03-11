@@ -1,7 +1,7 @@
 import polars as pls
 from zipfile import ZipFile
 from os import makedirs
-
+# watchdog
 """
 What does this do:
     - Unzip file:
@@ -24,13 +24,13 @@ def join_path(path, file):
 
 def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     # Make path and file names
-    dir_path = f".\\data\\{username}\\{time_stamp}"
+    dir_path = f".\\app\\data\\{username}\\{time_stamp}"
     filenames = [device + " " + name for name in original_names]
 
     # Extract stuff
     makedirs(dir_path, exist_ok = True)
     with ZipFile(dir_path + ".zip", 'r') as zipObject: 
-        zipObject.extractall(path = f".\\data\\{username}\\{time_stamp}")
+        zipObject.extractall(path = f".\\app\\data\\{username}\\{time_stamp}")
 
     # Linear
     linear_lazy = pls.scan_csv(source = join_path(dir_path, filenames[0]), has_header = False, skip_rows = 1) # Lazy scan, does not do anything (lol)

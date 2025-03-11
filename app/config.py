@@ -1,7 +1,10 @@
-import os
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///gulag.db'
-    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
-    MAX_CONTENT_LENGTH = 1024 * 1024 * 1024 # 1GB
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SESSION_TYPE = "filesystem" # Read doc for more info
+    secret_key = getenv("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = getenv("DATABASE_URI")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
