@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask import render_template, redirect, url_for, session, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user
 
 from ..models import User
 from ..extensions import db, bcrypt, login_manager
