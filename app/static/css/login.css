@@ -20,8 +20,9 @@ html, body {
 
 /* Phần bên trái chứa logo */
 .left {
-  margin-right: 5%;
-  flex: 0 0 50%;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 47.50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +35,7 @@ html, body {
 
 /* Phần bên phải chứa form đăng nhập */
 .right {
-  flex: 1;
+  flex: 0 0 52.50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +51,7 @@ form {
 
 form h1 {
   color: white;
-  font-family: "Garamond";
+  font-family: "Inknut Antiqua";
   font-size: 300%;
   text-align: center;
   margin-bottom: 5%;
@@ -88,6 +89,7 @@ input[type="password"] {
   justify-content: space-between;
   margin: 0.5rem 0;
   font-size: 1.0rem;
+  margin-top: 2%;
 }
 
 .links a {
@@ -101,18 +103,26 @@ width: 100%;
 padding: 0.8rem;
 border: none;
 border-radius: 0px;
-background-color: rgba(255, 255, 255, 0.2); /* Nền trắng nhưng rất trong suốt */
-color: #fff;
+background-color: #fff7f7; /* Khi hover, nền trắng sẽ trở thành màu đỏ */
+color: rgb(87, 0, 0);
 font-family: "Garamond";
 font-size: 1.5rem;
 font-weight: bold;
 cursor: pointer;
+margin-top: 2%;
+border-radius: 5px;
+}
+
+.btn:hover{
+  
+  background-color: rgb(38, 35, 35); /* Nền trắng nhưng rất trong suốt */
+  color: #fff;
 }
 
 /* Responsive: khi màn hình nhỏ, chuyển layout thành cột */
 @media (max-width: 800px) {
 .logo {
-  width: 35%;
+  width: 30%;
   height: auto;
 }
 
@@ -156,7 +166,7 @@ form {
   }
 
   .logo {
-    width: 35%; /* 40% của 660px */
+    width: 30%; /* 40% của 660px */
     height: auto;
   }
   
@@ -171,23 +181,13 @@ form {
     width: 100%;
     max-width: 500px;
   }
-}
 
-/* Khi màn hình chính bị giảm height nhưng width vẫn cao */
-@media (min-width: 800px) and (max-height: 400px) {
-  html, body {
-    overflow: auto;
-    position: fixed;
+  .left {
+    flex: 0 0 20%;
+    height: 165px;
   }
-
-  .logo {
-    width: 60%; /* 40% của 660px */
-    height: auto;
-  }
-  
-  .container {
-    height: auto;
-    align-items: center;
-    justify-content: center;
+  .right {
+    flex: 0 0 80%;
+    height: 495px;
   }
 }
