@@ -21,7 +21,7 @@ class Sensor_Data(db.Model):
     data_id: Mapped[int] = mapped_column(primary_key = True)
     user_id: Mapped[int] = mapped_column(nullable = False)
     time: Mapped[datetime] = mapped_column(nullable = False)
-    location: Mapped = mapped_column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
+    location = mapped_column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
 
     __table_args__ = {
         # To set partition by time
