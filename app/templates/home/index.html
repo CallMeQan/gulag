@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <link href="https://fonts.googleapis.com/css2?family=Vollkorn&display=swap" rel="stylesheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Chào mừng</title>
+        <title>Welcome</title>
         <!-- Liên kết đến file CSS trong thư mục static/css -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
     </head>
@@ -16,7 +16,7 @@
             </div>
             <!-- Phần bên phải: form đăng nhập -->
             <div class="right">
-                <h1>Welcome to escape from Gulag</h1>
+                <h1>Welcome to Escape from Gulag</h1>
 
       <a href="{{ url_for('auth.login') }}"><button type="button" class="btn">Get Started</button></a>
     </div>
