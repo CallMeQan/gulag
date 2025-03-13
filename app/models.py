@@ -1,5 +1,5 @@
-from sqlalchemy import DateTime, column
 from datetime import datetime
+from sqlalchemy import or_
 from sqlalchemy.orm import Mapped, mapped_column
 from geoalchemy2 import Geometry
 from flask_login import UserMixin
@@ -16,6 +16,13 @@ class User(db.Model, UserMixin):
     name: Mapped[str] = mapped_column(nullable = False)
     admin: Mapped[bool] = mapped_column()
 
+    @classmethod
+    def is_duplicate(self, username, email):
+        # Check if username or email is duplicated with only one query
+        return db.session.query(self.user_id).filter(
+            or_(self.username == username, self.email == email)
+        ).first() is not None
+    
 class Sensor_Data(db.Model):
     __tablename__ = "sensor_data"
     data_id: Mapped[int] = mapped_column(primary_key = True)
@@ -23,8 +30,8 @@ class Sensor_Data(db.Model):
     time: Mapped[datetime] = mapped_column(nullable = False)
     location = mapped_column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
 
+    # To set partition by time
     __table_args__ = {
-        # To set partition by time
         'postgresql_partition_by': 'RANGE (time)'
     }
 

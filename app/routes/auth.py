@@ -22,8 +22,13 @@ def register():
         password = request.form["password"]
         password_confirm = request.form["password_confirm"]
 
+        # Check if confirm password is correct
         if password != password_confirm:
             return render_template("auth/register-not-confirmed.html")
+        
+        # Check if username or email is duplicated
+        if User.is_duplicate(username = username, email = email):
+            return render_template("auth/register-duplicated.html")
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
