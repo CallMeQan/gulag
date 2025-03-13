@@ -35,7 +35,7 @@ original_names = ["Thing-Accelerometer_Linear.csv",
 def join_path(path, file):
     return path + "\\" + file
 
-def read_and_join(username: str, device: str, time_stamp: str, has_grade: bool = True):
+def read_and_join(username: str, user_id: int, device: str, time_stamp: str, has_grade: bool = True):
     """
     
     Read file .zip and turn them into Polars Lazyframe.
@@ -62,6 +62,7 @@ def read_and_join(username: str, device: str, time_stamp: str, has_grade: bool =
     # Process GPS data
     gps_lazy = pls.scan_csv(join_path(dir_path, filenames[4]), has_header = False, skip_rows = 1)
     gps_lazy = gps_lazy.with_columns([
+        pls.lit(user_id).alias("user_id"),
         pls.col("column_2")
         .str.extract(r'"lat":([\d\.]+)')
         .cast(pls.Float64)
@@ -71,7 +72,7 @@ def read_and_join(username: str, device: str, time_stamp: str, has_grade: bool =
         .cast(pls.Float64)
         .alias("lon")
     ])
-    gps_lazy = gps_lazy.select(["column_1", "lat", "lon"]) # Should not use slice for Polars
+    gps_lazy = gps_lazy.select(["user_id", "column_1", "lat", "lon"]) # Should not use slice for Polars
     gps_lazy = gps_lazy.rename({"column_1": "time"})
 
     # If Dataframe has Grade
@@ -102,6 +103,7 @@ def read_and_join(username: str, device: str, time_stamp: str, has_grade: bool =
     else:
         # Set format
         gps_lazy = gps_lazy.with_columns(
+            pls.col("user_id"),
             pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
             pls.col("lat"),
             pls.col("lon"),
@@ -152,15 +154,15 @@ def process_data(df: pls.LazyFrame) -> tuple:
     for i in range(0, df.select(pls.len()).collect().item() - 1, 60):
         temp_df = df.slice(i, 62).collect()
         try:
-            lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
-            lat2, lon2 = float(temp_df[60, 1]), float(temp_df[60, 2])
+            lat1, lon1 = float(temp_df[0, 2]), float(temp_df[0, 3])
+            lat2, lon2 = float(temp_df[60, 2]), float(temp_df[60, 3])
             distance = haversine(lat1, lon1, lat2, lon2)
-            delta_t = temp_df[60, 0] - temp_df[0, 0]
+            delta_t = temp_df[60, 1] - temp_df[0, 1]
         except:
-            lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
-            lat2, lon2 = float(temp_df[-1, 1]), float(temp_df[-1, 2])
+            lat1, lon1 = float(temp_df[0, 2]), float(temp_df[0, 3])
+            lat2, lon2 = float(temp_df[-1, 2]), float(temp_df[-1, 3])
             distance = haversine(lat1, lon1, lat2, lon2)
-            delta_t = temp_df[-1, 0] - temp_df[0, 0]
+            delta_t = temp_df[-1, 1] - temp_df[0, 1]
         
         # Convert to second
         delta_t = delta_t.total_seconds()
@@ -210,10 +212,11 @@ Then, just run this script.
 """
 if __name__ == "__main__":
     # Parameters
-    username = "UserB"
+    username = "Ceenen"
+    user_id = 5
     device = "Pixel 8 Pro"
     time_stamp = "historic-data 2025 03 09"
-    gps_lf, grade_lf = read_and_join(username, device, time_stamp, has_grade = True)
+    gps_lf, grade_lf = read_and_join(username, user_id, device, time_stamp, has_grade = True)
     print(gps_lf.collect())
     
     # Import for plotting if necessary
