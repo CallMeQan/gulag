@@ -35,7 +35,7 @@ original_names = ["Thing-Accelerometer_Linear.csv",
 def join_path(path, file):
     return path + "\\" + file
 
-def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
+def read_and_join(username: str, device: str, time_stamp: str, has_grade: bool = True):
     """
     
     Read file .zip and turn them into Polars Lazyframe.
@@ -43,9 +43,11 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     :username: Argument username, to get the directory the file is uploaded to.
     :device: Name of users' device, which is important for managing file.
     :timestamp: Timestamp of the .zip file.
-    :return: A polars Lazyframe with columns ["time", "grade", "lat", "lon"].
-    "time" is in ISO datetime format; "grade" datatype is float32; "lat" and
-    "lon" are float64.
+    :has_grade: Boolean value of whether to include grade Lazyframe
+
+    :return: A Lazyframe or a tuple of polars Lazyframes with columns ["time", "lat", "lon"]
+    and ["time", "grade"] (if has_grade == True). "time" is in ISO datetime format; "grade"
+    datatype is float32; "lat" and "lon" are float64.
 
     """
     # Make path and file names
@@ -56,20 +58,6 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     makedirs(dir_path, exist_ok = True)
     with ZipFile(dir_path + ".zip", 'r') as zipObject: 
         zipObject.extractall(path = dir_path)
-
-    # Linear
-    linear_lazy = pls.scan_csv(source = join_path(dir_path, filenames[0]), has_header = False, skip_rows = 1) # Lazy scan, does not do anything (lol)
-    linear_lazy = linear_lazy.rename({"column_1": "time", "column_2": "acc linear"})
-
-    # Acce. Z
-    acc_z_lazy = pls.scan_csv(join_path(dir_path, filenames[3]), has_header = False, skip_rows = 1)
-    acc_z_lazy = acc_z_lazy.rename({"column_1": "time", "column_2": "acc z"})
-    
-    # Accelerometer Z has been tripped of G value, so there is no need for minusing 10
-    grade_lazy = linear_lazy.join(acc_z_lazy, on = "time", how = "inner")
-    grade_lazy = grade_lazy.with_columns(
-            (pls.col("acc z") / (pls.col("acc linear")**2 - pls.col("acc z") ).sqrt() ).alias("grade")
-    )
 
     # Process GPS data
     gps_lazy = pls.scan_csv(join_path(dir_path, filenames[4]), has_header = False, skip_rows = 1)
@@ -86,17 +74,39 @@ def read_and_join(username: str, device: str, time_stamp: str) -> pls.LazyFrame:
     gps_lazy = gps_lazy.select(["column_1", "lat", "lon"]) # Should not use slice for Polars
     gps_lazy = gps_lazy.rename({"column_1": "time"})
 
-    # Merging
-    res_df = grade_lazy.select(["time", "grade"]).join(gps_lazy, on = "time", how = "inner")
+    # If Dataframe has Grade
+    if has_grade:
+        # Linear
+        linear_lazy = pls.scan_csv(source = join_path(dir_path, filenames[0]), has_header = False, skip_rows = 1) # Lazy scan, does not do anything (lol)
+        linear_lazy = linear_lazy.rename({"column_1": "time", "column_2": "acc linear"})
 
-    res_df = res_df.with_columns(
-        pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
-        pls.col("grade").cast(pls.Float32),
-        pls.col("lat"),
-        pls.col("lon"),
-    )
+        # Acce. Z
+        acc_z_lazy = pls.scan_csv(join_path(dir_path, filenames[3]), has_header = False, skip_rows = 1)
+        acc_z_lazy = acc_z_lazy.rename({"column_1": "time", "column_2": "acc z"})
+        
+        # Accelerometer Z has been tripped of G value, so there is no need for minusing 10
+        grade_lazy = linear_lazy.join(acc_z_lazy, on = "time", how = "inner")
+        grade_lazy = grade_lazy.with_columns(
+                (pls.col("acc z") / (pls.col("acc linear")**2 - pls.col("acc z") ).sqrt() ).alias("grade")
+        )
 
-    return res_df
+        # Set format
+        gps_lazy = gps_lazy.with_columns(
+            pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
+            pls.col("lat"),
+            pls.col("lon"),
+        )
+        return gps_lazy, grade_lazy.select(["time", "grade"])
+    
+    # If dataframe does not have grade
+    else:
+        # Set format
+        gps_lazy = gps_lazy.with_columns(
+            pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
+            pls.col("lat"),
+            pls.col("lon"),
+        )
+        return gps_lazy
 
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """
@@ -142,13 +152,13 @@ def process_data(df: pls.LazyFrame) -> tuple:
     for i in range(0, df.select(pls.len()).collect().item() - 1, 60):
         temp_df = df.slice(i, 62).collect()
         try:
-            lat1, lon1 = float(temp_df[0, 2]), float(temp_df[0, 3])
-            lat2, lon2 = float(temp_df[60, 2]), float(temp_df[60, 3])
+            lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
+            lat2, lon2 = float(temp_df[60, 1]), float(temp_df[60, 2])
             distance = haversine(lat1, lon1, lat2, lon2)
             delta_t = temp_df[60, 0] - temp_df[0, 0]
         except:
-            lat1, lon1 = float(temp_df[0, 2]), float(temp_df[0, 3])
-            lat2, lon2 = float(temp_df[-1, 2]), float(temp_df[-1, 3])
+            lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
+            lat2, lon2 = float(temp_df[-1, 1]), float(temp_df[-1, 2])
             distance = haversine(lat1, lon1, lat2, lon2)
             delta_t = temp_df[-1, 0] - temp_df[0, 0]
         
@@ -192,44 +202,51 @@ def calculate_data(df: pls.LazyFrame, distances: list):
 # ======================
 # |   Visualization    |
 # ======================
+"""
+
+To visualize, make directory: ./uploads/UserB/ and put the .zip file into there.
+Then, just run this script.
+
+"""
 if __name__ == "__main__":
     # Parameters
     username = "UserB"
     device = "Pixel 8 Pro"
     time_stamp = "historic-data 2025 03 09"
-    res_df = read_and_join(username, device, time_stamp)
-    print(res_df.collect())
+    gps_lf, grade_lf = read_and_join(username, device, time_stamp, has_grade = True)
+    print(gps_lf.collect())
     
     # Import for plotting if necessary
     import matplotlib.pyplot as plt
-    sample_num = len(res_df.collect())
+    sample_num = len(gps_lf.collect())
 
     # Calculating means for plotting
-    mean = res_df.select(["grade", "lat", "lon"]).collect().mean()
+    mean_gps = gps_lf.select(["lat", "lon"]).collect().mean()
+    mean_grade = grade_lf.select(["grade"]).collect().mean() 
 
     # Calculate the distances
-    distances, times, velocities = process_data(res_df)
-    total_distance, total_time, avg_velocity = calculate_data(res_df, distances)
+    distances, times, velocities = process_data(gps_lf)
+    total_distance, total_time, avg_velocity = calculate_data(gps_lf, distances)
 
     # Plot data
     plt.figure(figsize = (15, 7))
     plt.subplot(2, 4, 1)
-    plt.plot(res_df.collect()["grade"])
-    plt.plot([mean["grade"] for _ in range(sample_num)])
+    plt.plot(grade_lf.collect()["grade"])
+    plt.plot([mean_grade["grade"] for _ in range(sample_num)])
     plt.title("Grade")
 
     plt.subplot(2, 4, 2)
-    plt.plot(res_df.collect()["lat"])
-    plt.plot([mean["lat"] for _ in range(sample_num)])
+    plt.plot(gps_lf.collect()["lat"])
+    plt.plot([mean_gps["lat"] for _ in range(sample_num)])
     plt.title("Latitude")
 
     plt.subplot(2, 4, 3)
-    plt.plot(res_df.collect()["lon"])
-    plt.plot([mean["lon"] for _ in range(sample_num)])
+    plt.plot(gps_lf.collect()["lon"])
+    plt.plot([mean_gps["lon"] for _ in range(sample_num)])
     plt.title("Longitude")
     
     plt.subplot(2, 4, 4)
-    plt.plot(res_df.collect()["lat"], res_df.collect()["lon"], marker = '.')
+    plt.plot(gps_lf.collect()["lat"], gps_lf.collect()["lon"], marker = '.')
     plt.title("Map")
 
     plt.subplot(2, 4, 5)

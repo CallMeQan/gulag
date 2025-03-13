@@ -35,8 +35,6 @@ def register():
         new_user = User(username = username, email = email, password = hashed_password, name = username, admin = False)
         db.session.add(new_user)
         db.session.commit()
-        print(username)
-        print(password)
         return redirect(url_for("auth.login"))
     return render_template("auth/register.html")
 
@@ -44,13 +42,23 @@ def register():
 @auth_bp.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
+        # Receive information
         username = request.form["username"]
         password = request.form["password"]
         user = User.query.filter_by(username = username).first()
+
+        # If the username is valid, and the password match, login user
         if user and bcrypt.check_password_hash(user.password, password):
+            # Save user data to session
+            session["user"] = {
+                'user_id': user.user_id,
+                'username': user.username,
+                'email': user.email
+            }
+            # Login and save session data
             login_user(user)
-            session["username"] = username
             return redirect(url_for("home.index"))
+    # If method is GET, return to login.html
     return render_template("auth/login.html")
 
 # Page to do something that require registered user session
