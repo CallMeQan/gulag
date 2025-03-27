@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps – Track Đường Đi</title>
+    <style>
+      /* Đảm bảo map phủ toàn bộ trang */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+      }
+      .map {
+        height: 50%;
+        width: 50%;
+      }
+      #map {
+        height: 50%;
+        width: 50%;
+      }
+    </style>
+    <!-- Load Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ gg_api }}&callback=initMap" async defer></script>
+    <script>
+      function initMap() {
+        // Tạo map mới, căn giữa tại vị trí cụ thể (có thể thay đổi theo ý mình)
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: { lat: 10.7981007, lng: 106.6698631 }
+        });
+
+        // Khởi tạo DirectionsService và DirectionsRenderer
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+      }
+      // Hàm tính toán tuyến đường
+      function calculateRoute() {
+        const request = {
+          origin: new google.maps.LatLng(10.7626, 106.6602),
+          destination: new google.maps.LatLng(21.0278, 105.8342),
+          travelMode: 'DRIVING'
+        };
+
+        directionsService.route(request, (result, status) => {
+          console.log("Status:", status);
+          if (status === 'OK') {
+            directionsRenderer.setDirections(result);
+          } else {
+            alert('Có lỗi xảy ra: ' + status);
+          }
+        });
+      }
+      // Gọi initMap khi trang tải xong
+      window.onload = initMap;
+
+      // Gán sự kiện cho nút để gọi calculateRoute
+      document.getElementById('calculateRouteBtn').addEventListener('click', calculateRoute);
+    </script>
+  </head>
+  <body>
+    <h1>Google Map Route for Gulag</h1>
+    <div class="map" id="map"></div>
+    <br></br>
+    <button onclick="initMap()">Initialize Map</button>
+    <button onclick="calculateRoute()">Calculate The Route</button>
+  </body>
+</html>
