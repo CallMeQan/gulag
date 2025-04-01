@@ -1,1 +1,44 @@
-<h1>Hello, this is dashboard.html!</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="Gulag Logo"
+        />
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+      <div class="icon">
+        <img src="./icon/iconuser.svg" alt="User Icon" />
+      </div>
+    </nav>
+
+    <div class="background">
+      <div class="navbar_background"></div>
+      <div class="main">
+        <div class="map">
+          <div class="map_placeholder"></div>
+        </div>
+        <div class="info"></div>
+        <div class="profile-container"></div>
+      </div>
+    </div>
+  </body>
+</html>
