@@ -4,56 +4,6 @@
   box-sizing: border-box;
 }
 
-.background {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  background-color: #8a0b16;
-  z-index: -1; /* Để không che nội dung khác */
-}
-
-/* nav bar */
-.navbar {
-  position: fixed;
-  display: flex;
-  width: 100%;
-  height: 15.37%;
-  background-color: #ffffff;
-  align-items: center;
-  gap: 40px;
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
-}
-
-.navbar_background {
-  display: flex;
-  flex: 0 0 15.12%;
-}
-
-.logo img {
-  height: 15vh;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 5vw;
-  font-family: "Inknut Antiqua";
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #8a0b16;
-  font-size: 48px;
-}
-
-.icon {
-  margin-left: auto;
-  padding-right: 20px;
-}
-
 /* main components */
 .main {
   display: flex;
@@ -61,26 +11,206 @@
   height: 100%;
 }
 
+/* ================================================== */
+/* LEFT OF MAIN */
 .map {
   display: flex;
   flex: 0 0 50%;
   justify-content: center;
   align-items: center;
-  background-color: #0b608a;
+  background-color: #8a0b16;
 }
 
 .map_placeholder {
-  height: 300px;
-  width: 300px;
+  height: 70%;
+  width: 70%;
   background-color: white;
 }
 
+/* ================================================== */
+/* CENTER OF MAIN */
 .info {
+  display: flex;
+  flex-direction: column;
   flex: 0 0 20%;
-  background-color: #d0ff00;
+  background-color: #8a0b16;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
+.card {
+  display: flex;
+  align-items: center;
+  height: 13%;
+  width: 70%;
+  min-width: 215px;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.card_icon {
+  display: flex;
+  flex: 0 0 10%;
+}
+
+.card_info {
+  flex: 0 0 60%;
+  text-align: right;
+}
+
+.value {
+  font-family: Jomhuria;
+  font-weight: bold;
+  font-size: 20px;
+  color: #362828;
+}
+
+.label {
+  font-family: Inknut Antiqua;
+  font-weight: bold;
+  color: #8a0b16;
+}
+
+/* ================================================== */
+/* RIGHT OF MAIN */
+/* profile information */
 .profile_container {
-  flex: 0 0 80%;
-  background-color: #ff00f2;
+  display: flex;
+  flex: 0 0 30%;
+  min-width: 325px;
+  background-color: #8a0b16;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile_container_information {
+  height: 90%;
+  width: 80%;
+  background-color: #ffffff;
+  border-radius: 20px;
+}
+
+h2 {
+  font-size: 25px;
+  color: #8a0b16;
+  font-family: Inknut Antiqua;
+  padding-left: 7%;
+  padding-top: 5%;
+}
+
+.profile_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile_info img {
+  width: 30%;
+  height: 30%;
+}
+
+h3 {
+  font-weight: bold;
+  font-family: Inknut Antiqua;
+  color: #8a0b16;
+  font-size: 23px;
+}
+
+.profile_username {
+  position: relative;
+  font-family: Inknut Antiqua;
+  color: #8a0b16;
+  top: -15px;
+}
+
+/* Chi so co the  */
+.profile_stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #8a0b16;
+}
+
+.stat-value {
+  font-weight: bold;
+  font-size: 23px;
+}
+
+.stat-label {
+  font-size: 23px;
+}
+
+/* Calendar */
+.calendar-date-nar {
+  display: flex;
+  width: 100%;
+  padding-top: 5%;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  width: 100%;
+  max-width: 500px;
+  padding-top: 5%;
+}
+
+.calendar-header h3 {
+  display: inline;
+  white-space: nowrap; /* Prevents the text from wrapping onto the next line */
+  color: #8a0b16;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 15%;
+}
+
+.calendar-nar {
+  flex: 0 0 30%;
+  display: flex;
+  align-items: center;
+  gap: 10%;
+  margin-left: auto;
+}
+
+.pre-next-btn {
+  background-color: #8a0b16; /* Màu nền */
+  color: white; /* Màu chữ */
+  width: 30%; /* Chiều rộng */
+  height: 50%; /* Chiều cao */
+  border-radius: 50%; /* Bo tròn */
+  border: none; /* Loại bỏ viền */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  font-size: 30px; /* Cỡ chữ */
+}
+
+.calendar-item {
+  flex: 0 0 9%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.weekday {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8a0b16;
+}
+
+.date {
+  color: #362828;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
 }
