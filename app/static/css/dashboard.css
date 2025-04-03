@@ -71,6 +71,16 @@
   color: #8a0b16;
 }
 
+/* Animation of center main */
+
+.card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
 /* ================================================== */
 /* RIGHT OF MAIN */
 /* profile information */
@@ -181,7 +191,8 @@ h3 {
   margin-left: auto;
 }
 
-.pre-next-btn {
+.pre-next-btn-left,
+.pre-next-btn-right {
   background-color: #8a0b16; /* Màu nền */
   color: white; /* Màu chữ */
   width: 30%; /* Chiều rộng */
@@ -213,4 +224,29 @@ h3 {
   font-weight: bold;
   padding: 5px;
   border-radius: 5px;
+}
+
+/* Animation of left main */
+
+/* Date section */
+.date {
+  display: inline-block;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.date:hover {
+  background-color: rgba(255, 0, 0, 0.2); /* Màu đỏ nhạt */
+}
+
+/* Calendar navbar */
+.pre-next-btn-left,
+.pre-next-btn-right {
+  opacity: 0.3;
+  transition: opacity 0.3 ease-in-out;
+}
+
+.pre-next-btn-left:hover,
+.pre-next-btn-right:hover {
+  opacity: 1;
 }

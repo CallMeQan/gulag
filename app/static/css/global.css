@@ -22,6 +22,7 @@
   left: 0;
   z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
   padding-left: 2.5%;
+  overflow: hidden;
 }
 
 .navbar_background {
@@ -53,4 +54,32 @@
 
 .icon img {
   height: 10vh;
+}
+
+/* -------------------------------------------------------------------- */
+/* Hover Animation for Nav-link */
+
+.nav-links a {
+  transition: color 0.3s ease-in-out;
+  position: relative;
+}
+
+/* Tạo nền hình vuông ẩn dưới chữ */
+.nav-links a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0%;
+  height: 0%;
+  background-color: rgba(128, 0, 0, 0.2); /* Màu nền */
+  transition: all 0.3s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Khi hover, nền mở rộng ra 100% */
+.nav-links a:hover::before {
+  width: 100%;
+  height: 100%;
 }
