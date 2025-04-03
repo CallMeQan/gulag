@@ -1,3 +1,4 @@
+# flask --app upload_json run -h localhost -p 1234
 from flask import Flask, jsonify
 
 data = {
