@@ -4,7 +4,7 @@ from flask_session import Session
 from .config import Config
 from .extensions import db, bcrypt, login_manager, session
 from .models import User
-from .routes import home_bp, auth_bp, admin_bp
+from .routes import home_bp, auth_bp, admin_bp, data_bp
 
 def create_app_with_blueprint():
 
@@ -34,6 +34,7 @@ def create_app_with_blueprint():
     app.register_blueprint(home_bp, url_prefix = "/")
     app.register_blueprint(auth_bp, url_prefix = "/auth")
     app.register_blueprint(admin_bp, url_prefix = "/admin")
+    app.register_blueprint(data_bp, url_prefix = "/data")
 
     # ======================
     # |    Final stuff     |
