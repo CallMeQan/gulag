@@ -22,7 +22,7 @@ def create_app_with_blueprint():
     login_manager.init_app(app)
     session.init_app(app)
 
-    login_manager.login_view = "api.login"
+    login_manager.login_view = "auth.login"
 
     @login_manager.user_loader
     def load_user(user_id):
