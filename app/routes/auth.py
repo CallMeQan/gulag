@@ -67,4 +67,4 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
     if request.method == "POST":
         email = request.form["email"]
         return render_template("result.html")
-    return render_template("auth/forgot_password.html")
+    return render_template("auth/forgot_password.html") 
