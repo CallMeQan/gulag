@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, session, request
 from flask_login import login_user, logout_user, login_required
 import time, hmac, hashlib
 
+import datetime
 import os
 from dotenv import load_dotenv
 
@@ -22,7 +23,7 @@ def generate_reset_token():
     timestamp = str(int(time.time()))
     # Tạo token hash bằng cách dùng HMAC kết hợp SECRET_KEY và timestamp
     token = hmac.new(SECRET_KEY.encode(), timestamp.encode(), hashlib.sha256).hexdigest()
-    return token, timestamp
+    return token
 
 # User loader to get user object from the session when a request is made
 @login_manager.user_loader
@@ -88,13 +89,14 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
             return render_template("auth/register.html")
         
         # Generate reset token and timestamp
-        hashed_timestamp, ts = generate_reset_token()
+        hashed_timestamp = generate_reset_token()
 
         # Tạo link reset password, ví dụ: /email-forgot-password?a=token
-        reset_link = url_for('reset_password', a = hashed_timestamp, _external = True) # INT 129438200
+        reset_link = url_for('auth.recover_password', token = hashed_timestamp, _external = True) # INT 129438200
 
         # TODO: Save token and timestamp to database or cache for later verification
-        new_request = Forgot_Password(email = email, hashed_timestamp = hashed_timestamp)
+        created_at = datetime.datetime.now()
+        new_request = Forgot_Password(email = email, created_at = created_at, hashed_timestamp = hashed_timestamp)
         db.session.add(new_request)
         db.session.commit()
 
@@ -104,10 +106,11 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
     
     return render_template("auth/forgot_password.html")
 
-@auth_bp.route("/recover-password", methods = ["GET", "POST"])
-def recover_password():
+@auth_bp.route("/recover-password?a=<token>", methods = ["GET", "POST"])
+def recover_password(token):
     # Get the email and check for validity (less than 1 hour)
-    email = Forgot_Password.take_email_from_hash(hashed_timestamp = hashed_timestamp)
+    print(token)
+    email = Forgot_Password.take_email_from_hash(hashed_timestamp = token)
 
     if email is None:
         return "The link is not valid! Please come back again later."
@@ -115,10 +118,9 @@ def recover_password():
     # Changing password
     if request.method == "POST":
         # Get hashed timestamp token and updated password
-        hashed_timestamp = request.args.get("a")
-        new_password = request.form["password"]
+        new_password = request.form["new_password"]
         
         # Save the password
         User.update_password(email = email, new_password = new_password)
         return "Successfully changed password. Please log in!"
-    return render_template("auth/reset_password.html", email = email)
+    return render_template("auth/recover_password.html", email = email)
