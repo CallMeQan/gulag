@@ -1,12 +1,27 @@
 from flask import Blueprint, render_template
 from flask import render_template, redirect, url_for, session, request
 from flask_login import login_user, logout_user, login_required
+import time, hmac, hashlib
+
+import os
+from dotenv import load_dotenv
 
 from ..models import User
 from ..extensions import db, bcrypt, login_manager
 
+# env get
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 # Create instance
 auth_bp = Blueprint('auth', __name__)
+
+def generate_reset_token():
+    # Lấy timestamp hiện tại
+    timestamp = str(int(time.time()))
+    # Tạo token hash bằng cách dùng HMAC kết hợp SECRET_KEY và timestamp
+    token = hmac.new(SECRET_KEY.encode(), timestamp.encode(), hashlib.sha256).hexdigest()
+    return token, timestamp
 
 # User loader to get user object from the session when a request is made
 @login_manager.user_loader
@@ -66,5 +81,34 @@ def login():
 def forgot_password(): # Endpoint of this route is forgot_password, which is the function's name
     if request.method == "POST":
         email = request.form["email"]
-        return render_template("result.html")
+
+        # Check if email is valid
+        if not User.query.filter_by(email = email).first():
+            return render_template("auth/register.html")
+        
+        # Generate reset token and timestamp
+        token, ts = generate_reset_token()
+
+        # Tạo link reset password, ví dụ: /email-forgot-password?a=token
+        reset_link = url_for('reset_password', a=token, _external=True) # INT 129438200
+
+        # TODO: Save token and timestamp to database or cache for later verification
+        new_request = Forgot_Password(email = email, token = token)
+        db.session.add(new_request)
+        db.session.commit()
+
+        # TODO: Gửi email chứa reset_link tới user
+        
+        return f"Reset link sent to your email: {reset_link}"
+    
     return render_template("auth/forgot_password.html")
+
+@auth_bp.route("/email-forgot-password", methods=["GET", "POST"])
+def reset_password():
+    token = request.args.get("a")
+    # TODO: Xác thực token và kiểm tra thời gian hợp lệ (ví dụ: token hết hạn sau 1 giờ)
+    if request.method == "POST":
+        new_password = request.form.get("password")
+        # TODO: Lưu mật khẩu mới sau khi đã xác nhận token hợp lệ
+        return "Password has been reset successfully!"
+    return render_template("reset_password.html", token=token)
