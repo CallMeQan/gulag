@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from sqlalchemy import or_, and_, ForeignKey, cast, Date
 from sqlalchemy.orm import Mapped, mapped_column
 from geoalchemy2 import Geometry
@@ -31,7 +31,7 @@ class Sensor_Data(db.Model):
     __tablename__ = "sensor_data"
     data_id: Mapped[int] = mapped_column(primary_key = True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"), nullable = False)
-    time: Mapped[datetime] = mapped_column(nullable = False)
+    time: Mapped[datetime.datetime] = mapped_column(nullable = False)
     location = mapped_column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
 
     # To set partition by time
@@ -47,8 +47,8 @@ class Run_History(db.Model, UserMixin):
     __tablename__ = "run_history"
     run_id: Mapped[int] = mapped_column("run_id", primary_key = True)
     user_id: Mapped[int] = mapped_column(nullable = False)
-    start_time: Mapped[datetime] = mapped_column(nullable = False)
-    end_time: Mapped[datetime] = mapped_column(nullable = False)
+    start_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+    end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
     distance_km: Mapped[float] = mapped_column(nullable = False)
     avg_speed: Mapped[float] = mapped_column()
 
@@ -66,14 +66,22 @@ class Forgot_Password(db.Model):
     __tablename__ = "forgot_password"
     fp_id: Mapped[int] = mapped_column("fp_id", primary_key = True)
     email: Mapped[str] = mapped_column(nullable = False)
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable = False)
     hashed_timestamp: Mapped[str] = mapped_column(nullable = False)
 
     @classmethod
     def take_email_from_hash(self, hashed_timestamp):
+        """
+        Take email from a hashed timestamp, while checking if the created_at timestamp is less than 1 hour away.
+
+        :hashed_timestamp: A hashed timestamp, used to get unique string.
+        """
+        # Get current timestamp (GMT+7)
+        current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
+
         # Check if username or email is duplicated with only one query
-        # TODO: added a method to get email from this query
-        # return "a"
-        result = db.session.query(self.email).filter(
-            self.hashed_timestamp == hashed_timestamp
+        result = db.session.query(self.email, self.created_at).filter(
+            self.hashed_timestamp == hashed_timestamp,
+            current_timestamp - self.created_at <= datetime.timedelta(hours = 1)
         ).first()
         return result[0] if result else None
