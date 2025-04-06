@@ -26,6 +26,19 @@ class User(db.Model, UserMixin):
             or_(self.username == username, self.email == email)
         ).first() is not None
     
+    @classmethod
+    def update_password(self, email: str, new_password: str) -> None:
+        """
+        Update user's password.
+
+        :email: user's email.
+        :new_password: the updated password of the account.
+        """
+        db.session.query(self).\
+            filter(User.email == email).\
+            update({'password': new_password})
+        db.session.commit()
+
 # Define sensor data table
 class Sensor_Data(db.Model):
     __tablename__ = "sensor_data"

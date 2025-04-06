@@ -6,8 +6,9 @@ import time, hmac, hashlib
 import os
 from dotenv import load_dotenv
 
-from ..models import User
+from ..models import User, Forgot_Password
 from ..extensions import db, bcrypt, login_manager
+from ..modules.forgot_module import send_email
 
 # env get
 load_dotenv()
@@ -77,7 +78,7 @@ def login():
     return render_template("auth/login.html")
 
 # Page to do something that require registered user session
-@auth_bp.route("/forgot_password", methods = ["GET", "POST"])
+@auth_bp.route("/forgot-password", methods = ["GET", "POST"])
 def forgot_password(): # Endpoint of this route is forgot_password, which is the function's name
     if request.method == "POST":
         email = request.form["email"]
@@ -87,28 +88,37 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
             return render_template("auth/register.html")
         
         # Generate reset token and timestamp
-        token, ts = generate_reset_token()
+        hashed_timestamp, ts = generate_reset_token()
 
         # Tạo link reset password, ví dụ: /email-forgot-password?a=token
-        reset_link = url_for('reset_password', a=token, _external=True) # INT 129438200
+        reset_link = url_for('reset_password', a = hashed_timestamp, _external = True) # INT 129438200
 
         # TODO: Save token and timestamp to database or cache for later verification
-        new_request = Forgot_Password(email = email, token = token)
+        new_request = Forgot_Password(email = email, hashed_timestamp = hashed_timestamp)
         db.session.add(new_request)
         db.session.commit()
 
         # TODO: Gửi email chứa reset_link tới user
-        
-        return f"Reset link sent to your email: {reset_link}"
+        send_email(restore_link = reset_link, client_email = email)
+        return f"Reset link sent to your email: {email}"
     
     return render_template("auth/forgot_password.html")
 
-@auth_bp.route("/email-forgot-password", methods=["GET", "POST"])
-def reset_password():
-    token = request.args.get("a")
-    # TODO: Xác thực token và kiểm tra thời gian hợp lệ (ví dụ: token hết hạn sau 1 giờ)
+@auth_bp.route("/recover-password", methods = ["GET", "POST"])
+def recover_password():
+    # Get the email and check for validity (less than 1 hour)
+    email = Forgot_Password.take_email_from_hash(hashed_timestamp = hashed_timestamp)
+
+    if email is None:
+        return "The link is not valid! Please come back again later."
+
+    # Changing password
     if request.method == "POST":
-        new_password = request.form.get("password")
-        # TODO: Lưu mật khẩu mới sau khi đã xác nhận token hợp lệ
-        return "Password has been reset successfully!"
-    return render_template("reset_password.html", token=token)
+        # Get hashed timestamp token and updated password
+        hashed_timestamp = request.args.get("a")
+        new_password = request.form["password"]
+        
+        # Save the password
+        User.update_password(email = email, new_password = new_password)
+        return "Successfully changed password. Please log in!"
+    return render_template("auth/reset_password.html", email = email)
