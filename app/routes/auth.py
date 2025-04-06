@@ -119,8 +119,9 @@ def recover_password(token):
     if request.method == "POST":
         # Get hashed timestamp token and updated password
         new_password = request.form["new_password"]
+        hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
         
         # Save the password
-        User.update_password(email = email, new_password = new_password)
+        User.update_password(email = email, new_password = hashed_password)
         return "Successfully changed password. Please log in!"
     return render_template("auth/recover_password.html", email = email)
