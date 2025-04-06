@@ -61,3 +61,19 @@ class Run_History(db.Model, UserMixin):
         return db.session.query(self.run_id).filter(
             and_(self.user_id == user_id, cast(self.start_time, Date) == chosen_time)
         )
+    
+class Forgot_Password(db.Model):
+    __tablename__ = "forgot_password"
+    fp_id: Mapped[int] = mapped_column("fp_id", primary_key = True)
+    email: Mapped[str] = mapped_column(nullable = False)
+    hashed_timestamp: Mapped[str] = mapped_column(nullable = False)
+
+    @classmethod
+    def take_email_from_hash(self, hashed_timestamp):
+        # Check if username or email is duplicated with only one query
+        # TODO: added a method to get email from this query
+        # return "a"
+        result = db.session.query(self.email).filter(
+            self.hashed_timestamp == hashed_timestamp
+        ).first()
+        return result[0] if result else None
