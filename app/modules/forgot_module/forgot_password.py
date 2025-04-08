@@ -2,35 +2,48 @@ import smtplib, ssl
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
+def send_email(restore_link: str, server_email: str = "fuishere.ha.ha.ha@gmail.com",
+               client_email: str = "phuhn.a1.2124@gmail.com") -> None:
+    """
+    Function to send email to an account to restore it.
 
-# Replace with your own details
-sender_email = "hongp4949@gmail.com"
-receiver_email = "cptrekkles@gmail.com"
-password = os.getenv("EMAIL_PASSWORD")  # Use the App Password here
+    :restore_link: Link to restore the account.
+    :sender_email: SERVER's email address that will send the restoring email.
+    :sender_email: CLIENT's email address that will receive the restoring email.
+    """
+    # Load environment variables from .env file
+    load_dotenv()
 
-# Email content
-message = """\
-Subject: Test Email from Python
+    # Replace with your own details
+    password = os.getenv("EMAIL_PASSWORD")  # Use the App Password here
 
-This is a test email sent using Gmail's SMTP server.
+    # Email content
+    message = f"""\
+Subject: Gulag account's restoration
+
+This is the email from Gulag to restore your account.
+
+Please click on this link: {restore_link}
 """
 
-# Gmail SMTP server configuration
-smtp_server = "smtp.gmail.com"
-port = 587  # 587 is used for TLS/STARTTLS
+    # Gmail SMTP server configuration
+    smtp_server = "smtp.gmail.com"
+    port = 587  # 587 is used for TLS/STARTTLS
 
-# Create a secure SSL context
-context = ssl.create_default_context()
+    # Create a secure SSL context
+    context = ssl.create_default_context()
 
-# Connect to the Gmail SMTP server and send the email
-try:
-    with smtplib.SMTP(smtp_server, port) as server:
-        server.ehlo()  # Can be used to identify the client to the server
-        server.starttls(context=context)  # Secure the connection using TLS
-        server.ehlo()  # Re-identify after starting TLS
-        server.login(sender_email, password)  # Log in to your Gmail account
-        server.sendmail(sender_email, receiver_email, message)  # Send the email
-        print("Email sent successfully!")
-except Exception as e:
-    print(f"An error occurred: {e}")
+    # Connect to the Gmail SMTP server and send the email
+    try:
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.ehlo()  # Can be used to identify the client to the server
+            server.starttls(context=context)  # Secure the connection using TLS
+            server.ehlo()  # Re-identify after starting TLS
+            server.login(server_email, password)  # Log in to your Gmail account
+            server.sendmail(server_email, client_email, message)  # Send the email
+            print("Email sent successfully!")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    send_email("this is your link")
