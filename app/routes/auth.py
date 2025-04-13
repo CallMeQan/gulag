@@ -74,7 +74,7 @@ def login():
             }
             # Login and save session data
             login_user(user)
-            return redirect(url_for("home.index"))
+            return redirect(url_for("home.homepage"))
     # If method is GET, return to login.html
     return render_template("auth/login.html")
 

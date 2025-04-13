@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/set_goal.css') }}" /> <!-- connect to css -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Joan&display=swap" 
+      rel="stylesheet"
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Joan&family=Jomhuria&family=Judson:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo"> 
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="User Icon"/> <!-- connect to image -->
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+      <div class="icon">
+        <img src="{{ url_for('static', filename='images/user_icon.png') }}" alt="User Icon" />
+      </div>
+    </nav>
+
+    <div class="background">
+      <div class="navbar_background"></div>
+      <div class="main">
+        <div class="overlap-wrapper">
+          <div class="setgoal-container"> <p>Set goal</p> </div>
+          
+          <div class="goal-container">
+            <input type="number" id="goal" class="goal-input" value="0" min="0" max="999"> <!-- input to backend: using id-->
+            <span class="goal-unit">KM</span>
+          </div>
+          
+
+          
+          <div class="checkbox-container">
+            <label for="run-checkbox">Only for this run</label>
+            <input type="checkbox" id="run-checkbox">
+          </div>
+          <button class="savebtn" type="submit">Save</button> <!-- button -->
+
+       
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
