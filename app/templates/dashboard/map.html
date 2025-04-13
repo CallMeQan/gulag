@@ -1,52 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Google Maps – Track Đường Đi</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/global.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Dashboard</title>
 
-    <!-- Load Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ gg_api }}&callback=initMap" async defer></script>
-    <script>
-      function initMap() {
-        // Tạo map mới, căn giữa tại vị trí cụ thể (có thể thay đổi theo ý mình)
-        const map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: { lat: 10.7981007, lng: 106.6698631 }
-        });
-
-        // Khởi tạo DirectionsService và DirectionsRenderer
-        const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(map);
+    <!-- Map script -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      #map {
+        width: 100%;
+        height: 100%;
       }
-      // Hàm tính toán tuyến đường
-      // function calculateRoute() {
-      //   const request = {
-      //     origin: new google.maps.LatLng(10.7626, 106.6602),
-      //     destination: new google.maps.LatLng(21.0278, 105.8342),
-      //     travelMode: 'DRIVING'
-      //   };
+    </style>
 
-      //   directionsService.route(request, (result, status) => {
-      //     console.log("Status:", status);
-      //     if (status === 'OK') {
-      //       directionsRenderer.setDirections(result);
-      //     } else {
-      //       alert('Có lỗi xảy ra: ' + status);
-      //     }
-      //   });
-      // }
-      // Gọi initMap khi trang tải xong
-      window.onload = initMap;
-
-      // Gán sự kiện cho nút để gọi calculateRoute
-      document.getElementById('calculateRouteBtn').addEventListener('click', calculateRoute);
-    </script>
   </head>
+
   <body>
-    <h1>Google Map Route for Gulag</h1>
-    <div class="map" id="map"></div>
-    <br></br>
-    <button onclick="initMap()">Initialize Map</button>
-    <button onclick="calculateRoute()">Calculate The Route</button>
+    <nav class="navbar">
+      <div class="logo">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="Gulag Logo"
+        />
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+      <div class="icon">
+        <img
+          src="{{ url_for('static', filename='images/user1.png') }}"
+          alt="User Icon"
+        />
+      </div>
+    </nav>
+
+    <div class="background">
+      <div class="navbar_background"></div>
+      <div class="main">
+        <!-- LEFT -->
+        <div class="map">
+          <div class="map_placeholder">
+            <div id="map">
+              <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER -->
+        <div class="info">
+          <!-- Card 1: Total Steps -->
+          <div class="card">
+            <div class="card_icon">
+              <img
+                src="{{ url_for('static', filename='images/Steps.png') }}"
+                alt="User Steps"
+              />
+            </div>
+            <div class="card_info">
+              <p class="value">5595</p>
+              <p class="label">Total Steps</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Total Calories -->
+          <div class="card">
+            <div class="card_icon">
+              <img
+                src="{{ url_for('static', filename='images/Calories.png') }}"
+                alt="User Calories"
+              />
+            </div>
+            <div class="card_info">
+              <p class="value">220 Kcal</p>
+              <p class="label">Total Calories</p>
+            </div>
+          </div>
+
+          <!-- Card 3: Distance -->
+          <div class="card">
+            <div class="card_icon">
+              <img
+                src="{{ url_for('static', filename='images/Distance.png') }}"
+                alt="User Distance"
+              />
+            </div>
+            <div class="card_info">
+              <p class="value">8,5 Km</p>
+              <p class="label">Distance</p>
+            </div>
+          </div>
+
+          <!-- Card 4: Total Time -->
+          <div class="card">
+            <div class="card_icon">
+              <img
+                src="{{ url_for('static', filename='images/Clock.png') }}"
+                alt="User Clock"
+              />
+            </div>
+            <div class="card_info">
+              <p class="value">00:36:28</p>
+              <p class="label">Total Time</p>
+            </div>
+          </div>
+
+          <!-- Card 5: Avg Pace -->
+          <div class="card">
+            <div class="card_icon">
+              <img
+                src="{{ url_for('static', filename='images/Avg_Pace.png') }}"
+                alt="User Avg_Pace"
+              />
+            </div>
+            <div class="card_info">
+              <p class="value">10:43 /Km</p>
+              <p class="label">Avg Pace</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="profile_container">
+          <div class="profile_container_information">
+            <!-- RIGHT / profile title -->
+            <h2 class="profile-title">My Profile</h2>
+
+            <!-- RIGHT / info -->
+            <div class="profile_info">
+              <img
+                src="{{ url_for('static', filename='images/user1.png') }}"
+                alt="Avatar User"
+              />
+              <h3>
+                <div class="profile_name">Gulag Meme</div>
+              </h3>
+              <p class="profile_username">@Bibatcoc</p>
+
+              <!-- RIGHT / Profile info / Chi so co the -->
+              <div class="profile_stats">
+                <div class="stat">
+                  <span class="stat-value">65 kg</span>
+                  <span class="stat-label">Weight</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">178 cm</span>
+                  <span class="stat-label">Height</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">25</span>
+                  <span class="stat-label">Age</span>
+                </div>
+              </div>
+
+              <!-- RIGHT / Profile info / calendar header -->
+              <div class="calendar-date-nar">
+                <div class="calendar-header">
+                  <h3>February 2025</h3>
+                </div>
+                <div class="calendar-nar">
+                  <button class="pre-next-btn-left">&lt;</button>
+                  <button class="pre-next-btn-right">&gt;</button>
+                </div>
+              </div>
+
+              <!-- RIGHT / Profile info / Lich -->
+              <div class="calendar">
+                <div class="calendar-item">
+                  <div class="weekday">Mon</div>
+                  <div class="date">12</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Tue</div>
+                  <div class="date">13</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Wed</div>
+                  <div class="date">14</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Thu</div>
+                  <div class="date">15</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Fri</div>
+                  <div class="date">16</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Sat</div>
+                  <div class="date">17</div>
+                </div>
+                <div class="calendar-item">
+                  <div class="weekday">Sun</div>
+                  <div class="date">18</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script for map (Must be put here) -->
+    <script>
+      
+      var current_pos = JSON.parse('{{ current_pos|tojson }}');
+      var myGeoJSON = JSON.parse('{{ geojson|tojson }}');
+
+      const map = L.map('map').setView(current_pos, 20); //starting position
+
+      L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
+        tileSize: 512,
+        zoomOffset: -1,
+        minZoom: 1,
+        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        crossOrigin: true
+      }).addTo(map);
+
+      var marker = L.marker(current_pos).addTo(map);
+
+      L.geoJSON(myGeoJSON).addTo(map);
+
+      marker.bindPopup("<b> Your current position </b><br> Keep running!");
+    </script>
   </body>
 </html>
