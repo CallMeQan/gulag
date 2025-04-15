@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import session, request
+from flask import Blueprint, jsonify, session, request
 
 from flask_socketio import SocketIO, join_room, emit
 
@@ -40,11 +39,15 @@ def send_mobile_data():
 
     if request.method == "POST":
         # Get data from mobile
-        hashed_timestamp = request.form["hashed_timestamp"]
-        latitude = request.form["latitude"]
-        longitude = request.form["longitude"]
-        time_start = request.form["time_start"]
-        created_at = request.form["created_at"]
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON data received"}), 400
+
+        hashed_timestamp = data.get('hashed_timestamp')
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
+        time_start = data.get('time_start')
+        created_at = data.get('created_at')
 
         # Get user_id and check token
         user_id = Mobile_Session.get_user_id_from_hash(hashed_timestamp)

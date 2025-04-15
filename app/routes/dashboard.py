@@ -55,7 +55,7 @@ def map():
     # loaded_pos = loads(current_pos)
 
     # Parse dictionary into json-string
-    geojson = dumps(geojson)
+    # geojson = dumps(geojson)
     # loaded_geojson = loads(geojson)
 
     # Get map api key and socketio url

@@ -31,67 +31,76 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
-      let socket_server;
-      var myGeoJSON = {
-          type: "FeatureCollection",
-          features: [
-              {
-                type: "Feature",
-                properties: {
-                    name: "Running Route",
-                    type: "Loop Run"
-                },
-                geometry: {
-                  type: "LineString",
-                  coordinates: [
-                      // [106.612543, 11.107656],
-                      // [106.612943, 11.107656],
-                      // [106.613543, 11.107656],
-                  ]
-                }
-              }
-            ]
-      };
+      // let socket_server;
+      // var myGeoJSON = {
+      //     type: "FeatureCollection",
+      //     features: [
+      //         {
+      //           type: "Feature",
+      //           properties: {
+      //               name: "Running Route",
+      //               type: "Loop Run"
+      //           },
+      //           geometry: {
+      //             type: "LineString",
+      //             coordinates: [
+      //                 [106.612543, 11.107656],
+      //                 [106.612943, 11.107656],
+      //                 [106.613543, 11.107656],
+      //             ]
+      //           }
+      //         }
+      //       ]
+      // };
       
-      $(document).ready(function(){
-          // Connect to socketio
-          socket_server = io.connect('{{ socketio_url }}');
+      // localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-          // Socket connect
-          socket_server.on('connect', function() {
-              socket_server.emit('joined', {});
-          });
+      // $(document).ready(function(){
+      //     // Connect to socketio
+      //     socket_server = io.connect('{{ socketio_url }}');
+
+      //     // Socket connect
+      //     socket_server.on('connect', function() {
+      //         socket_server.emit('joined', {});
+      //     });
           
-          // Get data every interval
-          socket_server.on('updated_info_on_room', function(server_data) {
-              // localStorage.removeItem("locations");
-              // {'latitude': latitude, 'longitude': longitude}
+      //     // Get data every interval
+      //     socket_server.on('send_server_data', function(server_data) {
+      //         // {'latitude': latitude, 'longitude': longitude}
               
-              // Get data from Local Storage
-              let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]")
-              let location = [
-                  server_data.latitude,
-                  server_data.longitude
-              ];
+      //         // Get data from Local Storage
+      //         let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]")
+      //         let location = [
+      //             server_data.longitude, // longitude here must be put first
+      //             server_data.latitude
+      //         ];
 
-              // Add the current location and save all
-              saved_locations.push(location);
-              localStorage.setItem("locations", JSON.stringify(saved_locations));
+      //         // Add the current location and save all
+      //         saved_locations.push(location);
+      //         localStorage.setItem("locations", JSON.stringify(saved_locations));
 
-              myGeoJSON.features[0].geometry.coordinates = saved_locations;
-              // $("#locations").val(JSON.stringify(saved_locations));
-          })
-      });
+      //         myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"))
+      //         myGeoJSON.features[0].geometry.coordinates = saved_locations;
+      //         localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+      //         $("#locations").val(JSON.stringify(saved_locations));
+              
+      //         var current_pos = [11.107656, 106.612543]
 
-      // Socket disconnect
-      function leave_room() {
-          socket_server.emit('left', {}, function() {
-              socket_server.disconnect();
+      //         const map = L.map('map').setView(current_pos, 20); //starting position
 
-              // Go back to the login page
-              window.location.href = "{{ url_for('index') }}";
-          });
-      }
+      //         L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
+      //           tileSize: 512,
+      //           zoomOffset: -1,
+      //           minZoom: 1,
+      //           attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+      //           crossOrigin: true
+      //         }).addTo(map);
+
+      //         var marker = L.marker(current_pos).addTo(map);
+
+      //         L.geoJSON(myGeoJSON).addTo(map);
+      //     })
+      // });
     </script>
 
   </head>
@@ -281,13 +290,60 @@
         </div>
       </div>
     </div>
+    <textarea id="locations" style="min-height: 300px; min-width: 500px;"></textarea>
 
     <!-- Script for map (Must be put here) -->
     <script>
-      
-      var current_pos = JSON.parse('{{ current_pos|tojson }}');
+      localStorage.removeItem("locations");
+      let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
 
-      const map = L.map('map').setView(current_pos, 20); //starting position
+      let myGeoJSON = {
+                type: "FeatureCollection",
+                features: [
+                    {
+                      type: "Feature",
+                      properties: {
+                          name: "Running Route",
+                          type: "Loop Run"
+                      },
+                      geometry: {
+                        type: "LineString",
+                        coordinates: [
+                            [106.612543, 11.107656],
+                            [106.612943, 11.107656],
+                            [106.613543, 11.107656],
+                        ]
+                      }
+                    }
+                  ]
+            };
+      myGeoJSON = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              name: "Running Route",
+              type: "Loop Run"
+            },
+            geometry: {
+              type: "LineString",
+              coordinates: [
+                [106.612543, 11.107656],
+                [106.612943, 11.107656],
+                [106.613543, 11.107656],
+              ]
+            }
+          }
+        ]
+      };
+
+      // localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+
+      // var current_pos = JSON.parse(localStorage.getItem("locations")[0] || [11, 106]);
+      var current_pos = [11.107656, 106.612543]
+
+      const map = L.map('map').setView(current_pos, 12); //starting position
 
       L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
         tileSize: 512,
@@ -298,10 +354,49 @@
       }).addTo(map);
 
       var marker = L.marker(current_pos).addTo(map);
-
-      L.geoJSON(myGeoJSON).addTo(map);
-
       marker.bindPopup("<b> Your current position </b><br> Keep running!");
+
+      // myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
+      L.geoJSON(myGeoJSON).addTo(map);
+      
+      localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+
+      let socket_server;
+      $(document).ready(function(){
+          // Connect to socketio
+          socket_server = io.connect('{{ socketio_url }}');
+
+          // Socket connect
+          socket_server.on('connect', function() {
+              socket_server.emit('joined', {});
+          });
+          
+          // Get data every interval
+          socket_server.on('send_server_data', function(server_data) {
+              // {'latitude': latitude, 'longitude': longitude}
+              
+              // Get data from server_data
+              var current_pos = [11.107656, 106.612543];
+              var location = [
+                  server_data.longitude, // longitude here must be put first
+                  server_data.latitude
+              ];
+
+              // Add the current location and save all
+              saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
+              saved_locations.push(location);
+              localStorage.setItem("locations", JSON.stringify(saved_locations));
+
+              // Save it into myGeoJSON
+              myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
+              myGeoJSON.features[0].geometry.coordinates = saved_locations;
+              localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+              
+              $("#locations").val(JSON.stringify(myGeoJSON));
+
+              L.geoJSON(myGeoJSON).addTo(map);
+          })
+      });
     </script>
   </body>
 </html>
