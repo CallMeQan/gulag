@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, request
 
-from flask_socketio import SocketIO, join_room, emit
+from flask_socketio import emit
 
 from ..models import User, Mobile_Session, Sensor_Data
 from ..extensions import db, login_manager

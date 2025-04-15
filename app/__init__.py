@@ -1,7 +1,6 @@
 # app.py
 from flask import Flask
 from flask_session import Session
-from flask_socketio import SocketIO
 
 from .config import Config
 from .extensions import db, bcrypt, login_manager, session, socketio

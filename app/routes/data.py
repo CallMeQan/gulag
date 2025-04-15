@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, jsonify
-from flask import render_template, redirect, url_for, session, request
-from flask_login import login_user, logout_user, login_required
+from flask import Blueprint, jsonify
+from flask import redirect, url_for, session, request
 import polars as pls
 from dotenv import load_dotenv
 from os import getenv

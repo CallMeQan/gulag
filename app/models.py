@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import or_, and_, ForeignKey, cast, Date
+from sqlalchemy import or_, and_, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from geoalchemy2 import Geometry
 from flask_login import UserMixin
@@ -62,26 +62,6 @@ class Sensor_Data(db.Model):
         return db.session.query(self.user_id, self.created_at, self.location).select_from(Sensor_Data).filter(
             and_(self.user_id == user_id, self.start_time == start_time)
         ).all()
-    
-# Define running history table
-class Run_History(db.Model, UserMixin):
-    __tablename__ = "run_history"
-    run_id: Mapped[int] = mapped_column("run_id", primary_key = True)
-    user_id: Mapped[int] = mapped_column(nullable = False)
-    start_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
-    end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
-    distance_km: Mapped[float] = mapped_column(nullable = False)
-    avg_speed: Mapped[float] = mapped_column()
-
-    @classmethod
-    def history_on_user_start_time(self, user_id, chosen_time):
-        """
-        :chosen_time: date(2025, 3, 31), while self.start_time will be in ISO format "2025-04-04 10:05:00+00"
-        """
-        # Tạo truy vấn
-        return db.session.query(self.run_id).filter(
-            and_(self.user_id == user_id, cast(self.start_time, Date) == chosen_time)
-        )
     
 class Forgot_Password(db.Model):
     __tablename__ = "forgot_password"
@@ -151,3 +131,23 @@ class Mobile_Session(db.Model):
             self.hashed_timestamp == hashed_timestamp,
         ).first()
         return result[0] if result else None
+
+# # Define running history table
+# class Run_History(db.Model, UserMixin):
+#     __tablename__ = "run_history"
+#     run_id: Mapped[int] = mapped_column("run_id", primary_key = True)
+#     user_id: Mapped[int] = mapped_column(nullable = False)
+#     start_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+#     end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+#     distance_km: Mapped[float] = mapped_column(nullable = False)
+#     avg_speed: Mapped[float] = mapped_column()
+
+#     @classmethod
+#     def history_on_user_start_time(self, user_id, chosen_time):
+#         """
+#         :chosen_time: date(2025, 3, 31), while self.start_time will be in ISO format "2025-04-04 10:05:00+00"
+#         """
+#         # Query
+#         return db.session.query(self.run_id).filter(
+#             and_(self.user_id == user_id, cast(self.start_time, Date) == chosen_time)
+#         )
