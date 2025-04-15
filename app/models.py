@@ -44,7 +44,8 @@ class Sensor_Data(db.Model):
     __tablename__ = "sensor_data"
     data_id: Mapped[int] = mapped_column(primary_key = True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"), nullable = False)
-    time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+    start_time: Mapped[int] = mapped_column(nullable = False)
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable = False)
     location = mapped_column(Geometry(geometry_type='POINT', srid=4326), nullable=False)
 
     # To set partition by time
@@ -54,6 +55,13 @@ class Sensor_Data(db.Model):
 
     def get_id(self):
         return self.data_id
+    
+    @classmethod
+    def get_running_session(self, user_id, start_time):
+        # Another way to query table
+        return db.session.query(self.user_id, self.created_at, self.location).select_from(Sensor_Data).filter(
+            and_(self.user_id == user_id, self.start_time == start_time)
+        ).all()
     
 # Define running history table
 class Run_History(db.Model, UserMixin):
@@ -90,11 +98,56 @@ class Forgot_Password(db.Model):
         :hashed_timestamp: A hashed timestamp, used to get unique string.
         """
         # Get current timestamp (GMT+7)
-        current_timestamp = datetime.datetime.now()
+        datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
 
         # Check if username or email is duplicated with only one query
         result = db.session.query(self.email, self.created_at).filter(
             self.hashed_timestamp == hashed_timestamp,
             current_timestamp - self.created_at <= datetime.timedelta(hours = 1)
+        ).first()
+        return result[0] if result else None
+    
+class Mobile_Session(db.Model):
+    __tablename__ = "mobile_session"
+    mobile_id: Mapped[int] = mapped_column("mobile_id", primary_key = True)
+    user_id: Mapped[int] = mapped_column(nullable = False)
+    created_at: Mapped[datetime.datetime] = mapped_column(nullable = False)
+    hashed_timestamp: Mapped[str] = mapped_column(nullable = False)
+
+    @classmethod
+    def create_session(self, user_id: str, created_at: str, hashed_timestamp: str) -> None:
+        """
+        Create session if there has been none.
+        Renew session if the hour is more than 24 hours.
+        """
+        # Get current timestamp (GMT+7)
+        user_session = db.session.query(self.user_id).filter(
+            self.user_id == user_id,
+        ).first()
+
+        user_session = True if user_session else False
+
+        # Query
+        if user_session:
+            current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
+            db.session.query(self).\
+            filter(Mobile_Session.user_id == user_id,
+                   current_timestamp - self.created_at <= datetime.timedelta(hours = 24)).\
+            update({'created_at': current_timestamp,'hashed_timestamp': hashed_timestamp})
+        else:
+            mobile_session = Mobile_Session(user_id = user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
+            db.session.add(mobile_session)
+        db.session.commit()
+
+    @classmethod
+    def get_user_id_from_hash(self, hashed_timestamp):
+        """
+        Take email from a hashed timestamp, while checking if the created_at timestamp is less than 1 hour away.
+
+        :hashed_timestamp: A hashed timestamp, used to get unique string.
+        """
+        # Check if username or email is duplicated with only one query
+        result = db.session.query(self.user_id).filter(
+            self.hashed_timestamp == hashed_timestamp,
         ).first()
         return result[0] if result else None

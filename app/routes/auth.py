@@ -7,7 +7,7 @@ import datetime
 import os
 from dotenv import load_dotenv
 
-from ..models import User, Forgot_Password
+from ..models import User, Forgot_Password, Mobile_Session
 from ..extensions import db, bcrypt, login_manager
 from ..modules.forgot_module import send_email
 
@@ -125,3 +125,26 @@ def recover_password(token):
         User.update_password(email = email, new_password = hashed_password)
         return "Successfully changed password. Please log in!"
     return render_template("auth/recover_password.html", email = email)
+
+@auth_bp.route("/mobile_check", methods = ["GET", "POST"])
+def mobile_check():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        # Query user
+        user = User.query.filter_by(email = email).first()
+
+        # If user exists and password is correct
+        if user and bcrypt.check_password_hash(user.password, password):
+            # Generate hashed timestamp used as token and current timestamp
+            hashed_timestamp = generate_reset_token()
+            created_at = datetime.datetime.now()
+
+            # Create session or add them
+            Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
+            
+            # TODO: Send the token to mobile app.
+            return f"Successfully signed in - here is the token: {hashed_timestamp}!"
+        return "Something was wrong!"
+    return "Send data here to sign in and get token!"

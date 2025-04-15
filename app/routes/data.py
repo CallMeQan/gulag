@@ -47,6 +47,7 @@ def data_fetch():
         gps_lf = gps_lf.with_columns(
             (pls.lit("POINT(") + pls.col("lon").cast(pls.Utf8) + pls.lit(" ") + pls.col("lat").cast(pls.Utf8) + pls.lit(")")).alias("location")
         )
+        
         gps_lf = gps_lf.select(["user_id", "time", "location"])
         
         # Input into database
