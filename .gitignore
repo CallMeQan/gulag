@@ -185,7 +185,6 @@ token.json
 # Data files
 *.csv
 *.zip
-*.txt
 
 # Test files
 **/test.py
