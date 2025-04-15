@@ -1,12 +1,19 @@
 # app.py
-from flask import Flask #, session
+from flask import Flask
 from flask_session import Session
+from flask_socketio import SocketIO
+
 from .config import Config
-from .extensions import db, bcrypt, login_manager, session
+from .extensions import db, bcrypt, login_manager, session, socketio
 from .models import User
 from .routes import home_bp, auth_bp, admin_bp, data_bp, dashboard_bp, mobile_bp
 
 def create_app_with_blueprint():
+
+    # ============================
+    # |  SocketIO events import  |
+    # ============================
+    from .socketio_events import events
 
     # ======================
     # |    Configuration   |
@@ -21,6 +28,7 @@ def create_app_with_blueprint():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     session.init_app(app)
+    socketio.init_app(app)
 
     login_manager.login_view = "auth.login"
 
@@ -43,6 +51,7 @@ def create_app_with_blueprint():
     # ======================
     with app.app_context():
         db.create_all()
+
     return app
 
 if __name__ == "__main__":

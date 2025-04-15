@@ -1,13 +1,11 @@
 from flask import Blueprint
 from flask import session, request
 
-from dotenv import load_dotenv
+from flask_socketio import SocketIO, join_room, emit
 
 from ..models import User, Mobile_Session, Sensor_Data
 from ..extensions import db, login_manager
-
-# env get
-load_dotenv()
+from ..params import SOCKETIO_PATH
 
 mobile_bp = Blueprint('mobile', __name__)
 
@@ -16,12 +14,13 @@ mobile_bp = Blueprint('mobile', __name__)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@mobile_bp.route("/send_data", methods = ["GET", "POST"])
-def send_data():
+@mobile_bp.route("/send_mobile_data", methods = ["GET", "POST"])
+def send_mobile_data():
     """
     
     Get data from mobile and send it to the map in JSON format.
 
+    POST method will send these:
     {
         "hashed_timestamp": "e4dbc3acc15744bbac473655167aa1211da77da3796a703a9625e93c0a10eb09!",
         "latitude": 0,
@@ -52,16 +51,25 @@ def send_data():
         if user_id is None:
             return "Token is expired or does not exist! Please log in on Mobile again."
 
+        # Commit row to data base
         row = {
-            "user_id": 1,
+            "user_id": user_id,
             "start_time": time_start,
             "created_at": created_at,
             "location": f"Point({latitude} {longitude})"
         }
-
         row = Sensor_Data(**row)
         db.session.add(row)
         db.session.commit()
+        
+        # Add Socketio
+        emit("send_server_data",
+             {
+                "latitude": latitude,
+                "longitude": longitude
+             },
+             to = user_id,
+             namespace = SOCKETIO_PATH)
         
         return "Data sent successfully!"
     return "Send data here to show it in the map!"

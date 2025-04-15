@@ -27,6 +27,73 @@
       }
     </style>
 
+    <!-- SocketIO script -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      let socket_server;
+      var myGeoJSON = {
+          type: "FeatureCollection",
+          features: [
+              {
+                type: "Feature",
+                properties: {
+                    name: "Running Route",
+                    type: "Loop Run"
+                },
+                geometry: {
+                  type: "LineString",
+                  coordinates: [
+                      // [106.612543, 11.107656],
+                      // [106.612943, 11.107656],
+                      // [106.613543, 11.107656],
+                  ]
+                }
+              }
+            ]
+      };
+      
+      $(document).ready(function(){
+          // Connect to socketio
+          socket_server = io.connect('{{ socketio_url }}');
+
+          // Socket connect
+          socket_server.on('connect', function() {
+              socket_server.emit('joined', {});
+          });
+          
+          // Get data every interval
+          socket_server.on('updated_info_on_room', function(server_data) {
+              // localStorage.removeItem("locations");
+              // {'latitude': latitude, 'longitude': longitude}
+              
+              // Get data from Local Storage
+              let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]")
+              let location = [
+                  server_data.latitude,
+                  server_data.longitude
+              ];
+
+              // Add the current location and save all
+              saved_locations.push(location);
+              localStorage.setItem("locations", JSON.stringify(saved_locations));
+
+              myGeoJSON.features[0].geometry.coordinates = saved_locations;
+              // $("#locations").val(JSON.stringify(saved_locations));
+          })
+      });
+
+      // Socket disconnect
+      function leave_room() {
+          socket_server.emit('left', {}, function() {
+              socket_server.disconnect();
+
+              // Go back to the login page
+              window.location.href = "{{ url_for('index') }}";
+          });
+      }
+    </script>
+
   </head>
 
   <body>
@@ -219,7 +286,6 @@
     <script>
       
       var current_pos = JSON.parse('{{ current_pos|tojson }}');
-      var myGeoJSON = JSON.parse('{{ geojson|tojson }}');
 
       const map = L.map('map').setView(current_pos, 20); //starting position
 
