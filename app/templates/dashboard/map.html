@@ -27,81 +27,9 @@
       }
     </style>
 
-    <!-- SocketIO script -->
+    <!-- Download JS stuff -->
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      // let socket_server;
-      // var myGeoJSON = {
-      //     type: "FeatureCollection",
-      //     features: [
-      //         {
-      //           type: "Feature",
-      //           properties: {
-      //               name: "Running Route",
-      //               type: "Loop Run"
-      //           },
-      //           geometry: {
-      //             type: "LineString",
-      //             coordinates: [
-      //                 [106.612543, 11.107656],
-      //                 [106.612943, 11.107656],
-      //                 [106.613543, 11.107656],
-      //             ]
-      //           }
-      //         }
-      //       ]
-      // };
-      
-      // localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-
-      // $(document).ready(function(){
-      //     // Connect to socketio
-      //     socket_server = io.connect('{{ socketio_url }}');
-
-      //     // Socket connect
-      //     socket_server.on('connect', function() {
-      //         socket_server.emit('joined', {});
-      //     });
-          
-      //     // Get data every interval
-      //     socket_server.on('send_server_data', function(server_data) {
-      //         // {'latitude': latitude, 'longitude': longitude}
-              
-      //         // Get data from Local Storage
-      //         let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]")
-      //         let location = [
-      //             server_data.longitude, // longitude here must be put first
-      //             server_data.latitude
-      //         ];
-
-      //         // Add the current location and save all
-      //         saved_locations.push(location);
-      //         localStorage.setItem("locations", JSON.stringify(saved_locations));
-
-      //         myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"))
-      //         myGeoJSON.features[0].geometry.coordinates = saved_locations;
-      //         localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-      //         $("#locations").val(JSON.stringify(saved_locations));
-              
-      //         var current_pos = [11.107656, 106.612543]
-
-      //         const map = L.map('map').setView(current_pos, 20); //starting position
-
-      //         L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
-      //           tileSize: 512,
-      //           zoomOffset: -1,
-      //           minZoom: 1,
-      //           attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-      //           crossOrigin: true
-      //         }).addTo(map);
-
-      //         var marker = L.marker(current_pos).addTo(map);
-
-      //         L.geoJSON(myGeoJSON).addTo(map);
-      //     })
-      // });
-    </script>
 
   </head>
 
@@ -290,14 +218,12 @@
         </div>
       </div>
     </div>
-    <textarea id="locations" style="min-height: 300px; min-width: 500px;"></textarea>
 
-    <!-- Script for map (Must be put here) -->
+    <!-- Script for map (Must be put here) and SocketIO -->
     <script>
-      localStorage.removeItem("locations");
-      let saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
-
-      let myGeoJSON = {
+      // localStorage.removeItem("locations");
+      var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
+      var myGeoJSON = {
                 type: "FeatureCollection",
                 features: [
                     {
@@ -308,42 +234,16 @@
                       },
                       geometry: {
                         type: "LineString",
-                        coordinates: [
-                            [106.612543, 11.107656],
-                            [106.612943, 11.107656],
-                            [106.613543, 11.107656],
-                        ]
+                        coordinates: saved_locations,
                       }
                     }
                   ]
             };
-      myGeoJSON = {
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: {
-              name: "Running Route",
-              type: "Loop Run"
-            },
-            geometry: {
-              type: "LineString",
-              coordinates: [
-                [106.612543, 11.107656],
-                [106.612943, 11.107656],
-                [106.613543, 11.107656],
-              ]
-            }
-          }
-        ]
-      };
+      localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-      // localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+      current_pos = [21.03717741287463, 105.83702964290497];
 
-      // var current_pos = JSON.parse(localStorage.getItem("locations")[0] || [11, 106]);
-      var current_pos = [11.107656, 106.612543]
-
-      const map = L.map('map').setView(current_pos, 12); //starting position
+      const map = L.map('map').setView(current_pos, 14); //starting position
 
       L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
         tileSize: 512,
@@ -376,11 +276,12 @@
               // {'latitude': latitude, 'longitude': longitude}
               
               // Get data from server_data
-              var current_pos = [11.107656, 106.612543];
               var location = [
                   server_data.longitude, // longitude here must be put first
                   server_data.latitude
               ];
+              current_pos = location
+              current_pos = [current_pos[1], current_pos[0]];
 
               // Add the current location and save all
               saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
@@ -391,9 +292,16 @@
               myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
               myGeoJSON.features[0].geometry.coordinates = saved_locations;
               localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-              
-              $("#locations").val(JSON.stringify(myGeoJSON));
 
+              map.setView(current_pos, 14);
+              
+              // Remove old marker and add a new one
+              if (map.hasLayer(marker)) {
+                map.removeLayer(marker);
+              }
+              marker = L.marker(current_pos).addTo(map);
+              marker.bindPopup("<b> Your current position </b><br> Keep running!");
+              
               L.geoJSON(myGeoJSON).addTo(map);
           })
       });
