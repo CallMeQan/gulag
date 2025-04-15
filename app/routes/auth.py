@@ -4,16 +4,11 @@ from flask_login import login_user, logout_user, login_required
 import time, hmac, hashlib
 
 import datetime
-import os
-from dotenv import load_dotenv
 
 from ..models import User, Forgot_Password, Mobile_Session
 from ..extensions import db, bcrypt, login_manager
 from ..modules.forgot_module import send_email
-
-# env get
-load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
+from ..params import SECRET_KEY
 
 # Create instance
 auth_bp = Blueprint('auth', __name__)
@@ -145,6 +140,6 @@ def mobile_check():
             Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
             
             # TODO: Send the token to mobile app.
-            return f"Successfully signed in - here is the token: {hashed_timestamp}!"
+            return f"Successfully signed in - here is the token ({hashed_timestamp}), and user_id ({user.user_id})!"
         return "Something was wrong!"
     return "Send data here to sign in and get token!"

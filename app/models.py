@@ -98,7 +98,7 @@ class Forgot_Password(db.Model):
         :hashed_timestamp: A hashed timestamp, used to get unique string.
         """
         # Get current timestamp (GMT+7)
-        datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
+        current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
 
         # Check if username or email is duplicated with only one query
         result = db.session.query(self.email, self.created_at).filter(
