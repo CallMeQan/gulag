@@ -5,6 +5,7 @@
         "pkief.material-icon-theme",
         "github.copilot",
         "ms-python.python",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
     ]
 }

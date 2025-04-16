@@ -1,5 +1,5 @@
+from os import getenv
 import smtplib, ssl
-from ...params import EMAIL_PASSWORD
 
 def send_email(restore_link: str, server_email: str = "fuishere.ha.ha.ha@gmail.com",
                client_email: str = "phuhn.a1.2124@gmail.com") -> None:
@@ -11,7 +11,7 @@ def send_email(restore_link: str, server_email: str = "fuishere.ha.ha.ha@gmail.c
     :sender_email: CLIENT's email address that will receive the restoring email.
     """
     # Replace with your own details
-    password = EMAIL_PASSWORD  # Use the App Password here
+    password = getenv("PASSWORD_OF_EMAIL")  # Use the App Password here
 
     # Email content
     message = f"""\
@@ -32,11 +32,11 @@ Please click on this link: {restore_link}
     # Connect to the Gmail SMTP server and send the email
     try:
         with smtplib.SMTP(smtp_server, port) as server:
-            server.ehlo()  # Can be used to identify the client to the server
-            server.starttls(context=context)  # Secure the connection using TLS
-            server.ehlo()  # Re-identify after starting TLS
+            server.ehlo()
+            server.starttls(context=context)
+            server.ehlo()
             server.login(server_email, password)  # Log in to your Gmail account
-            server.sendmail(server_email, client_email, message)  # Send the email
+            server.sendmail(server_email, client_email, message)
             print("Email sent successfully!")
     except Exception as e:
         print(f"An error occurred: {e}")

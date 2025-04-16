@@ -39,7 +39,7 @@ INSERT INTO users (username, password, email, name, admin) VALUES
 ('bob_dev', 'hashed_password_2', 'bob@example.com', 'Bob', FALSE),
 ('charlie99', 'hashed_password_3', 'charlie@example.com', 'Charlie', FALSE),
 ('david_admin', 'hashed_password_4', 'david@example.com', 'David', TRUE),
-('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE)
+('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE),
 ('Ceenen', 'hashed_password_6', 'phuhn.a1.2124@gmail.com', 'Fuu', TRUE);
 
 ------------------------------------------------------

@@ -1,9 +1,9 @@
+from os import getenv
 from flask import Blueprint, render_template
 from flask import render_template
 
 from ..models import User
 from ..extensions import login_manager
-from ..params import SOCKETIO_URL, MAP_KEY
 
 
 # Create instance
@@ -18,4 +18,4 @@ def load_user(user_id):
 @dashboard_bp.route("/map", methods = ["GET", "POST"])
 def map():    
     # Get map api key and socketio url
-    return render_template("dashboard/map.html", socketio_url = SOCKETIO_URL, map_key = MAP_KEY)
+    return render_template("dashboard/map.html", socketio_url = getenv("SOCKETIO_URL"), map_key = getenv("MAP_API_KEY"))
