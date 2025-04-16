@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}" />
+    <link rel="stylesheet" href="home_global.css" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Joan&display=swap" 
+    rel="stylesheet"
+  >
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"/>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+      <div class="icon">
+        <img src="{{ url_for('static', filename='images/user_icon.png') }}" alt="User Icon" />
+      </div>
+    </nav>
+
+
+    <div class="background">
+      <div class="navbar_background"></div>
+        <div class="main">
+
+          <a href="{{ url_for('home.set_goal') }}" class="setgoal-container">Set goal</a>
+
+          <button class="red-button">Start running</button>
+        
+          <a href="{{ url_for('admin.dashboard') }}" class="statistic-container">Statistic</a> <!--need to change url to dashboard-->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

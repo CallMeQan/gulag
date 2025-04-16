@@ -1,6 +1,5 @@
 import smtplib, ssl
-import os
-from dotenv import load_dotenv
+from ...params import EMAIL_PASSWORD
 
 def send_email(restore_link: str, server_email: str = "fuishere.ha.ha.ha@gmail.com",
                client_email: str = "phuhn.a1.2124@gmail.com") -> None:
@@ -11,11 +10,8 @@ def send_email(restore_link: str, server_email: str = "fuishere.ha.ha.ha@gmail.c
     :sender_email: SERVER's email address that will send the restoring email.
     :sender_email: CLIENT's email address that will receive the restoring email.
     """
-    # Load environment variables from .env file
-    load_dotenv()
-
     # Replace with your own details
-    password = os.getenv("EMAIL_PASSWORD")  # Use the App Password here
+    password = EMAIL_PASSWORD  # Use the App Password here
 
     # Email content
     message = f"""\

@@ -1,10 +1,7 @@
-from dotenv import load_dotenv
-from os import getenv
-
-load_dotenv()
+from .params import SECRET_KEY, DATABASE_URI, SESSION_TYPE, SQLALCHEMY_TRACK_MODIFICATIONS
 
 class Config:
-    SESSION_TYPE = "filesystem" # Read doc for more info
-    secret_key = getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = getenv("DATABASE_URI")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SESSION_TYPE = SESSION_TYPE # Read doc for more info
+    secret_key = SECRET_KEY
+    SQLALCHEMY_DATABASE_URI = DATABASE_URI
+    SQLALCHEMY_TRACK_MODIFICATIONS = SQLALCHEMY_TRACK_MODIFICATIONS

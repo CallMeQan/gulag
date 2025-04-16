@@ -1,0 +1,84 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(25) NOT NULL UNIQUE,
+    password VARCHAR(60) NOT NULL,
+    email VARCHAR(320) NOT NULL UNIQUE,
+    name VARCHAR(25) NOT NULL,
+    admin BOOLEAN
+);
+
+CREATE TABLE sensor_data (
+data_id SERIAL PRIMARY KEY,
+user_id INT NOT NULL REFERENCES users(user_id),
+start_time BIGINT NOT NULL,
+created_at TIMESTAMPTZ NOT NULL,
+location GEOMETRY(Point, 4326) NOT NULL
+);
+
+CREATE TABLE forgot_password (
+   fp_id SERIAL PRIMARY KEY,
+   email VARCHAR(320) NOT NULL,
+   created_at TIMESTAMPTZ DEFAULT NOW(),
+   hashed_timestamp VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE mobile_session (
+	mobile_id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL REFERENCES users(user_id),
+created_at TIMESTAMPTZ NOT NULL,
+hashed_timestamp CHAR(100) NOT NULL
+);
+
+-------------------------------------------
+-- Insert sample data into users table --
+-------------------------------------------
+INSERT INTO users (username, password, email, name, admin) VALUES
+('alice123', 'hashed_password_1', 'alice@example.com', 'Alice', FALSE),
+('bob_dev', 'hashed_password_2', 'bob@example.com', 'Bob', FALSE),
+('charlie99', 'hashed_password_3', 'charlie@example.com', 'Charlie', FALSE),
+('david_admin', 'hashed_password_4', 'david@example.com', 'David', TRUE),
+('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE)
+('Ceenen', 'hashed_password_6', 'phuhn.a1.2124@gmail.com', 'Fuu', TRUE);
+
+------------------------------------------------------
+-- Insert samples into sensor_data records --
+------------------------------------------------------
+INSERT INTO sensor_data (user_id, start_time, created_at, location) VALUES
+(1, 1681598400, '2025-04-15T08:30:00+00', ST_SetSRID(ST_MakePoint(106.7000, 10.7769), 4326)),
+(1, 1681602000, '2025-04-15T09:30:00+00', ST_SetSRID(ST_MakePoint(106.6820, 10.7626), 4326)),
+(1, 1681605600, '2025-04-15T10:30:00+00', ST_SetSRID(ST_MakePoint(106.6602, 10.7629), 4326)),
+(1, 1681609200, '2025-04-15T11:30:00+00', ST_SetSRID(ST_MakePoint(106.6297, 10.7764), 4326)),
+(1, 1681612800, '2025-04-15T12:30:00+00', ST_SetSRID(ST_MakePoint(106.6410, 10.7915), 4326)),
+(1, 1681616400, '2025-04-15T13:30:00+00', ST_SetSRID(ST_MakePoint(106.6756, 10.7620), 4326)),
+(1, 1681620000, '2025-04-15T14:30:00+00', ST_SetSRID(ST_MakePoint(106.7120, 10.7767), 4326)),
+(1, 1681623600, '2025-04-15T15:30:00+00', ST_SetSRID(ST_MakePoint(106.6900, 10.7710), 4326)),
+(1, 1681598400, '2025-04-15T08:30:00+00', ST_SetSRID(ST_MakePoint(106.7000, 10.7769), 4326)),
+(2, 1681602000, '2025-04-15T09:30:00+00', ST_SetSRID(ST_MakePoint(106.6820, 10.7626), 4326)),
+(2, 1681605600, '2025-04-15T10:30:00+00', ST_SetSRID(ST_MakePoint(106.6602, 10.7629), 4326)),
+(2, 1681609200, '2025-04-15T11:30:00+00', ST_SetSRID(ST_MakePoint(106.6297, 10.7764), 4326)),
+(2, 1681612800, '2025-04-15T12:30:00+00', ST_SetSRID(ST_MakePoint(106.6410, 10.7915), 4326)),
+(2, 1681616400, '2025-04-15T13:30:00+00', ST_SetSRID(ST_MakePoint(106.6756, 10.7620), 4326)),
+(2, 1681620000, '2025-04-15T14:30:00+00', ST_SetSRID(ST_MakePoint(106.7120, 10.7767), 4326)),
+(3, 1681623600, '2025-04-15T15:30:00+00', ST_SetSRID(ST_MakePoint(106.6900, 10.7710), 4326)),
+(3, 1681627200, '2025-04-15T16:30:00+00', ST_SetSRID(ST_MakePoint(106.7012, 10.7780), 4326)),
+(3, 1681630800, '2025-04-15T17:30:00+00', ST_SetSRID(ST_MakePoint(106.6422, 10.7920), 4326)),
+(3, 1681634400, '2025-04-15T18:30:00+00', ST_SetSRID(ST_MakePoint(106.7130, 10.7770), 4326)),
+(4, 1681638000, '2025-04-15T19:30:00+00', ST_SetSRID(ST_MakePoint(106.6610, 10.7635), 4326)),
+(4, 1681641600, '2025-04-15T20:30:00+00', ST_SetSRID(ST_MakePoint(106.6835, 10.7633), 4326)),
+(4, 1681645200, '2025-04-15T21:30:00+00', ST_SetSRID(ST_MakePoint(106.6910, 10.7720), 4326)),
+(4, 1681648800, '2025-04-15T22:30:00+00', ST_SetSRID(ST_MakePoint(106.6765, 10.7625), 4326)),
+(4, 1681652400, '2025-04-15T23:30:00+00', ST_SetSRID(ST_MakePoint(106.6995, 10.7755), 4326)),
+(4, 1681656000, '2025-04-16T00:30:00+00', ST_SetSRID(ST_MakePoint(106.6302, 10.7770), 4326)),
+(4, 1681659600, '2025-04-16T01:30:00+00', ST_SetSRID(ST_MakePoint(106.6430, 10.7910), 4326)),
+(4, 1681663200, '2025-04-16T02:30:00+00', ST_SetSRID(ST_MakePoint(106.6770, 10.7610), 4326)),
+(4, 1681666800, '2025-04-16T03:30:00+00', ST_SetSRID(ST_MakePoint(106.6920, 10.7700), 4326));
+
+------------------------------------------------
+-- Insert 3 sample forgot_password records --
+------------------------------------------------
+
+INSERT INTO forgot_password (email, hashed_timestamp) VALUES
+('phuhn.a1.2124@gmail.com', 'hash1'),
+('bob@example.com', 'hash2');
