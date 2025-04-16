@@ -4,16 +4,11 @@ from flask_login import login_user, logout_user, login_required
 import time, hmac, hashlib
 
 import datetime
-import os
-from dotenv import load_dotenv
 
-from ..models import User, Forgot_Password
+from ..models import User, Forgot_Password, Mobile_Session
 from ..extensions import db, bcrypt, login_manager
 from ..modules.forgot_module import send_email
-
-# env get
-load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
+from ..params import SECRET_KEY
 
 # Create instance
 auth_bp = Blueprint('auth', __name__)
@@ -74,7 +69,7 @@ def login():
             }
             # Login and save session data
             login_user(user)
-            return redirect(url_for("home.index"))
+            return redirect(url_for("home.homepage"))
     # If method is GET, return to login.html
     return render_template("auth/login.html")
 
@@ -125,3 +120,26 @@ def recover_password(token):
         User.update_password(email = email, new_password = hashed_password)
         return "Successfully changed password. Please log in!"
     return render_template("auth/recover_password.html", email = email)
+
+@auth_bp.route("/mobile_check", methods = ["GET", "POST"])
+def mobile_check():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        # Query user
+        user = User.query.filter_by(email = email).first()
+
+        # If user exists and password is correct
+        if user and bcrypt.check_password_hash(user.password, password):
+            # Generate hashed timestamp used as token and current timestamp
+            hashed_timestamp = generate_reset_token()
+            created_at = datetime.datetime.now()
+
+            # Create session or add them
+            Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
+            
+            # TODO: Send the token to mobile app.
+            return f"Successfully signed in - here is the token ({hashed_timestamp}), and user_id ({user.user_id})!"
+        return "Something was wrong!"
+    return "Send data here to sign in and get token!"
