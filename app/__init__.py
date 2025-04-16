@@ -1,4 +1,5 @@
 # app.py
+from os import getenv
 from flask import Flask
 from flask_session import Session
 
@@ -53,6 +54,7 @@ def create_app_with_blueprint():
 
     return app
 
+# For local development only
 if __name__ == "__main__":
     app = create_app_with_blueprint()
-    app.run(debug=False, port=5000)
+    app.run(debug=True, port=8000, host="0.0.0.0")
