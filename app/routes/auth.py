@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
+from os import getenv
+from flask import Blueprint, jsonify, render_template
 from flask import render_template, redirect, url_for, session, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user
 import time, hmac, hashlib
 
 import datetime
@@ -8,26 +9,32 @@ import datetime
 from ..models import User, Forgot_Password, Mobile_Session
 from ..extensions import db, bcrypt, login_manager
 from ..modules.forgot_module import send_email
-from ..params import SECRET_KEY
 
-# Create instance
 auth_bp = Blueprint('auth', __name__)
 
-def generate_reset_token():
-    # Lấy timestamp hiện tại
+def generate_token() -> str:
+    """
+    Generate a reset token using HMAC with SHA256.
+    The token is created by hashing the current timestamp with a secret key.
+    """
     timestamp = str(int(time.time()))
-    # Tạo token hash bằng cách dùng HMAC kết hợp SECRET_KEY và timestamp
-    token = hmac.new(SECRET_KEY.encode(), timestamp.encode(), hashlib.sha256).hexdigest()
-    return token
+    token = hmac.new(getenv("SECRET_KEY"), timestamp.encode(), hashlib.sha256)
+    return token.hexdigest()
 
-# User loader to get user object from the session when a request is made
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    Load a user from the database using the user_id stored in the session.
+    This function is used by Flask-Login to retrieve the user object for the current session.
+    """
     return User.query.get(int(user_id))
 
 # Register account
 @auth_bp.route("/register", methods = ["GET", "POST"])
 def register():
+    """
+    Register a new user account.
+    """
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]
@@ -54,12 +61,10 @@ def register():
 @auth_bp.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Receive information
         username = request.form["username"]
         password = request.form["password"]
         user = User.query.filter_by(username = username).first()
 
-        # If the username is valid, and the password match, login user
         if user and bcrypt.check_password_hash(user.password, password):
             # Save user data to session
             session["user"] = {
@@ -67,15 +72,18 @@ def login():
                 'username': user.username,
                 'email': user.email
             }
-            # Login and save session data
             login_user(user)
             return redirect(url_for("home.homepage"))
-    # If method is GET, return to login.html
     return render_template("auth/login.html")
 
-# Page to do something that require registered user session
 @auth_bp.route("/forgot-password", methods = ["GET", "POST"])
-def forgot_password(): # Endpoint of this route is forgot_password, which is the function's name
+def forgot_password():
+    """
+    Forgot password function.
+    This function is used to send a reset password link to the user's email.
+    The link contains a token that is used to verify the user's identity.
+    The token is generated using HMAC with SHA256 based on the current timestamp and a secret key.
+    """
     if request.method == "POST":
         email = request.form["email"]
 
@@ -83,19 +91,16 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
         if not User.query.filter_by(email = email).first():
             return render_template("auth/register.html")
         
-        # Generate reset token and timestamp
-        hashed_timestamp = generate_reset_token()
+        hashed_timestamp = generate_token()
 
-        # Tạo link reset password, ví dụ: /email-forgot-password?a=token
-        reset_link = url_for('auth.recover_password', token = hashed_timestamp, _external = True) # INT 129438200
+        # Tạo link reset password, ví dụ: /recover-password?a=token
+        reset_link = url_for('auth.recover_password', token = hashed_timestamp, _external = True)
 
-        # TODO: Save token and timestamp to database or cache for later verification
         created_at = datetime.datetime.now()
         new_request = Forgot_Password(email = email, created_at = created_at, hashed_timestamp = hashed_timestamp)
         db.session.add(new_request)
         db.session.commit()
 
-        # TODO: Gửi email chứa reset_link tới user
         send_email(restore_link = reset_link, client_email = email)
         return f"Reset link sent to your email: {email}"
     
@@ -103,43 +108,46 @@ def forgot_password(): # Endpoint of this route is forgot_password, which is the
 
 @auth_bp.route("/recover-password?a=<token>", methods = ["GET", "POST"])
 def recover_password(token):
-    # Get the email and check for validity (less than 1 hour)
-    print(token)
+    """
+    Recover password function.
+    This function is used to recover the user's password.
+    The function takes a token as an argument, which is used to verify the user's identity.
+    """
+    # print(token)
     email = Forgot_Password.take_email_from_hash(hashed_timestamp = token)
 
     if email is None:
         return "The link is not valid! Please come back again later."
 
-    # Changing password
+    # Login
     if request.method == "POST":
-        # Get hashed timestamp token and updated password
         new_password = request.form["new_password"]
         hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
         
-        # Save the password
         User.update_password(email = email, new_password = hashed_password)
         return "Successfully changed password. Please log in!"
     return render_template("auth/recover_password.html", email = email)
 
 @auth_bp.route("/mobile_check", methods = ["GET", "POST"])
 def mobile_check():
+    """
+    Mobile sign in check.
+    This function is used to check if the user can sign in using the mobile app.
+    """
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
 
-        # Query user
         user = User.query.filter_by(email = email).first()
 
-        # If user exists and password is correct
         if user and bcrypt.check_password_hash(user.password, password):
-            # Generate hashed timestamp used as token and current timestamp
-            hashed_timestamp = generate_reset_token()
+            hashed_timestamp = generate_token()
             created_at = datetime.datetime.now()
 
             # Create session or add them
             Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
             
             # TODO: Send the token to mobile app.
-            return f"Successfully signed in - here is the token ({hashed_timestamp}), and user_id ({user.user_id})!"
-        return "Something was wrong!"
-    return "Send data here to sign in and get token!"
+            return jsonify({"token": hashed_timestamp, "user_id": user.user_id}), 200
+        return jsonify({"error": "Invalid email or password"}), 401
+    return jsonify({"error": "Invalid request method"}), 405

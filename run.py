@@ -1,7 +1,7 @@
-from app import create_app_with_blueprint, socketio
-
-app = create_app_with_blueprint()
-
 if __name__ == '__main__':
-    # Run
-    socketio.run(app, host = "127.0.0.1", port = 5000, debug = True)
+    from app import create_app_with_blueprint, socketio
+    from dotenv import load_dotenv
+    from os import getenv
+    load_dotenv()
+    app = create_app_with_blueprint()
+    socketio.run(app, host="0.0.0.0", port="8000", debug=getenv("DEBUG", default = True))

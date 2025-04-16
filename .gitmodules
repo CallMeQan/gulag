@@ -1,0 +1,3 @@
+[submodule "gulag-android"]
+	path = gulag-android
+	url = https://github.com/CallMeQan/gulag-android

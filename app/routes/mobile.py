@@ -1,10 +1,10 @@
+from os import getenv
 from flask import Blueprint, jsonify, request
 
 from flask_socketio import emit
 
 from ..models import User, Mobile_Session, Sensor_Data
 from ..extensions import db, login_manager
-from ..params import SOCKETIO_PATH
 
 mobile_bp = Blueprint('mobile', __name__)
 
@@ -72,7 +72,7 @@ def send_mobile_data():
                 "longitude": longitude
              },
              to = user_id,
-             namespace = SOCKETIO_PATH)
+             namespace = getenv("SOCKETIO_PATH"),)
         
-        return "Data sent successfully!"
+        return "Data sent successfully!", 200
     return "Send data here to show it in the map!"
