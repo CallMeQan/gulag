@@ -1,4 +1,4 @@
-from .gps_process import read_and_join, process_data, calculate_data
+from .test_gps import read_and_join, process_data, calculate_data
 
 
 

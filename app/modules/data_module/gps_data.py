@@ -7,12 +7,13 @@ from os import makedirs
 from geopy.distance import geodesic
 
 """
+
 What does this do:
-    - Unzip file:
-        + Inside specific user's file
-        + Must have time start (and time end?)
-    - Process the data and combine it into 1 single file
-    - 
+    - Get data input for **run_history** table:
+        + Table **run_history** will have nullable fields (start, end, velocity, etc)
+        + Query the table **sensor_data** database to get the GIS data from start_time to end_time.
+        + Process data in **sensor_data** (multiple rows) and put into **run_history** (one row).
+
 """ 
 
 
@@ -34,81 +35,6 @@ original_names = ["Thing-Accelerometer_Linear.csv",
 
 def join_path(path, file):
     return path + "\\" + file
-
-def read_and_join(username: str, user_id: int, device: str, time_stamp: str, has_grade: bool = True):
-    """
-    
-    Read file .zip and turn them into Polars Lazyframe.
-    
-    :username: Argument username, to get the directory the file is uploaded to.
-    :device: Name of users' device, which is important for managing file.
-    :timestamp: Timestamp of the .zip file.
-    :has_grade: Boolean value of whether to include grade Lazyframe
-
-    :return: A Lazyframe or a tuple of polars Lazyframes with columns ["time", "lat", "lon"]
-    and ["time", "grade"] (if has_grade == True). "time" is in ISO datetime format; "grade"
-    datatype is float32; "lat" and "lon" are float64.
-
-    """
-    # Make path and file names
-    dir_path = f".\\uploads\\{username}\\{time_stamp}"
-    filenames = [device + " " + name for name in original_names]
-
-    # Extract stuff
-    makedirs(dir_path, exist_ok = True)
-    with ZipFile(dir_path + ".zip", 'r') as zipObject: 
-        zipObject.extractall(path = dir_path)
-
-    # Process GPS data
-    gps_lazy = pls.scan_csv(join_path(dir_path, filenames[4]), has_header = False, skip_rows = 1)
-    gps_lazy = gps_lazy.with_columns([
-        pls.lit(user_id).alias("user_id"),
-        pls.col("column_2")
-        .str.extract(r'"lat":([\d\.]+)')
-        .cast(pls.Float64)
-        .alias("lat"),
-        pls.col("column_2")
-        .str.extract(r'"lon":([\d\.]+)')
-        .cast(pls.Float64)
-        .alias("lon")
-    ])
-    gps_lazy = gps_lazy.select(["user_id", "column_1", "lat", "lon"]) # Should not use slice for Polars
-    gps_lazy = gps_lazy.rename({"column_1": "time"})
-
-    # If Dataframe has Grade
-    if has_grade:
-        # Linear
-        linear_lazy = pls.scan_csv(source = join_path(dir_path, filenames[0]), has_header = False, skip_rows = 1) # Lazy scan, does not do anything (lol)
-        linear_lazy = linear_lazy.rename({"column_1": "time", "column_2": "acc linear"})
-
-        # Acce. Z
-        acc_z_lazy = pls.scan_csv(join_path(dir_path, filenames[3]), has_header = False, skip_rows = 1)
-        acc_z_lazy = acc_z_lazy.rename({"column_1": "time", "column_2": "acc z"})
-        
-        # Accelerometer Z has been tripped of G value, so there is no need for minusing 10
-        grade_lazy = linear_lazy.join(acc_z_lazy, on = "time", how = "inner")
-        grade_lazy = grade_lazy.with_columns(
-                (pls.col("acc z") / (pls.col("acc linear")**2 - pls.col("acc z") ).sqrt() ).alias("grade")
-        )
-
-        # Set format
-        gps_lazy = gps_lazy.with_columns(
-            pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
-            pls.col("lat"),
-            pls.col("lon"),
-        )
-        return gps_lazy, grade_lazy.select(["time", "grade"])
-    
-    # If dataframe does not have grade
-    else:
-        # Set format
-        gps_lazy = gps_lazy.with_columns(
-            pls.col("user_id"),
-            pls.col("time").str.strptime(pls.Datetime, format="%FT%H:%M:%S%.fZ", strict=False),
-            pls.col("lat"),
-            pls.col("lon"),
-        )
-        return gps_lazy
 
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """

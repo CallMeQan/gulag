@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, jsonify
-from flask import render_template, redirect, url_for, session, request
-from flask_login import login_user, logout_user, login_required
+from flask import Blueprint, jsonify
+from flask import redirect, url_for, session, request
 import polars as pls
 from dotenv import load_dotenv
 from os import getenv
@@ -47,6 +46,7 @@ def data_fetch():
         gps_lf = gps_lf.with_columns(
             (pls.lit("POINT(") + pls.col("lon").cast(pls.Utf8) + pls.lit(" ") + pls.col("lat").cast(pls.Utf8) + pls.lit(")")).alias("location")
         )
+        
         gps_lf = gps_lf.select(["user_id", "time", "location"])
         
         # Input into database

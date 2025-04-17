@@ -3,3 +3,5 @@ from .auth import auth_bp
 from .home import home_bp
 from .api import api_bp
 from .data import data_bp
+from .dashboard import dashboard_bp
+from .mobile import mobile_bp

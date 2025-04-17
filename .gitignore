@@ -1,6 +1,7 @@
 # Data
 **/data/
 uploads/
+Images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -156,6 +157,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+myenv/
 
 # Pyre type checker
 .pyre/
@@ -183,4 +185,6 @@ token.json
 # Data files
 *.csv
 *.zip
-*.txt
+
+# Test files
+**/test.py
