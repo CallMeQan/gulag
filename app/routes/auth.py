@@ -148,6 +148,6 @@ def mobile_check():
             Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
             
             # TODO: Send the token to mobile app.
-            return jsonify({"token": hashed_timestamp, "user_id": user.user_id}), 200
+            return jsonify({"hashed_timestamp": hashed_timestamp, "user_id": user.user_id}), 200
         return jsonify({"error": "Invalid email or password"}), 401
     return jsonify({"error": "Invalid request method"}), 405
