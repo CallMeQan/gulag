@@ -163,4 +163,3 @@ class Personal_Info(db.Model, UserMixin):
             current_timestamp - self.created_at <= datetime.timedelta(hours = 1)
         ).first()
         return result[0] if result else None
-        )

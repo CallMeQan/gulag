@@ -42,15 +42,9 @@
         />
       </div>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
+        <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
         <li><a href="#">News</a></li>
       </ul>
-      <div class="icon">
-        <img
-          src="{{ url_for('static', filename='images/user1.png') }}"
-          alt="User Icon"
-        />
-      </div>
     </nav>
 
     <div class="background">

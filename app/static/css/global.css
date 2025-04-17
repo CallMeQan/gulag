@@ -10,6 +10,15 @@
   left: 0;
   z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
 }
+.background {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-color: #8a0b16;
+  z-index: -1; /* Để không che nội dung khác */
+}
+
 
 .navbar_background {
   display: flex;
