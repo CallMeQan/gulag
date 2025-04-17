@@ -15,7 +15,22 @@ home_bp = Blueprint('home', __name__)
 @home_bp.route('/')
 def index():
     return render_template('home/index.html')
-@home_bp.route('/profile')
+
+@home_bp.route('/homepage')
+def homepage():
+    return render_template('home/homepage.html')
+
+
+@home_bp.route('/set-goal', methods = ["GET", "POST"])
+def set_goal():
+    if request.method == "POST":
+        goal = request.form["goal"]
+        print(goal)
+        return render_template("home/homepage.html")
+    return render_template("home/set_goal.html")
+
+
+@home_bp.route('/profile', methods = ["GET", "POST"])
 @login_required
 def profile():
     stat = Personal_Stat.query.filter_by(user_id=current_user.user_id).first()
@@ -34,6 +49,6 @@ def profile():
             db.session.add(stat)
 
         db.session.commit()
-        return redirect(url_for("profile"))
+        return redirect(url_for("home.profile"))
 
     return render_template("home/profile.html", username=current_user.username, personal_stat=stat)
