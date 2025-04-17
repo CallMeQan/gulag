@@ -6,6 +6,6 @@ home_bp = Blueprint('home', __name__)
 def index():
     return render_template('home/index.html')
 
-# @app.route('/about')
-# def about():
-#     return render_template('about.html')
+@home_bp.route('/homepage')
+def homepage():
+    return render_template('home/homepage.html')

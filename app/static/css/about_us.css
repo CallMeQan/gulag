@@ -1,0 +1,132 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden; /* Chặn cuộn ngang trên toàn bộ trang */
+}
+
+/* main components */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Đảm bảo phần này có thể mở rộng nếu nội dung bên trong nhiều hơn */
+}
+
+/* ---------------------------------------------- */
+/* top container */
+.general-container {
+  display: flex;
+  min-height: 85vh;
+  background-color: #2656bd;
+}
+
+/* left section  */ /*main*/
+.left {
+  display: flex;
+  background-color: #8a0b16;
+}
+
+.left img {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+/* right section */ /*main*/
+.right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #8a0b16;
+}
+
+.about_us {
+  display: flex;
+  flex: 0 0 55%;
+  align-items: center;
+  position: relative;
+}
+
+.about_us_text {
+  position: absolute;
+  left: -8%;
+}
+
+.general_info {
+  display: flex;
+  flex: 0 0 40%;
+  flex-direction: column;
+}
+
+/* word editing */
+.general_info p {
+  font-family: Inknut Antiqua;
+  font-size: 22px;
+  color: #ffffff;
+  padding-left: 20%;
+  line-height: 1.5;
+  padding-bottom: 5%;
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 110px;
+}
+
+/* -------------------------------------------------- */
+/* bottom container */
+.personal-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Chia thành 2 cột bằng nhau */
+  grid-template-rows: repeat(3, minmax(300px, auto));
+  place-items: center;
+  gap: 20px; /* Khoảng cách giữa các items */
+  padding-top: 4%;
+  background-color: #8a0b16;
+}
+
+.card {
+  display: flex;
+  width: 75%;
+  height: auto;
+  background: white;
+  border-radius: 12px;
+}
+
+.card img {
+  width: 40%;
+  height: auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  padding-left: 3%;
+  padding-top: 5%;
+}
+
+/* word editing */
+.name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #7b0d0d;
+}
+
+.mssv,
+.e-mail {
+  font-size: 20px;
+  color: #7b0d0d;
+}
+
+.introduce {
+  font-size: 20px;
+  font-style: italic;
+  color: #8a0b16;
+}
