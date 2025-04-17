@@ -19,15 +19,15 @@
     <form method="POST" class="profile_stats">
         <div class="stat">
           <span class="stat-label">Weight (kg)</span>
-          <input class="stat-value" type="number" step="0.1" name="weight" value="{{ personal_info.weight or '' }}" required>
+          <input class="stat-value" type="number" step="0.1" name="weight" value="{{ personal_stat.weight or '' }}" required>
         </div>
         <div class="stat">
           <span class="stat-label">Height (m)</span>
-          <input class="stat-value" type="number" step="0.01" name="height" value="{{ personal_info.height or '' }}" required>
+          <input class="stat-value" type="number" step="0.01" name="height" value="{{ personal_stat.height or '' }}" required>
         </div>
         <div class="stat">
           <span class="stat-label">Age</span>
-          <input class="stat-value" type="number" name="age" value="{{ personal_info.age or '' }}" required>
+          <input class="stat-value" type="number" name="age" value="{{ personal_stat.age or '' }}" required>
         </div>
       
         <button type="submit" class="btn">Save Changes</button>
