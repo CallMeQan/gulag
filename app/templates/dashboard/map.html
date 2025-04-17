@@ -44,6 +44,7 @@
       <ul class="nav-links">
         <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
         <li><a href="#">News</a></li>
+        <li><a href="{{url_for('home.profile')}}">Profile</a></li>
       </ul>
     </nav>
 
@@ -147,7 +148,7 @@
               <h3>
                 <div class="profile_name">Gulag Meme</div>
               </h3>
-              <p class="profile_username">@Bibatcoc</p>
+              <p class="profile_username">@{{ username }}</p>
 
               <!-- RIGHT / Profile info / Chi so co the -->
               <div class="profile_stats">

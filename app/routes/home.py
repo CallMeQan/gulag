@@ -1,10 +1,13 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import login_required
+from app.models import Personal_Info
+from flask_login import current_user
+from ..extensions import db
+
 
 home_bp = Blueprint('home', __name__)
 
-@home_bp.route('/')
-def index():
-    return render_template('home/index.html')
+
 
 # @app.route('/about')
 # def about():
@@ -21,3 +24,5 @@ def set_goal():
         print(goal)
         return render_template("home/homepage.html")
     return render_template("home/set_goal.html")
+
+

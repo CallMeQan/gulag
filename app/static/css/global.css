@@ -38,17 +38,21 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 5vw;
+  gap: 12vw;
   font-family: "Inknut Antiqua";
+  text-align: center;
+  justify-content: space-between;
+  padding: 0;
+  margin-left: 0.5%;
 }
-
 .nav-links a {
   text-decoration: none;
   color: #8a0b16;
   font-size: 48px;
   margin-left:100%;
+  text-align: center;
+  text-decoration: none;
 }
-
 .icon {
   margin-left: auto;
   margin-top: 1.2%;
