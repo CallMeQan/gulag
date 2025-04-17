@@ -39,7 +39,7 @@ def interval_signal_to_server(message):
 
     run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.user_id = {user_id} AND sensor_data.start_time = {time_start};"
     run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.start_time = {time_start};"
-    lz_frame = pls.read_database_uri(query = run_session_query, uri = getenv("SQLALCHEMY_DATABASE_URI"), engine="connectorx")
+    lz_frame = pls.read_database_uri(query = run_session_query, uri = getenv("DATABASE_URI"), engine="connectorx")
 
     # Get kinematic data
     distances, times, velocities = process_data(lz_frame)
