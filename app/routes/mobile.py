@@ -30,18 +30,11 @@ def send_mobile_data():
     
     """
 
-    # if True:
-    #     hashed_timestamp = "4e797e555f01f0dd367491846b7feeb06bc39192fc6b98361326b933e688a5c4"
-    #     latitude = 0
-    #     longitude = 1
-    #     time_start = int(time.time())
-    #     created_at = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
-
     if request.method == "POST":
         # Get data from mobile
         data = request.get_json()
         if not data:
-            return jsonify({"error": "No JSON data received"}), 400
+            return jsonify({"error": "No JSON data received!"}), 400
 
         hashed_timestamp = data.get('hashed_timestamp')
         latitude = data.get('latitude')
@@ -68,11 +61,12 @@ def send_mobile_data():
         # Add Socketio
         emit("send_server_data",
              {
+                "time_start": time_start,
                 "latitude": latitude,
                 "longitude": longitude
              },
              to = user_id,
-             namespace = getenv("SOCKETIO_PATH"),)
+             namespace = getenv("SOCKETIO_PATH"))
         
         return "Data sent successfully!", 200
     return "Send data here to show it in the map!"

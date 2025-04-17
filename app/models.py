@@ -58,8 +58,14 @@ class Sensor_Data(db.Model):
     
     @classmethod
     def get_running_session(self, user_id, start_time):
-        # Another way to query table
-        return db.session.query(self.user_id, self.created_at, self.location).select_from(Sensor_Data).filter(
+        """
+        Query returns: [(user_id, created_at, latitude, longitude), (user_id, created_at, latitude, longitude),...]
+        """
+        from geoalchemy2 import functions
+        
+        return db.session.query(self.user_id, self.created_at, functions.ST_Y(self.location), functions.ST_X(self.location)).\
+            select_from(Sensor_Data).\
+            filter(
             and_(self.user_id == user_id, self.start_time == start_time)
         ).all()
     
@@ -124,30 +130,36 @@ class Mobile_Session(db.Model):
         """
         Take email from a hashed timestamp, while checking if the created_at timestamp is less than 1 hour away.
 
-        :hashed_timestamp: A hashed timestamp, used to get unique string.
+        :hashed_timestamp: A hashed timestamp, used to get user_id.
         """
-        # Check if username or email is duplicated with only one query
         result = db.session.query(self.user_id).filter(
             self.hashed_timestamp == hashed_timestamp,
         ).first()
         return result[0] if result else None
 
-# # Define running history table
-# class Run_History(db.Model, UserMixin):
-#     __tablename__ = "run_history"
-#     run_id: Mapped[int] = mapped_column("run_id", primary_key = True)
-#     user_id: Mapped[int] = mapped_column(nullable = False)
-#     start_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
-#     end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
-#     distance_km: Mapped[float] = mapped_column(nullable = False)
-#     avg_speed: Mapped[float] = mapped_column()
+# Define running history table
+class Personal_Info(db.Model, UserMixin):
+    __tablename__ = "personal_info"
+    person_id: Mapped[int] = mapped_column("run_id", primary_key = True)
+    weight: Mapped[float] = mapped_column(nullable = False, default = 70)
+    height: Mapped[datetime.datetime] = mapped_column(nullable = False, default = 1.7)
+    end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+    distance_km: Mapped[float] = mapped_column(nullable = False)
+    avg_speed: Mapped[float] = mapped_column()
 
-#     @classmethod
-#     def history_on_user_start_time(self, user_id, chosen_time):
-#         """
-#         :chosen_time: date(2025, 3, 31), while self.start_time will be in ISO format "2025-04-04 10:05:00+00"
-#         """
-#         # Query
-#         return db.session.query(self.run_id).filter(
-#             and_(self.user_id == user_id, cast(self.start_time, Date) == chosen_time)
-#         )
+    @classmethod
+    def take_email_from_hash(self, hashed_timestamp):
+        """
+        Take email from a hashed timestamp, while checking if the created_at timestamp is less than 1 hour away.
+
+        :hashed_timestamp: A hashed timestamp, used to get unique string.
+        """
+        # Get current timestamp (GMT+7)
+        current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
+
+        # Check if username or email is duplicated with only one query
+        result = db.session.query(self.email, self.created_at).filter(
+            self.hashed_timestamp == hashed_timestamp,
+            current_timestamp - self.created_at <= datetime.timedelta(hours = 1)
+        ).first()
+        return result[0] if result else None

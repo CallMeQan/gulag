@@ -76,7 +76,7 @@
               />
             </div>
             <div class="card_info">
-              <p class="value">5595</p>
+              <p class="value"><span id="step">0</span></p>
               <p class="label">Total Steps</p>
             </div>
           </div>
@@ -90,7 +90,7 @@
               />
             </div>
             <div class="card_info">
-              <p class="value">220 Kcal</p>
+              <p class="value"><span id="calorie">0</span> Kcal</p>
               <p class="label">Total Calories</p>
             </div>
           </div>
@@ -104,7 +104,7 @@
               />
             </div>
             <div class="card_info">
-              <p class="value">8,5 Km</p>
+              <p class="value"><span id="total_distance">0</span> Km</p>
               <p class="label">Distance</p>
             </div>
           </div>
@@ -118,7 +118,7 @@
               />
             </div>
             <div class="card_info">
-              <p class="value">00:36:28</p>
+              <p class="value"><span id="total_time">0</span></p>
               <p class="label">Total Time</p>
             </div>
           </div>
@@ -132,7 +132,7 @@
               />
             </div>
             <div class="card_info">
-              <p class="value">10:43 /Km</p>
+              <p class="value"><span id="pace">0</span> /Km</p>
               <p class="label">Avg Pace</p>
             </div>
           </div>
@@ -221,7 +221,7 @@
 
     <!-- Script for map (Must be put here) and SocketIO -->
     <script>
-      // localStorage.removeItem("locations");
+      localStorage.removeItem("locations", "myGeoJSON");
       var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
       var myGeoJSON = {
                 type: "FeatureCollection",
@@ -262,18 +262,31 @@
       localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
       let socket_server;
+
       $(document).ready(function(){
-          // Connect to socketio
+          // Connect to SocketIO
           socket_server = io.connect('{{ socketio_url }}');
 
           // Socket connect
           socket_server.on('connect', function() {
               socket_server.emit('joined', {});
           });
+
+          // Socket update web on interval
+          socket_server.on("update_kinematic", function(server_data) {
+            // {"calorie": calorie, "step": step, "total_distance": total_distance, "total_time": total_time, "avg_velocity": avg_velocity}
+
+            // Add to <span> tags
+            document.getElementById("calorie").textContent = server_data.calorie;
+            document.getElementById("step").textContent = server_data.step;
+            document.getElementById("total_distance").textContent = server_data.total_distance;
+            document.getElementById("total_time").textContent = server_data.total_time;
+            document.getElementById("pace").textContent = server_data.pace;
+          });
           
           // Get data every interval
           socket_server.on('send_server_data', function(server_data) {
-              // {'latitude': latitude, 'longitude': longitude}
+              // {'time_start': time_start, 'latitude': latitude, 'longitude': longitude}
               
               // Get data from server_data
               var location = [
@@ -303,6 +316,9 @@
               marker.bindPopup("<b> Your current position </b><br> Keep running!");
               
               L.geoJSON(myGeoJSON).addTo(map);
+
+              // SocketIO events to update info
+              socket_server.emit("interval_signal_to_server", {time_start: server_data.time_start})
           })
       });
     </script>
