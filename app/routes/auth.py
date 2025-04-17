@@ -18,7 +18,7 @@ def generate_token() -> str:
     The token is created by hashing the current timestamp with a secret key.
     """
     timestamp = str(int(time.time()))
-    token = hmac.new(getenv("SECRET_KEY"), timestamp.encode(), hashlib.sha256)
+    token = hmac.new(getenv("SECRET_KEY").encode(), timestamp.encode(), hashlib.sha256)
     return token.hexdigest()
 
 @login_manager.user_loader
