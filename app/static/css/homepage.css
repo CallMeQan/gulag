@@ -75,8 +75,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #be5050; /* Dark Red */
-    color: white; /* White text */
+  
+    background-color: #ffffff; /* Dark Red */
+    color: #8a0b16; /* White text */
     width: 28%;
     height: 250px;
     font-size: 40px;
@@ -87,17 +88,19 @@
     transition: all 0.2s ease-in-out;
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
   
+    text-decoration: none; /* <-- removes underline */
+
   }
   
   /* Hover Effect */
   .red-button:hover {
-    background-color: #a52a2a; /* Lighter red */
+    background-color: #ffffff; /* Lighter red */
     transform: scale(1.01); /* Slightly enlarges */
   }
   
   /* Active/Clicked Effect */
   .red-button:active {
-    background-color: #600000; /* Even darker red */
+    background-color: #ffffff; /* Even darker red */
     transform: scale(0.99); /* Shrinks a little */
   }
   
@@ -131,7 +134,7 @@
     justify-content: flex-end; /* Push text to the right */
     align-items: center;
     position: absolute;
-    right: 4.5%; /* Adjust position */
+    right: 1.5%; /* Adjust position */
     top: 58%; /* Center vertically */
     transform: translateY(-50%);
 

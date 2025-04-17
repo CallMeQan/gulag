@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+    rel="stylesheet"
+  /> 
+    <link 
+    href="https://fonts.googleapis.com/css2?family=Joan&family=Jomhuria&family=Judson:ital,wght@0,400;0,700;1,400&display=swap" 
+    rel="stylesheet">
+  >
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"/>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+        <li><a href="{{ url_for('home.set_goal') }}">About Us</a></li> <!--cần link lại đến trang About Us-->
+      </ul>
+    
+    </nav>
+
+
+    <div class="background">
+      <div class="navbar_background"></div>
+      <div class="main">
+        <div class="map_placeholder"> </div>
+
+        <div class="time-container">
+          <p class="time-label">Time:</p>
+          <p class="time-value">00:30:00</p>
+        </div>
+
+        <a href="{{ url_for('home.running') }}" class="resume-button">
+        <img src="{{ url_for('static', filename='images/resume.png') }}" alt="resume" />
+        </a>
+
+        <div class="end-button">
+            <img src="{{ url_for('static', filename='images/end.png') }}" alt="end" />
+          </div>
+
+        <div class="distance-container">
+          <p class="distance-label">Distance:</p>
+          <p class="distance-value">8.5 KM</p>
+        </div>
+
+    </div>
+
+  </body>
+</html>

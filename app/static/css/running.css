@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden; /* Để ko scroll dc */
+  }
+  
+  .background {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-color: #8a0b16;
+    z-index: -1; /* Để không che nội dung khác */
+  }
+  
+  /* nav bar */
+  .navbar {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 15.37%;
+    background-color: #ffffff;
+    align-items: center;
+    gap: 40px;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
+  }
+  
+  .navbar_background {
+    display: flex;
+    flex: 0 0 15.12%;
+  }
+  
+  .logo {
+    margin-left: 5px;
+    height: 80%;
+  }
+  
+  .logo img {
+    height: 100%;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 5vw;
+    font-family: "Inknut Antiqua";
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #8a0b16;
+    font-size: 48px;
+  }
+  
+  .icon {
+    margin-left: auto;
+    margin-top: 1.2%;
+    padding-right: 20px;
+
+  }
+  
+  /* main components */
+  .main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 84.88%; /* 100% - 15.12% */
+    height: 100%;
+  }
+
+
+  .map_placeholder {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: absolute;
+    top: 22%; /* Center vertically */
+
+    background-color: #FFFFFF;
+    width: 50%;
+    height: 50%;
+    
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .time-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+
+    justify-content: flex-start; /* Align text to the left */
+    left: 9%; /* Adjust position */
+    top: 83%; /* Center vertically */
+    gap: 10px; /* Adjust spacing between "Time:" and "30:00" */
+  }
+  
+  
+  .time-label, .time-value {
+    display: inline-block;
+    font-size: 55px;
+    font-family: "Judson";
+    white-space: nowrap; /* Prevents line breaks */
+    color: white; /* Ensure visibility */
+  }
+
+  .distance-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+
+    justify-content: flex-start; /* Align text to the left */
+    left: 68%;
+    top: 83%; /* Center vertically */
+    gap: 10px; /* Adjust spacing between "Time:" and "30:00" */
+  }
+
+
+  .distance-label, .distance-value {
+    display: inline-block;
+    font-size: 55px;
+    font-family: "Judson";
+    white-space: nowrap; /* Prevents line breaks */
+    color: white; /* Ensure visibility */
+  }
+
+  .pause-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; /* Dark Red */
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    border: none; /* Remove default border */
+    border-radius: 10px; /* Makes it rounded */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  
+    margin-top: 25%;
+    margin-left:-5.5%;
+    margin-right: 4%;
+  }
+
+  /* .pause-button img {
+    margin-top: 26%;
+  } */
+
+  /* Hover Effect */
+  .pause-button:hover {
+    background-color: #ffffff; /* Lighter red */
+    transform: scale(1.06); /* Slightly enlarges */
+  }
+  
+
+  .end-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; /* Dark Red */
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    border: none; /* Remove default border */
+    border-radius: 10px; /* Makes it rounded */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  
+    margin-top: 25%;
+    margin-right:-5%;
+  }
+
+  /* Hover Effect */
+  .end-button:hover {
+    background-color: #ffffff; /* Lighter red */
+    transform: scale(1.06); /* Slightly enlarges */
+  }

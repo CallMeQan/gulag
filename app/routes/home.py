@@ -22,3 +22,11 @@ def set_goal():
         print(goal)
         return render_template("home/homepage.html")
     return render_template("home/set_goal.html")
+
+@home_bp.route('/running')
+def running():
+    return render_template('home/running.html')
+
+@home_bp.route('/pause-running')
+def resume():
+    return render_template('home/resume.html')
