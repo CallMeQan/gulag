@@ -14,17 +14,11 @@ dashboard_bp = Blueprint('dashboard', __name__)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@dashboard_bp.route("/map")
-@login_required
-def dashboard():
-    stat = Personal_Stat.query.filter_by(user_id=current_user.user_id).first()
-    return render_template("dashboard/map.html", personal_stat=stat, username=current_user.username)
 
 # Main
 @dashboard_bp.route("/map", methods = ["GET", "POST"])
 def map():
     user_id = session["user"]["user_id"]
     user = User.query.get(user_id)
-    # replace with how you track session
-    # Get map api key and socketio url
-    return render_template("dashboard/map.html", socketio_url = getenv("SOCKETIO_URL"), map_key = getenv("MAP_API_KEY"),username = user.username) 
+    stat = Personal_Stat.query.filter_by(user_id=current_user.user_id).first()
+    return render_template("dashboard/map.html", socketio_url = getenv("SOCKETIO_URL"), map_key = getenv("MAP_API_KEY"), personal_stat=stat, username = user.username) 
