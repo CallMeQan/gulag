@@ -10,6 +10,15 @@
   left: 0;
   z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
 }
+.background {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-color: #8a0b16;
+  z-index: -1; /* Để không che nội dung khác */
+}
+
 
 .navbar_background {
   display: flex;
@@ -29,17 +38,21 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 5vw;
+  gap: 12vw;
   font-family: "Inknut Antiqua";
+  text-align: center;
+  justify-content: space-between;
+  padding: 0;
+  margin-left: 0.5%;
 }
-
 .nav-links a {
   text-decoration: none;
   color: #8a0b16;
   font-size: 48px;
   margin-left:100%;
+  text-align: center;
+  text-decoration: none;
 }
-
 .icon {
   margin-left: auto;
   margin-top: 1.2%;
