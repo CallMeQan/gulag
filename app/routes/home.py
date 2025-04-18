@@ -30,3 +30,11 @@ def running():
 @home_bp.route('/pause-running')
 def resume():
     return render_template('home/resume.html')
+
+@home_bp.route('/congrats')
+def congrats():
+    return render_template('home/congrats.html')
+
+@home_bp.route('/bad-news')
+def bad_news():
+    return render_template('home/bad_news.html')

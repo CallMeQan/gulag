@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/congrats.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
     <link
     href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
@@ -29,26 +29,35 @@
     <div class="background">
       <div class="navbar_background"></div>
       <div class="main">
-        <div class="map_placeholder"> </div>
+          <div class="map_placeholder"> </div>
 
-        <div class="time-container">
-          <p class="time-label">Time:</p>
-          <p class="time-value">00:30:00</p>
+          <div class="time-container">
+            <p class="time-label">Time:</p>
+            <p class="time-value">00:30:00</p>
+          </div>
+
+          <div class="pause-button">
+            <img src="{{ url_for('static', filename='images/pause.png') }}" alt="pause" />
         </div>
-
-        <a href="{{ url_for('home.running') }}" class="resume-button">
-        <img src="{{ url_for('static', filename='images/resume.png') }}" alt="resume" />
-        </a>
-
-        <a href="{{ url_for('home.congrats') }}" class="end-button">  <!-- đi tới 1 là congrats 2 là it seems like... -->
+  
+          <div class="end-button">
             <img src="{{ url_for('static', filename='images/end.png') }}" alt="end" />
           </div>
-        </a>
 
-        <div class="distance-container">
-          <p class="distance-label">Distance:</p>
-          <p class="distance-value">8.5 KM</p>
+          <div class="distance-container">
+            <p class="distance-label">Distance:</p>
+            <p class="distance-value">8.5 KM</p>
+          </div>
+
+        <div class="congrats_container">
+          <p class="congrats_text1">Congrats!</p>
+          <p class="congrats_text2">You have escaped from Gulag.</p>
+          <p class="continue_text">Tap to continue</p>
         </div>
+
+        <a href="{{ url_for('admin.dashboard') }}" class="click-layer"></a>
+
+      </div>
 
     </div>
 

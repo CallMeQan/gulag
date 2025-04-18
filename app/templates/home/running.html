@@ -40,9 +40,10 @@
           <img src="{{ url_for('static', filename='images/pause.png') }}" alt="pause" />
         </a>
 
-        <div class="end-button">
+        <a href="{{ url_for('home.congrats') }}" class="end-button">  <!-- đi tới 1 là congrats 2 là it seems like... -->
           <img src="{{ url_for('static', filename='images/end.png') }}" alt="end" />
         </div>
+        </a>
 
         <div class="distance-container">
           <p class="distance-label">Distance:</p>
