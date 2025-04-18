@@ -7,7 +7,7 @@
 /* main components */
 .main {
   display: flex;
-  flex: 0 0 84.88%; /* 100% - 15.12% */
+  flex: 0 0 84.63%; /* 100% - 15.12% */
   height: 100%;
 }
 

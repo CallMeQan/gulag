@@ -138,15 +138,15 @@ class Mobile_Session(db.Model):
         return result[0] if result else None
 
 # Define running history table
-class Personal_Info(db.Model, UserMixin):
-    __tablename__ = "personal_info"
-    person_id: Mapped[int] = mapped_column("run_id", primary_key = True)
-    weight: Mapped[float] = mapped_column(nullable = False, default = 70)
-    height: Mapped[datetime.datetime] = mapped_column(nullable = False, default = 1.7)
-    end_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
-    distance_km: Mapped[float] = mapped_column(nullable = False)
-    avg_speed: Mapped[float] = mapped_column()
+class Personal_Stat(db.Model, UserMixin):
+    __tablename__ = "personal_stat"
+    person_id: Mapped[int] = mapped_column("person_id", primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"), nullable=False, unique=True)
+    weight: Mapped[float] = mapped_column(nullable=False, default=70)
+    height: Mapped[float] = mapped_column(nullable=False, default=1.7)
+    age: Mapped[int] = mapped_column(nullable=False, default=20)
 
+    user = db.relationship("User", backref="personal_stat", uselist=False)
     @classmethod
     def take_email_from_hash(self, hashed_timestamp):
         """

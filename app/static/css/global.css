@@ -37,8 +37,12 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 3vw;
+  gap: 5vw;
   font-family: "Inknut Antiqua";
+  text-align: center;
+  justify-content: space-between;
+  padding: 0;
+  margin-left: 0.5%;
 }
 
 .nav-links a {

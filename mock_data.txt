@@ -98,3 +98,14 @@ INSERT INTO sensor_data (user_id, start_time, created_at, location) VALUES
 INSERT INTO forgot_password (email, hashed_timestamp) VALUES
 ('phuhn.a1.2124@gmail.com', 'hash1'),
 ('bob@example.com', 'hash2');
+
+------------------------------------------------------
+-- Insert Personal Stat --
+------------------------------------------------------
+CREATE TABLE personal_stat ( 
+    person_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id),
+    weight FLOAT NOT NULL DEFAULT 70,
+    height FLOAT NOT NULL DEFAULT 1.7,
+    age INT NOT NULL DEFAULT 20
+);
