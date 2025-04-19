@@ -1,0 +1,49 @@
+{% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
+head %} {{ super() }}
+<!-- Link to the CSS Home page -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/profile.css') }}"    
+/>
+<link
+     href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+    rel="stylesheet"
+/>
+<link
+    href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+    rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+        
+<!-- Main content of the about us page -->
+    
+<div class="main">
+    <div class="profile-container">
+        <form method="POST" class="profile_stats">
+            <div class="stat1">
+                <span class="age-label">Age</span>
+                <input class="age-value" type="number" name="age" value="{{ personal_stat.age or '' }}" required>
+            </div>
+
+            <div class="stat2">
+                <span class="height-label">Height (cm)</span>
+                <div class="height-input-wrapper">
+                    <input class="height-value" type="number" step="0.01" name="height" value="{{ personal_stat.height or '' }}" required>
+                    <span class="height-unit">cm</span>
+                </div>
+            </div>
+
+            <div class="stat3">
+                <span class="weight-label">Weight (kg)</span>
+                <div class="weight-input-wrapper">
+                    <input class="weight-value" type="number" step="0.1" name="weight" value="{{ personal_stat.weight or '' }}" required>
+                    <span class="weight-unit">kg</span>
+                </div>
+            </div>
+          
+            <button type="submit" class="btn">Save changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+    
