@@ -18,7 +18,10 @@
     <title>Dashboard</title>
 
     <!-- Map script -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
       #map {
@@ -28,9 +31,14 @@
     </style>
 
     <!-- Download JS stuff -->
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
-
+    <script
+      type="text/javascript"
+      src="//code.jquery.com/jquery-1.4.2.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//cdn.socket.io/4.4.1/socket.io.min.js"
+    ></script>
   </head>
 
   <body>
@@ -55,7 +63,18 @@
         <div class="map">
           <div class="map_placeholder">
             <div id="map">
-              <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
+              <a
+                href="https://www.maptiler.com"
+                style="
+                  position: absolute;
+                  left: 10px;
+                  bottom: 10px;
+                  z-index: 999;
+                "
+                ><img
+                  src="https://api.maptiler.com/resources/logo.svg"
+                  alt="MapTiler logo"
+              /></a>
             </div>
           </div>
         </div>
@@ -217,104 +236,117 @@
     <!-- Script for map (Must be put here) and SocketIO -->
     <script>
       localStorage.removeItem("locations", "myGeoJSON");
-      var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
+      var saved_locations = JSON.parse(
+        localStorage.getItem("locations") || "[]"
+      );
       var myGeoJSON = {
-                type: "FeatureCollection",
-                features: [
-                    {
-                      type: "Feature",
-                      properties: {
-                          name: "Running Route",
-                          type: "Loop Run"
-                      },
-                      geometry: {
-                        type: "LineString",
-                        coordinates: saved_locations,
-                      }
-                    }
-                  ]
-            };
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              name: "Running Route",
+              type: "Loop Run",
+            },
+            geometry: {
+              type: "LineString",
+              coordinates: saved_locations,
+            },
+          },
+        ],
+      };
       localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
       current_pos = [21.03717741287463, 105.83702964290497];
 
-      const map = L.map('map').setView(current_pos, 14); //starting position
+      const map = L.map("map").setView(current_pos, 14); //starting position
 
-      L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,{ //style URL
-        tileSize: 512,
-        zoomOffset: -1,
-        minZoom: 1,
-        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-        crossOrigin: true
-      }).addTo(map);
+      L.tileLayer(
+        `https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,
+        {
+          //style URL
+          tileSize: 512,
+          zoomOffset: -1,
+          minZoom: 1,
+          attribution:
+            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+          crossOrigin: true,
+        }
+      ).addTo(map);
 
       var marker = L.marker(current_pos).addTo(map);
       marker.bindPopup("<b> Your current position </b><br> Keep running!");
 
       // myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
       L.geoJSON(myGeoJSON).addTo(map);
-      
+
       localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
       let socket_server;
 
-      $(document).ready(function(){
-          // Connect to SocketIO
-          socket_server = io.connect('{{ socketio_url }}');
+      $(document).ready(function () {
+        // Connect to SocketIO
+        socket_server = io.connect("{{ socketio_url }}");
 
-          // Socket connect
-          socket_server.on('connect', function() {
-              socket_server.emit('joined', {});
+        // Socket connect
+        socket_server.on("connect", function () {
+          socket_server.emit("joined", {});
+        });
+
+        // Socket update web on interval
+        socket_server.on("update_kinematic", function (server_data) {
+          // {"calorie": calorie, "step": step, "total_distance": total_distance, "total_time": total_time, "avg_velocity": avg_velocity}
+
+          // Add to <span> tags
+          document.getElementById("calorie").textContent = server_data.calorie;
+          document.getElementById("step").textContent = server_data.step;
+          document.getElementById("total_distance").textContent =
+            server_data.total_distance;
+          document.getElementById("total_time").textContent =
+            server_data.total_time;
+          document.getElementById("pace").textContent = server_data.pace;
+        });
+
+        // Get data every interval
+        socket_server.on("send_server_data", function (server_data) {
+          // {'time_start': time_start, 'latitude': latitude, 'longitude': longitude}
+
+          // Get data from server_data
+          var location = [
+            server_data.longitude, // longitude here must be put first
+            server_data.latitude,
+          ];
+          current_pos = location;
+          current_pos = [current_pos[1], current_pos[0]];
+
+          // Add the current location and save all
+          saved_locations = JSON.parse(
+            localStorage.getItem("locations") || "[]"
+          );
+          saved_locations.push(location);
+          localStorage.setItem("locations", JSON.stringify(saved_locations));
+
+          // Save it into myGeoJSON
+          myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
+          myGeoJSON.features[0].geometry.coordinates = saved_locations;
+          localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+
+          map.setView(current_pos, 14);
+
+          // Remove old marker and add a new one
+          if (map.hasLayer(marker)) {
+            map.removeLayer(marker);
+          }
+          marker = L.marker(current_pos).addTo(map);
+          marker.bindPopup("<b> Your current position </b><br> Keep running!");
+
+          L.geoJSON(myGeoJSON).addTo(map);
+
+          // SocketIO events to update info
+          socket_server.emit("interval_signal_to_server", {
+            time_start: server_data.time_start,
           });
-
-          // Socket update web on interval
-          socket_server.on("update_kinematic", function(server_data) {
-            // {"calorie": calorie, "step": step, "total_distance": total_distance, "total_time": total_time, "avg_velocity": avg_velocity}
-
-            // Add to <span> tags
-            document.getElementById("calorie").textContent = server_data.calorie;
-            document.getElementById("step").textContent = server_data.step;
-            document.getElementById("total_distance").textContent = server_data.total_distance;
-            document.getElementById("total_time").textContent = server_data.total_time;
-            document.getElementById("pace").textContent = server_data.pace;
-          });
-          
-          // Get data every interval
-          socket_server.on('send_server_data', function(server_data) {
-              // {'time_start': time_start, 'latitude': latitude, 'longitude': longitude}
-              
-              // Get data from server_data
-              var location = [
-                  server_data.longitude, // longitude here must be put first
-                  server_data.latitude
-              ];
-              current_pos = location
-              current_pos = [current_pos[1], current_pos[0]];
-
-              // Add the current location and save all
-              saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
-              saved_locations.push(location);
-              localStorage.setItem("locations", JSON.stringify(saved_locations));
-
-              // Save it into myGeoJSON
-              myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
-              myGeoJSON.features[0].geometry.coordinates = saved_locations;
-              localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-
-              map.setView(current_pos, 14);
-              
-              // Remove old marker and add a new one
-              if (map.hasLayer(marker)) {
-                map.removeLayer(marker);
-              }
-              marker = L.marker(current_pos).addTo(map);
-              marker.bindPopup("<b> Your current position </b><br> Keep running!");
-              
-              L.geoJSON(myGeoJSON).addTo(map);
-
-              // SocketIO events to update info
-              socket_server.emit("interval_signal_to_server", {time_start: server_data.time_start})
-          })
+        });
       });
     </script>
   </body>

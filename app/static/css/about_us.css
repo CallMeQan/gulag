@@ -1,23 +1,10 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  overflow-x: hidden; /* Chặn cuộn ngang trên toàn bộ trang */
-}
-
+/* ---------------------------------------------- */
 /* main components */
-.main {
+/* .main {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Đảm bảo phần này có thể mở rộng nếu nội dung bên trong nhiều hơn */
-}
+} */
 
-/* ---------------------------------------------- */
 /* top container */
 .general-container {
   display: flex;
@@ -27,14 +14,12 @@ body {
 
 /* left section  */ /*main*/
 .left {
-  display: flex;
   background-color: #8a0b16;
 }
 
 .left img {
   height: 100%;
   width: 100%;
-  display: block;
 }
 
 /* right section */ /*main*/
