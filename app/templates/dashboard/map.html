@@ -1,353 +1,324 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/global.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/dashboard.css') }}"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <title>Dashboard</title>
+{% extends "home/layout.html" %} {% block title %} Dashboard {% endblock %} {%
+block head %} {{ super() }}
 
-    <!-- Map script -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-      #map {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+<!-- Link to the CSS about_us page -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+{% endblock %} {%block content %}
 
-    <!-- Download JS stuff -->
-    <script
-      type="text/javascript"
-      src="//code.jquery.com/jquery-1.4.2.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="//cdn.socket.io/4.4.1/socket.io.min.js"
-    ></script>
-  </head>
+<!-- Main content of the dashboard page -->
+<div class="main">
+  <!-- LEFT -->
+  <div class="map">
+    <div class="map_placeholder">
+      <div id="map">
+        <a
+          href="https://www.maptiler.com"
+          style="position: absolute; left: 10px; bottom: 10px; z-index: 999"
+          ><img
+            src="https://api.maptiler.com/resources/logo.svg"
+            alt="MapTiler logo"
+        /></a>
+      </div>
+    </div>
+  </div>
 
-  <body>
-    <nav class="navbar">
-      <div class="logo">
+  <!-- CENTER -->
+  <div class="info">
+    <!-- Card 1: Total Steps -->
+    <div class="card">
+      <div class="card_icon">
         <img
-          src="{{ url_for('static', filename='images/logo.png') }}"
-          alt="Gulag Logo"
+          src="{{ url_for('static', filename='images/Steps.png') }}"
+          alt="User Steps"
         />
       </div>
-      <ul class="nav-links">
-        <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="{{url_for('home.profile')}}">Profile</a></li>
-      </ul>
-    </nav>
+      <div class="card_info">
+        <p class="value"><span id="step">0</span></p>
+        <p class="label">Total Steps</p>
+      </div>
+    </div>
 
-    <div class="background">
-      <div class="navbar_background"></div>
-      <div class="main">
-        <!-- LEFT -->
-        <div class="map">
-          <div class="map_placeholder">
-            <div id="map">
-              <a
-                href="https://www.maptiler.com"
-                style="
-                  position: absolute;
-                  left: 10px;
-                  bottom: 10px;
-                  z-index: 999;
-                "
-                ><img
-                  src="https://api.maptiler.com/resources/logo.svg"
-                  alt="MapTiler logo"
-              /></a>
-            </div>
+    <!-- Card 2: Total Calories -->
+    <div class="card">
+      <div class="card_icon">
+        <img
+          src="{{ url_for('static', filename='images/Calories.png') }}"
+          alt="User Calories"
+        />
+      </div>
+      <div class="card_info">
+        <p class="value"><span id="calorie">0</span> Kcal</p>
+        <p class="label">Total Calories</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Distance -->
+    <div class="card">
+      <div class="card_icon">
+        <img
+          src="{{ url_for('static', filename='images/Distance.png') }}"
+          alt="User Distance"
+        />
+      </div>
+      <div class="card_info">
+        <p class="value"><span id="total_distance">0</span> Km</p>
+        <p class="label">Distance</p>
+      </div>
+    </div>
+
+    <!-- Card 4: Total Time -->
+    <div class="card">
+      <div class="card_icon">
+        <img
+          src="{{ url_for('static', filename='images/Clock.png') }}"
+          alt="User Clock"
+        />
+      </div>
+      <div class="card_info">
+        <p class="value"><span id="total_time">0</span></p>
+        <p class="label">Total Time</p>
+      </div>
+    </div>
+
+    <!-- Card 5: Avg Pace -->
+    <div class="card">
+      <div class="card_icon">
+        <img
+          src="{{ url_for('static', filename='images/Avg_Pace.png') }}"
+          alt="User Avg_Pace"
+        />
+      </div>
+      <div class="card_info">
+        <p class="value"><span id="pace">0</span> /Km</p>
+        <p class="label">Avg Pace</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="profile_container">
+    <div class="profile_container_information">
+      <!-- RIGHT / profile title -->
+      <h2 class="profile-title">My Profile</h2>
+
+      <!-- RIGHT / info -->
+      <div class="profile_info">
+        <img
+          src="{{ url_for('static', filename='images/user1.png') }}"
+          alt="Avatar User"
+        />
+        <h3>
+          <div class="profile_name">Gulag Meme</div>
+        </h3>
+        <p class="profile_username">@{{ username }}</p>
+
+        <!-- RIGHT / Profile info / Chi so co the -->
+        <div class="profile_stats">
+          <div class="stat">
+            <span class="stat-value">{{ personal_stat.weight }} kg</span>
+            <span class="stat-label">Weight</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ personal_stat.height }} cm</span>
+            <span class="stat-label">Height</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ personal_stat.age }}</span>
+            <span class="stat-label">Age</span>
           </div>
         </div>
 
-        <!-- CENTER -->
-        <div class="info">
-          <!-- Card 1: Total Steps -->
-          <div class="card">
-            <div class="card_icon">
-              <img
-                src="{{ url_for('static', filename='images/Steps.png') }}"
-                alt="User Steps"
-              />
-            </div>
-            <div class="card_info">
-              <p class="value"><span id="step">0</span></p>
-              <p class="label">Total Steps</p>
-            </div>
+        <!-- RIGHT / Profile info / calendar header -->
+        <div class="calendar-date-nar">
+          <div class="calendar-header">
+            <h3>February 2025</h3>
           </div>
-
-          <!-- Card 2: Total Calories -->
-          <div class="card">
-            <div class="card_icon">
-              <img
-                src="{{ url_for('static', filename='images/Calories.png') }}"
-                alt="User Calories"
-              />
-            </div>
-            <div class="card_info">
-              <p class="value"><span id="calorie">0</span> Kcal</p>
-              <p class="label">Total Calories</p>
-            </div>
-          </div>
-
-          <!-- Card 3: Distance -->
-          <div class="card">
-            <div class="card_icon">
-              <img
-                src="{{ url_for('static', filename='images/Distance.png') }}"
-                alt="User Distance"
-              />
-            </div>
-            <div class="card_info">
-              <p class="value"><span id="total_distance">0</span> Km</p>
-              <p class="label">Distance</p>
-            </div>
-          </div>
-
-          <!-- Card 4: Total Time -->
-          <div class="card">
-            <div class="card_icon">
-              <img
-                src="{{ url_for('static', filename='images/Clock.png') }}"
-                alt="User Clock"
-              />
-            </div>
-            <div class="card_info">
-              <p class="value"><span id="total_time">0</span></p>
-              <p class="label">Total Time</p>
-            </div>
-          </div>
-
-          <!-- Card 5: Avg Pace -->
-          <div class="card">
-            <div class="card_icon">
-              <img
-                src="{{ url_for('static', filename='images/Avg_Pace.png') }}"
-                alt="User Avg_Pace"
-              />
-            </div>
-            <div class="card_info">
-              <p class="value"><span id="pace">0</span> /Km</p>
-              <p class="label">Avg Pace</p>
-            </div>
+          <div class="calendar-nar">
+            <button class="pre-next-btn-left">&lt;</button>
+            <button class="pre-next-btn-right">&gt;</button>
           </div>
         </div>
 
-        <!-- RIGHT -->
-        <div class="profile_container">
-          <div class="profile_container_information">
-            <!-- RIGHT / profile title -->
-            <h2 class="profile-title">My Profile</h2>
-
-            <!-- RIGHT / info -->
-            <div class="profile_info">
-              <img
-                src="{{ url_for('static', filename='images/user1.png') }}"
-                alt="Avatar User"
-              />
-              <h3>
-                <div class="profile_name">Gulag Meme</div>
-              </h3>
-              <p class="profile_username">@{{ username }}</p>
-
-              <!-- RIGHT / Profile info / Chi so co the -->
-              <div class="profile_stats">
-                <div class="stat">
-                  <span class="stat-value">{{ personal_stat.weight }} kg</span>
-                  <span class="stat-label">Weight</span>
-                </div>
-                <div class="stat">
-                  <span class="stat-value">{{ personal_stat.height }} cm</span>
-                  <span class="stat-label">Height</span>
-                </div>
-                <div class="stat">
-                  <span class="stat-value">{{ personal_stat.age }}</span>
-                  <span class="stat-label">Age</span>
-                </div>
-              </div>
-
-              <!-- RIGHT / Profile info / calendar header -->
-              <div class="calendar-date-nar">
-                <div class="calendar-header">
-                  <h3>February 2025</h3>
-                </div>
-                <div class="calendar-nar">
-                  <button class="pre-next-btn-left">&lt;</button>
-                  <button class="pre-next-btn-right">&gt;</button>
-                </div>
-              </div>
-
-              <!-- RIGHT / Profile info / Lich -->
-              <div class="calendar">
-                <div class="calendar-item">
-                  <div class="weekday">Mon</div>
-                  <div class="date">12</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Tue</div>
-                  <div class="date">13</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Wed</div>
-                  <div class="date">14</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Thu</div>
-                  <div class="date">15</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Fri</div>
-                  <div class="date">16</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Sat</div>
-                  <div class="date">17</div>
-                </div>
-                <div class="calendar-item">
-                  <div class="weekday">Sun</div>
-                  <div class="date">18</div>
-                </div>
-              </div>
-            </div>
+        <!-- RIGHT / Profile info / Lich -->
+        <div class="calendar">
+          <div class="calendar-item">
+            <div class="weekday">Mon</div>
+            <div class="date">12</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Tue</div>
+            <div class="date">13</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Wed</div>
+            <div class="date">14</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Thu</div>
+            <div class="date">15</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Fri</div>
+            <div class="date">16</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Sat</div>
+            <div class="date">17</div>
+          </div>
+          <div class="calendar-item">
+            <div class="weekday">Sun</div>
+            <div class="date">18</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<!-- Map script -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- Script for map (Must be put here) and SocketIO -->
-    <script>
-      localStorage.removeItem("locations", "myGeoJSON");
-      var saved_locations = JSON.parse(
-        localStorage.getItem("locations") || "[]"
-      );
-      var myGeoJSON = {
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: {
-              name: "Running Route",
-              type: "Loop Run",
-            },
-            geometry: {
-              type: "LineString",
-              coordinates: saved_locations,
-            },
-          },
-        ],
-      };
+<!-- Download JS stuff -->
+<script
+  type="text/javascript"
+  src="//code.jquery.com/jquery-1.4.2.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="//cdn.socket.io/4.4.1/socket.io.min.js"
+></script>
+
+<!-- Script for map (Must be put here) and SocketIO -->
+<script>
+  localStorage.removeItem("locations", "myGeoJSON");
+  var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
+  var myGeoJSON = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        properties: {
+          name: "Running Route",
+          type: "Loop Run",
+        },
+        geometry: {
+          type: "LineString",
+          coordinates: saved_locations,
+        },
+      },
+    ],
+  };
+  localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+
+  current_pos = [21.03717741287463, 105.83702964290497];
+
+  const map = L.map("map").setView(current_pos, 14); //starting position
+
+  L.tileLayer(
+    `https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,
+    {
+      //style URL
+      tileSize: 512,
+      zoomOffset: -1,
+      minZoom: 1,
+      attribution:
+        '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
+      crossOrigin: true,
+    }
+  ).addTo(map);
+
+  var marker = L.marker(current_pos).addTo(map);
+  marker.bindPopup("<b> Your current position </b><br> Keep running!");
+
+  // myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
+  L.geoJSON(myGeoJSON).addTo(map);
+
+  localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
+
+  let socket_server;
+
+  $(document).ready(function () {
+    // Connect to SocketIO
+    socket_server = io.connect("{{ socketio_url }}");
+
+    // Socket connect
+    socket_server.on("connect", function () {
+      socket_server.emit("joined", {});
+    });
+
+    // Socket update web on interval
+    socket_server.on("update_kinematic", function (server_data) {
+      // {"calorie": calorie, "step": step, "total_distance": total_distance, "total_time": total_time, "avg_velocity": avg_velocity}
+
+      // Add to <span> tags
+      document.getElementById("calorie").textContent = server_data.calorie;
+      document.getElementById("step").textContent = server_data.step;
+      document.getElementById("total_distance").textContent =
+        server_data.total_distance;
+      document.getElementById("total_time").textContent =
+        server_data.total_time;
+      document.getElementById("pace").textContent = server_data.pace;
+    });
+
+    // Get data every interval
+    socket_server.on("send_server_data", function (server_data) {
+      // {'time_start': time_start, 'latitude': latitude, 'longitude': longitude}
+
+      // Get data from server_data
+      var location = [
+        server_data.longitude, // longitude here must be put first
+        server_data.latitude,
+      ];
+      current_pos = location;
+      current_pos = [current_pos[1], current_pos[0]];
+
+      // Add the current location and save all
+      saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
+      saved_locations.push(location);
+      localStorage.setItem("locations", JSON.stringify(saved_locations));
+
+      // Save it into myGeoJSON
+      myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
+      myGeoJSON.features[0].geometry.coordinates = saved_locations;
       localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-      current_pos = [21.03717741287463, 105.83702964290497];
+      map.setView(current_pos, 14);
 
-      const map = L.map("map").setView(current_pos, 14); //starting position
-
-      L.tileLayer(
-        `https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`,
-        {
-          //style URL
-          tileSize: 512,
-          zoomOffset: -1,
-          minZoom: 1,
-          attribution:
-            '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
-          crossOrigin: true,
-        }
-      ).addTo(map);
-
-      var marker = L.marker(current_pos).addTo(map);
+      // Remove old marker and add a new one
+      if (map.hasLayer(marker)) {
+        map.removeLayer(marker);
+      }
+      marker = L.marker(current_pos).addTo(map);
       marker.bindPopup("<b> Your current position </b><br> Keep running!");
 
-      // myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
       L.geoJSON(myGeoJSON).addTo(map);
 
-      localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-
-      let socket_server;
-
-      $(document).ready(function () {
-        // Connect to SocketIO
-        socket_server = io.connect("{{ socketio_url }}");
-
-        // Socket connect
-        socket_server.on("connect", function () {
-          socket_server.emit("joined", {});
-        });
-
-        // Socket update web on interval
-        socket_server.on("update_kinematic", function (server_data) {
-          // {"calorie": calorie, "step": step, "total_distance": total_distance, "total_time": total_time, "avg_velocity": avg_velocity}
-
-          // Add to <span> tags
-          document.getElementById("calorie").textContent = server_data.calorie;
-          document.getElementById("step").textContent = server_data.step;
-          document.getElementById("total_distance").textContent =
-            server_data.total_distance;
-          document.getElementById("total_time").textContent =
-            server_data.total_time;
-          document.getElementById("pace").textContent = server_data.pace;
-        });
-
-        // Get data every interval
-        socket_server.on("send_server_data", function (server_data) {
-          // {'time_start': time_start, 'latitude': latitude, 'longitude': longitude}
-
-          // Get data from server_data
-          var location = [
-            server_data.longitude, // longitude here must be put first
-            server_data.latitude,
-          ];
-          current_pos = location;
-          current_pos = [current_pos[1], current_pos[0]];
-
-          // Add the current location and save all
-          saved_locations = JSON.parse(
-            localStorage.getItem("locations") || "[]"
-          );
-          saved_locations.push(location);
-          localStorage.setItem("locations", JSON.stringify(saved_locations));
-
-          // Save it into myGeoJSON
-          myGeoJSON = JSON.parse(localStorage.getItem("myGeoJSON"));
-          myGeoJSON.features[0].geometry.coordinates = saved_locations;
-          localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
-
-          map.setView(current_pos, 14);
-
-          // Remove old marker and add a new one
-          if (map.hasLayer(marker)) {
-            map.removeLayer(marker);
-          }
-          marker = L.marker(current_pos).addTo(map);
-          marker.bindPopup("<b> Your current position </b><br> Keep running!");
-
-          L.geoJSON(myGeoJSON).addTo(map);
-
-          // SocketIO events to update info
-          socket_server.emit("interval_signal_to_server", {
-            time_start: server_data.time_start,
-          });
-        });
+      // SocketIO events to update info
+      socket_server.emit("interval_signal_to_server", {
+        time_start: server_data.time_start,
       });
-    </script>
-  </body>
-</html>
+    });
+  });
+</script>
+{% endblock %}
