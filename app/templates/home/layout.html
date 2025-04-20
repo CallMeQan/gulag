@@ -8,12 +8,34 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/global.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/transition.css') }}"
+    />
     {% endblock %}
   </head>
 
   <body>
     <!-- Background wrapper and main content -->
     <div class="background">
+      <!-- Hammer Transition Overlay -->
+      <div class="transition-overlay" id="transition-overlay">
+        <img
+          src="{{ url_for('static', filename='images/hammer.png') }}"
+          alt="Hammer"
+          class="hammer"
+        />
+
+        <!-- Loading text Gulag-->
+        <div class="loading-text" id="loading-text">
+          <span>G</span><span>u</span><span>l</span><span>a</span><span>g</span>
+          <span>&nbsp;</span>
+          <span>l</span><span>o</span><span>a</span><span>d</span><span>i</span
+          ><span>n</span><span>g</span><span>.</span><span>.</span
+          ><span>.</span>
+        </div>
+      </div>
+      <!-- Navbar and main content wrapper -->
       <div class="navbar_background">
         <!-- Navbar -->
         <nav class="navbar">
@@ -38,6 +60,8 @@
     </div>
     {% block scripts %}
     <!-- place for JS scripts -->
+    <!-- Hammer for page transition-->
+    <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
     {% endblock %}
   </body>
 </html>

@@ -169,6 +169,6 @@ block head %} {{ super() }}
     <!-- ///// -->
   </div>
 </div>
-{% endblock %} {% block scripts %}
+{% endblock %} {% block scripts %} {{ super() }}
 <script src="{{ url_for('static', filename='javascript/about_us.js') }}"></script>
 {% endblock %}
