@@ -165,6 +165,11 @@
                   <span class="stat-label">Age</span>
                 </div>
               </div>
+              <div class="current_datetime">
+                <div class="date_day" id="date_day"></div>
+                <div class="date_month_year" id="date_month_year"></div>
+                <div class="digital_clock" id="digital_clock"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -273,6 +278,45 @@
               socket_server.emit("interval_signal_to_server", {time_start: server_data.time_start})
           })
       });
+      function updateDateTime() {
+          const now = new Date();
+
+          // Formatter for Vietnam time (Asia/Ho_Chi_Minh)
+          const formatterDate = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          });
+
+          const formatterTime = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+          });
+
+          // Format date and time
+          const dateParts = formatterDate.formatToParts(now);
+          const timeParts = formatterTime.formatToParts(now);
+
+          const day = dateParts.find(p => p.type === 'day').value;
+          const month = dateParts.find(p => p.type === 'month').value;
+          const year = dateParts.find(p => p.type === 'year').value;
+
+          const hour = timeParts.find(p => p.type === 'hour').value;
+          const minute = timeParts.find(p => p.type === 'minute').value;
+          const second = timeParts.find(p => p.type === 'second').value;
+
+          document.getElementById('date_day').textContent = day;
+          document.getElementById('date_month_year').textContent = `${month} ${year}`;
+          document.getElementById('digital_clock').textContent = `${hour}:${minute}:${second}`;
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
     </script>
   </body>
 </html>
