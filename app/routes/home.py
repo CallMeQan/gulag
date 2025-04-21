@@ -23,8 +23,7 @@ def about():
 @home_bp.route('/set-goal', methods = ["GET", "POST"])
 def set_goal():
     if request.method == "POST":
-        new_goal = request.form["goal"]
-        print(new_goal)
+        new_goal = request.form.get("goal")
         User.update_goal(user_id = current_user.user_id, new_goal = new_goal)
         return render_template("home/homepage.html")
     return render_template("home/set_goal.html")
