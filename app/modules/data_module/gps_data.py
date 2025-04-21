@@ -61,7 +61,6 @@ def process_data(df: pls.LazyFrame, step: int = 2) -> tuple:
     # Loop over each pair of rows to calculate distances
     for i in range(0, df.select(pls.len()).item() - 1, step + 1):
         temp_df = df.slice(i, step + 1)
-        print(temp_df)
         lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
         lat2, lon2 = float(temp_df[-1, 1]), float(temp_df[-1, 2])
         distance = haversine(lat1, lon1, lat2, lon2)
