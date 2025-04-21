@@ -176,18 +176,27 @@ class Personal_Stat(db.Model, UserMixin):
     user = db.relationship("User", backref="personal_stat", uselist=False)
 
     @classmethod
-    def take_email_from_hash(self, hashed_timestamp):
+    def get_weight(self, user_id: int) -> float:
         """
-        Take email from a hashed timestamp, while checking if the created_at timestamp is less than 1 hour away.
+        Get user's weight.
 
-        :hashed_timestamp: A hashed timestamp, used to get unique string.
+        :user_id: user's id
+        :return: user's weight that is a numeric data
         """
-        # Get current timestamp (GMT+7)
-        current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
+        weight = db.session.query(self.weight).\
+            filter(User.user_id == user_id).\
+            first()
+        return weight[0] if weight else None
 
-        # Check if username or email is duplicated with only one query
-        result = db.session.query(self.email, self.created_at).filter(
-            self.hashed_timestamp == hashed_timestamp,
-            current_timestamp - self.created_at <= datetime.timedelta(hours = 1)
-        ).first()
-        return result[0] if result else None
+    @classmethod
+    def get_height(self, user_id: int) -> float:
+        """
+        Get user's height.
+
+        :user_id: user's id
+        :return: user's height that is a numeric data
+        """
+        height = db.session.query(self.height).\
+            filter(User.user_id == user_id).\
+            first()
+        return height[0] if height else None

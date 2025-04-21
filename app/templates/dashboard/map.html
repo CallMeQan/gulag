@@ -150,7 +150,7 @@ block head %} {{ super() }}
           <div class="digital_clock" id="digital_clock"></div>
         </div>
         <div id="message" style="display: none; color: green; font-weight: bold;">
-          Bạn đã xong...
+          You have finished...
         </div>
       </div>
     </div>
@@ -284,11 +284,8 @@ block head %} {{ super() }}
         time_start: server_data.time_start,
       });
 
-      // Giả sử đây là điều kiện bạn muốn kiểm tra
-      let isDone = false;
-
+      // When the server check that goal is finished
       socket_server.on("finish_goal", function() {
-        isDone = true;
         document.getElementById("message").style.display = "block";
       });
     });
