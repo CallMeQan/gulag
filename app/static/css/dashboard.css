@@ -152,95 +152,32 @@ h3 {
   font-size: 23px;
 }
 
-/* Calendar */
-.calendar-date-nar {
-  display: flex;
-  width: 100%;
-  padding-top: 5%;
-}
-
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  width: 100%;
-  max-width: 500px;
-  padding-top: 5%;
-}
-
-.calendar-header h3 {
-  display: inline;
-  white-space: nowrap; /* Prevents the text from wrapping onto the next line */
-  color: #8a0b16;
-  font-size: 20px;
-  text-align: left;
-  padding-left: 15%;
-}
-
-.calendar-nar {
-  flex: 0 0 30%;
-  display: flex;
-  align-items: center;
-  gap: 10%;
-  margin-left: auto;
-}
-
-.pre-next-btn-left,
-.pre-next-btn-right {
-  background-color: #8a0b16; /* Màu nền */
-  color: white; /* Màu chữ */
-  width: 30%; /* Chiều rộng */
-  height: 50%; /* Chiều cao */
-  border-radius: 50%; /* Bo tròn */
-  border: none; /* Loại bỏ viền */
-  display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  font-size: 30px; /* Cỡ chữ */
-}
-
-.calendar-item {
-  flex: 0 0 9%;
-  display: flex;
-  flex-direction: column;
+.current_datetime {
   text-align: center;
-}
-
-.weekday {
-  font-size: 20px;
-  font-weight: bold;
+  margin-top: 15px;
+  font-family: 'Inknut Antiqua', serif;
   color: #8a0b16;
 }
 
-.date {
-  color: #362828;
+.date_day {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  font-family: 'Inknut Antiqua'
+}
+
+.date_month_year {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-family: 'Inknut Antiqua';
+  color: #8a0b16;
+}
+
+.digital_clock {
   font-size: 20px;
   font-weight: bold;
-  padding: 5px;
-  border-radius: 5px;
+  color: #8a0b16;
+  font-family: 'Inknut Antiqua'
 }
 
-/* Animation of left main */
 
-/* Date section */
-.date {
-  display: inline-block;
-  border-radius: 50%;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.date:hover {
-  background-color: rgba(255, 0, 0, 0.2); /* Màu đỏ nhạt */
-}
-
-/* Calendar navbar */
-.pre-next-btn-left,
-.pre-next-btn-right {
-  opacity: 0.3;
-  transition: opacity 0.3 ease-in-out;
-}
-
-.pre-next-btn-left:hover,
-.pre-next-btn-right:hover {
-  opacity: 1;
-}
