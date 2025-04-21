@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <meta charset="UTF-8" />
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/global.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/transition.css') }}"
+    />
+    {% endblock %}
+  </head>
+
+  <body>
+    <!-- Background wrapper and main content -->
+    <div class="background">
+      <!-- Hammer Transition Overlay -->
+      <div class="transition-overlay" id="transition-overlay">
+        <img
+          src="{{ url_for('static', filename='images/hammer.png') }}"
+          alt="Hammer"
+          class="hammer"
+        />
+
+        <!-- Loading text Gulag-->
+        <div class="loading-text" id="loading-text">
+          <span>G</span><span>u</span><span>l</span><span>a</span><span>g</span>
+          <span>&nbsp;</span>
+          <span>l</span><span>o</span><span>a</span><span>d</span><span>i</span
+          ><span>n</span><span>g</span><span>.</span><span>.</span
+          ><span>.</span>
+        </div>
+      </div>
+      <!-- Navbar and main content wrapper -->
+      <div class="navbar_background">
+        <!-- Navbar -->
+        <nav class="navbar">
+          <div class="logo">
+            <img
+              src="{{ url_for('static', filename='images/logo.png') }}"
+              alt="Logo"
+            />
+          </div>
+          <ul class="nav-links">
+            <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+            <li><a href="{{ url_for('home.about') }}">About Us</a></li>
+            <li><a href="{{ url_for('home.profile') }}">Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="main_background">
+        {% block content %}
+        <!-- Main content goes here -->
+        {% endblock %}
+      </div>
+    </div>
+    {% block scripts %}
+    <!-- place for JS scripts -->
+    <!-- Hammer for page transition-->
+    <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
+    {% endblock %}
+  </body>
+</html>

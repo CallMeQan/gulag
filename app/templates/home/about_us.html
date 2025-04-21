@@ -1,0 +1,174 @@
+{% extends "home/layout.html" %} {% block title %} About Us {% endblock %} {%
+block head %} {{ super() }}
+
+<!-- Link to the CSS about_us page -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/about_us.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+
+<!-- Main content of the about us page -->
+<div class="main">
+  <!------------- Top ------------>
+  <div class="general-container">
+    <div class="left">
+      <img
+        src="{{ url_for('static', filename='images/about_us_group.png') }}"
+        alt="Group_image"
+        class="image_group"
+      />
+    </div>
+    <div class="right">
+      <div class="about_us">
+        <h1 class="about_us_text">
+          About <br />
+          Us.
+        </h1>
+      </div>
+      <div class="general_info">
+        <p>
+          Together, we work to achieve our common goals and <br />
+          success, always committed to delivering outstanding.
+        </p>
+        <p>
+          Together, we collaborate with unity and purpose, driving innovation
+          and achieving excellence as one team.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!------------- Bottom ------------>
+  <div class="personal-container">
+    <!-- Card 1 -->
+    <!-- Chau Minh Quan -->
+    <div class="card">
+      <img
+        src="{{ url_for('static', filename='images/personal_image_1.png') }}"
+        alt="User Steps"
+      />
+
+      <div class="info">
+        <p class="name">Chau Minh Quan</p>
+        <p class="mssv">Student ID: 104240214</p>
+        <p class="e-mail">
+          E-mail: <br />
+          104240214@student.vgu.edu.vn
+        </p>
+        <p class="introduce">
+          " Hi, I'm Chau Minh Quan (Qan), a first-year undergraduate student and
+          intern at the Vietnamese-German University. I've been passionate about
+          coding for over 8 years, starting with Java, PHP, Python, and
+          JavaScript, and now focusing on TypeScript and Go."
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <!-- Hong Nguyen Phuc -->
+    <div class="card">
+      <img
+        src="{{ url_for('static', filename='images/personal_image_2.png') }}"
+        alt="User Steps"
+      />
+
+      <div class="info">
+        <p class="name">Hong Nguyen Phuc</p>
+        <p class="mssv">Student ID: 104240581</p>
+        <p class="e-mail">
+          E-mail: <br />
+          104240581@student.vgu.edu.vn
+        </p>
+        <p class="introduce">
+          " Chào ae, tôi là Sinh viên năm 1 CSE. Tôi thích lập trình và yêu đời.
+          Tôi thích lập trình và yêu đời.Tôi thích lập trình và yêu đời.Tôi
+          thích lập trình và yêu đời.Tôi thích lập trình và yêu đời "
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <!-- Ho Nguyen Phu -->
+    <div class="card">
+      <img
+        src="{{ url_for('static', filename='images/personal_image_3.png') }}"
+        alt="User Steps"
+      />
+
+      <div class="info">
+        <p class="name">Ho Nguyen Phu</p>
+        <p class="mssv">Student ID: 104240073</p>
+        <p class="e-mail">
+          E-mail: <br />
+          104240073@student.vgu.edu.vn
+        </p>
+        <p class="introduce">
+          " I am a VGU freshman. My dream is to be a great AI scientist and
+          inventor. Dr. Heinz Doofenschmirtz is my role model. In this project,
+          I take responsibility in back-end, database management and real-time
+          effects."
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <!-- Cao Tue Anh -->
+    <div class="card">
+      <img
+        src="{{ url_for('static', filename='images/personal_image_4.png') }}"
+        alt="User Steps"
+      />
+
+      <div class="info">
+        <p class="name">Cao Tue Anh</p>
+        <p class="mssv">Student ID: 104240192</p>
+        <p class="e-mail">
+          E-mail: <br />
+          104240192@student.vgu.edu.vn
+        </p>
+        <p class="introduce">
+          " Chào ae, tôi là Sinh viên năm 1 CSE. Tôi thích lập trình và yêu đời.
+          Tôi thích lập trình và yêu đời.Tôi thích lập trình và yêu đời.Tôi
+          thích lập trình và yêu đời.Tôi thích lập trình và yêu đời "
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <!-- Pham Trong Quy -->
+    <div class="card">
+      <img
+        src="{{ url_for('static', filename='images/personal_image_5.png') }}"
+        alt="User Steps"
+      />
+
+      <div class="info">
+        <p class="name">Pham Trong Quy</p>
+        <p class="mssv">Student ID: 104240232</p>
+        <p class="e-mail">
+          E-mail: <br />
+          104240232@student.vgu.edu.vn
+        </p>
+        <p class="introduce">
+          " Hi, I'm Pham Trong Quy, a first-year undergraduate student. My dream
+          is to be a Data scientist and singer. I love to play games and listen
+          to music. I am a member of the Gulag team, and I am responsible for
+          the front-end development of the project."
+        </p>
+      </div>
+    </div>
+    <!-- ///// -->
+  </div>
+</div>
+{% endblock %} {% block scripts %} {{ super() }}
+<script src="{{ url_for('static', filename='javascript/about_us.js') }}"></script>
+{% endblock %}

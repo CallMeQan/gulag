@@ -1,0 +1,145 @@
+/* ---------------------------------------------- */
+/* main components */
+/* .main {
+  display: flex;
+  flex-direction: column;
+} */
+
+/* top container */
+.general-container {
+  display: flex;
+  min-height: 85vh;
+  background-color: #2656bd;
+}
+
+/* left section  */ /*main*/
+.left {
+  background-color: #8a0b16;
+  position: relative;
+}
+
+.left img {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.left::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  left: 20%;
+  border-radius: 20px / 100%;
+  background-color: white;
+  z-index: 10;
+}
+/* right section */ /*main*/
+.right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #8a0b16;
+}
+
+.about_us {
+  display: flex;
+  flex: 0 0 55%;
+  align-items: center;
+  position: relative;
+}
+
+.about_us_text {
+  position: absolute;
+  left: -8%;
+}
+
+.general_info {
+  display: flex;
+  flex: 0 0 40%;
+  flex-direction: column;
+}
+
+/* word editing */
+.general_info p {
+  font-family: Inknut Antiqua;
+  font-size: 22px;
+  color: #ffffff;
+  padding-left: 20%;
+  line-height: 1.5;
+  padding-bottom: 5%;
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 110px;
+}
+
+/* -------------------------------------------------- */
+/* bottom container */
+.personal-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Chia thành 2 cột bằng nhau */
+  grid-template-rows: repeat(3, minmax(300px, auto));
+  place-items: center;
+  gap: 20px; /* Khoảng cách giữa các items */
+  padding-top: 4%;
+  background-color: #8a0b16;
+}
+
+.card {
+  display: flex;
+  width: 75%;
+  height: auto;
+  background: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+
+.card img {
+  width: 40%;
+  height: auto;
+  border-radius: 12px 0 0 12px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  padding-left: 3%;
+  padding-top: 1%;
+}
+
+/* word editing */
+.name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #7b0d0d;
+}
+
+.mssv,
+.e-mail {
+  font-size: 20px;
+  color: #7b0d0d;
+}
+
+.introduce {
+  font-size: 20px;
+  font-style: italic;
+  color: #8a0b16;
+}
+
+/* animation for card */
+.card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

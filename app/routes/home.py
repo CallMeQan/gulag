@@ -20,6 +20,9 @@ def index():
 def homepage():
     return render_template('home/homepage.html')
 
+@home_bp.route('/about')
+def about():
+    return render_template('home/about_us.html')
 
 @home_bp.route('/set-goal', methods = ["GET", "POST"])
 def set_goal():

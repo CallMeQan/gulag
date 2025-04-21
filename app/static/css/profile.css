@@ -1,0 +1,163 @@
+/* main components */
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 84.88%; /* 100% - 15.12% */
+  height: 100%;
+}
+
+.profile-container {
+  width: 33%;
+  height: 80%;
+  justify-content: center;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.profile_heading {
+  color: black;
+  padding-left: 5%;
+}
+.stat1 {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: left; /* Centers horizontally */
+  border-radius: 20px;
+  height: 30%;
+  flex-direction: column;
+}
+
+.age-label {
+  display: flex;
+  justify-content: left;
+  border-radius: 20px;
+  font-size: 165%;
+  font-family: "Inknut Antiqua";
+  margin-top: 5.5%;
+  margin-left: 8%;
+  margin-bottom: -1.5%;
+}
+
+.age-value {
+  background-color: #fce4e4;
+  justify-content: left;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 200%;
+  font-family: "Judson";
+  margin-left: 8%;
+  padding: 3%;
+  width: 77%;
+  height: 52px;
+}
+
+.stat2 {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: left; /* Centers horizontally */
+  border-radius: 20px;
+  flex-direction: column;
+  margin-top: 1%;
+}
+
+.height-label {
+  display: flex;
+  justify-content: left;
+  border-radius: 20px;
+  font-size: 165%;
+  font-family: "Inknut Antiqua";
+  margin-top: 1%;
+  margin-left: 8%;
+  white-space: nowrap;
+  margin-bottom: -3%;
+}
+
+.height-value {
+  background-color: #fce4e4;
+  justify-content: left;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 200%;
+  font-family: "Judson";
+  /* margin-top: -5%; */
+  margin-left: 8%;
+  width: 57%;
+  padding: 3%;
+  height: 52px;
+}
+
+.height-unit {
+  font-size: 165%;
+  font-family: "Inknut Antiqua";
+  margin-left: 9%;
+}
+
+.stat3 {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: left; /* Centers horizontally */
+  border-radius: 20px;
+  flex-direction: column;
+  margin-top: 0.5%;
+}
+
+.weight-label {
+  display: flex;
+  justify-content: left;
+  border-radius: 20px;
+  font-size: 165%;
+  font-family: "Inknut Antiqua";
+  margin-top: 0%;
+  margin-left: 8%;
+  white-space: nowrap;
+  margin-bottom: -3%;
+}
+
+.weight-value {
+  background-color: #fce4e4;
+  justify-content: left;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 200%;
+  font-family: "Judson";
+  margin-left: 8%;
+  width: 57%;
+  padding: 3%;
+  height: 52px;
+}
+
+.weight-unit {
+  font-size: 165%;
+  font-family: "Inknut Antiqua";
+  margin-left: 10%;
+}
+
+.btn {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  border-radius: 10px;
+  background-color: #686869;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  margin-right: 9%;
+  margin-top: 6%;
+  height: 52px;
+  color: white;
+  font-family: "Inknut Antiqua";
+  font-size: 100%;
+  border: none;
+  height: 40px;
+  width: 150px;
+}
+
+.btn:hover {
+  background-color: #444444; /* Darker on hover */
+}

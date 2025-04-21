@@ -1,38 +1,78 @@
-<!DOCTYPE html> 
-<html>
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" /> 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}" />
+{% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
+head %} {{ super() }}
 
-  <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Joan&family=Jomhuria&family=Judson:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-</head>
-<body>
+<!-- Link to CSS profile and external font's link -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/profile.css') }}"
+/>
 
-  <div class="profile_container">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&family=Jomhuria&family=Judson:ital,wght@0,400;0,700;1,400&display=swap"
+  rel="stylesheet"
+/>
+{% endblock%} {% block content%}
+
+<!-- Main content for the profile page -->
+
+<div class="main">
+  <!-- The personal information -->
+  <div class="profile-container">
     <h1 class="profile_heading">Welcome back, {{ username }}!</h1>
-
     <form method="POST" class="profile_stats">
-        <div class="stat">
-          <span class="stat-label">Weight (kg)</span>
-          <input class="stat-value" type="number" step="0.1" name="weight" value="{{ personal_stat.weight or '' }}" required>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Height (cm)</span>
-          <input class="stat-value" type="number" step="0.01" name="height" value="{{ personal_stat.height or '' }}" required>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Age</span>
-          <input class="stat-value" type="number" name="age" value="{{ personal_stat.age or '' }}" required>
-        </div>
-      
-        <button type="submit" class="btn">Save Changes</button>
-      </form>
-  </div>
+      <div class="stat1">
+        <span class="age-label">Age</span>
+        <input
+          class="age-value"
+          type="number"
+          name="age"
+          value="{{ personal_stat.age or '' }}"
+          required
+        />
+      </div>
 
-</body>
-</html>
+      <div class="stat2">
+        <span class="height-label">Height (cm)</span>
+        <div class="height-input-wrapper">
+          <input
+            class="height-value"
+            type="number"
+            step="0.01"
+            name="height"
+            value="{{ personal_stat.height or '' }}"
+            required
+          />
+          <span class="height-unit">cm</span>
+        </div>
+      </div>
+
+      <div class="stat3">
+        <span class="weight-label">Weight</span>
+        <div class="weight-input-wrapper">
+          <input
+            class="weight-value"
+            type="number"
+            step="0.1"
+            name="weight"
+            value="{{ personal_stat.weight or '' }}"
+            required
+          />
+          <span class="weight-unit">kg</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Save Changes</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
