@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import or_, and_, ForeignKey
+from sqlalchemy import func, or_, and_, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from geoalchemy2 import Geometry
 from flask_login import UserMixin
@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(nullable = False)
     name: Mapped[str] = mapped_column(nullable = False)
     admin: Mapped[bool] = mapped_column()
+
+    goal: Mapped[float] = mapped_column(nullable = True, default = 1)
 
     def get_id(self):
         return self.user_id
@@ -38,6 +40,32 @@ class User(db.Model, UserMixin):
             filter(User.email == email).\
             update({'password': new_password})
         db.session.commit()
+
+    @classmethod
+    def update_goal(self, user_id: int, new_goal: float) -> None:
+        """
+        Update user's goal.
+
+        :user_id: user's user_id.
+        :new_goal: the updated goal.
+        """
+        db.session.query(self).\
+            filter(User.user_id == user_id).\
+            update({'goal': new_goal})
+        db.session.commit()
+
+    @classmethod
+    def get_goal(self, user_id: int) -> float:
+        """
+        Get user's goal.
+
+        :user_id: user's id
+        :return: user's goal that is a numeric data
+        """
+        goal = db.session.query(self.goal).\
+            filter(User.user_id == user_id).\
+            first()
+        return goal[0] if goal else None
 
 # Define sensor data table
 class Sensor_Data(db.Model):
@@ -115,11 +143,9 @@ class Mobile_Session(db.Model):
 
         # Query
         if user_session:
-            current_timestamp = datetime.datetime.now(tz = datetime.timezone(datetime.timedelta(seconds=25200)))
-            db.session.query(self).\
-            filter(Mobile_Session.user_id == user_id,
-                   current_timestamp - self.created_at <= datetime.timedelta(hours = 24)).\
-            update({'created_at': current_timestamp,'hashed_timestamp': hashed_timestamp})
+            db.session.query(Mobile_Session).\
+            filter(Mobile_Session.user_id == user_id).\
+            update({'created_at': func.now(),'hashed_timestamp': hashed_timestamp})
         else:
             mobile_session = Mobile_Session(user_id = user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
             db.session.add(mobile_session)
@@ -134,6 +160,7 @@ class Mobile_Session(db.Model):
         """
         result = db.session.query(self.user_id).filter(
             self.hashed_timestamp == hashed_timestamp,
+            func.now() - self.created_at <= datetime.timedelta(hours = 24)
         ).first()
         return result[0] if result else None
 
@@ -147,6 +174,7 @@ class Personal_Stat(db.Model, UserMixin):
     age: Mapped[int] = mapped_column(nullable=False, default=20)
 
     user = db.relationship("User", backref="personal_stat", uselist=False)
+
     @classmethod
     def take_email_from_hash(self, hashed_timestamp):
         """
