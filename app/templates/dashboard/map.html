@@ -149,6 +149,9 @@ block head %} {{ super() }}
           <div class="date_month_year" id="date_month_year"></div>
           <div class="digital_clock" id="digital_clock"></div>
         </div>
+        <div id="message" style="display: none; color: green; font-weight: bold;">
+          Bạn đã xong...
+        </div>
       </div>
     </div>
   </div>
@@ -279,6 +282,14 @@ block head %} {{ super() }}
       // SocketIO events to update info
       socket_server.emit("interval_signal_to_server", {
         time_start: server_data.time_start,
+      });
+
+      // Giả sử đây là điều kiện bạn muốn kiểm tra
+      let isDone = false;
+
+      socket_server.on("finish_goal", function() {
+        isDone = true;
+        document.getElementById("message").style.display = "block";
       });
     });
   });
