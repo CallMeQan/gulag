@@ -15,13 +15,27 @@
 /* left section  */ /*main*/
 .left {
   background-color: #8a0b16;
+  position: relative;
 }
 
 .left img {
   height: 100%;
   width: 100%;
+  z-index: 1;
 }
 
+.left::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  left: 20%;
+  border-radius: 20px / 100%;
+  background-color: white;
+  z-index: 10;
+}
 /* right section */ /*main*/
 .right {
   display: flex;
