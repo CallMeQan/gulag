@@ -7,6 +7,7 @@ import polars as pls
 from .. import socketio
 
 from ..modules.data_module import process_data, calculate_data
+from ..models import User
 
 @socketio.on("joined", namespace = getenv("SOCKETIO_PATH")) # SOCKETIO_PATH can be "/data_room"
 def joined(message):
@@ -26,7 +27,7 @@ def joined(message):
 @socketio.on("interval_signal_to_server", namespace = getenv("SOCKETIO_PATH"))
 def interval_signal_to_server(message):
     """
-    Get signal from user every interval of 10 rows.
+    Get signal from user map web every interval of 10 rows.
 
     {"time_start": time_start}
     """
@@ -38,7 +39,7 @@ def interval_signal_to_server(message):
     stride_length = 0.6 # meter
 
     run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.user_id = {user_id} AND sensor_data.start_time = {time_start};"
-    run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.start_time = {time_start};"
+    # run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.start_time = {time_start};"
     lz_frame = pls.read_database_uri(query = run_session_query, uri = getenv("DATABASE_URI"), engine="connectorx")
 
     # Get kinematic data
@@ -77,7 +78,10 @@ def interval_signal_to_server(message):
     step_num = int(total_distance / stride_length) # steps
     total_distance = round(total_distance / 1000, 1) # km
     total_time = round(total_time, 1) # seconds
-    pace = round(total_time / total_distance / 3600, 1)
+    try:
+        pace = round(total_time / total_distance / 3600, 1)
+    except ZeroDivisionError:
+        pace = 10
 
     emit("update_kinematic",
         {
@@ -89,3 +93,9 @@ def interval_signal_to_server(message):
         },
         to = user_id,
         namespace = getenv("SOCKETIO_PATH"))
+    
+    if total_distance >= User.get_goal(user_id = user_id):
+        emit("finish_goal",
+            {},
+            to = user_id,
+            namespace = getenv("SOCKETIO_PATH"))

@@ -67,6 +67,7 @@ def send_mobile_data():
              },
              to = user_id,
              namespace = getenv("SOCKETIO_PATH"))
-        
-        return "Data sent successfully!", 200
-    return "Send data here to show it in the map!"
+        res = jsonify("Data sent to the map!")
+        res.headers["Access-Control-Allow-Origin"] = "*"
+        return res, 200
+    return jsonify("Send data here to show it in the map!"), 400

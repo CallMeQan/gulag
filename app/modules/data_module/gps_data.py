@@ -4,16 +4,6 @@
 import polars as pls
 from geopy.distance import geodesic
 
-"""
-
-What does this do:
-    - Get data input for **run_history** table:
-        + Table **run_history** will have nullable fields (start, end, velocity, etc)
-        + Query the table **sensor_data** database to get the GIS data from start_time to end_time.
-        + Process data in **sensor_data** (multiple rows) and put into **run_history** (one row).
-
-""" 
-
 # ======================
 # |    FUNCTIONS       |
 # ======================
@@ -61,7 +51,6 @@ def process_data(df: pls.LazyFrame, step: int = 2) -> tuple:
     # Loop over each pair of rows to calculate distances
     for i in range(0, df.select(pls.len()).item() - 1, step + 1):
         temp_df = df.slice(i, step + 1)
-        print(temp_df)
         lat1, lon1 = float(temp_df[0, 1]), float(temp_df[0, 2])
         lat2, lon2 = float(temp_df[-1, 1]), float(temp_df[-1, 2])
         distance = haversine(lat1, lon1, lat2, lon2)

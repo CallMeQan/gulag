@@ -1,7 +1,8 @@
 DROP TABLE sensor_data;
-DROP TABLE users;
 DROP TABLE forgot_password;
 DROP TABLE mobile_session;
+DROP TABLE personal_stat;
+DROP TABLE users;
 
 CREATE EXTENSION IF NOT EXISTS postgis;
 
@@ -11,7 +12,8 @@ CREATE TABLE users (
     password VARCHAR(60) NOT NULL,
     email VARCHAR(320) NOT NULL UNIQUE,
     name VARCHAR(25) NOT NULL,
-    admin BOOLEAN
+    admin BOOLEAN,
+    goal FLOAT DEFAULT 1
 );
 
 CREATE TABLE sensor_data (
@@ -36,16 +38,25 @@ created_at TIMESTAMPTZ NOT NULL,
 hashed_timestamp CHAR(100) NOT NULL
 );
 
+CREATE TABLE personal_stat ( 
+    person_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(user_id),
+    weight FLOAT NOT NULL DEFAULT 70,
+    height FLOAT NOT NULL DEFAULT 1.7,
+    age INT NOT NULL DEFAULT 20
+);
+
 -------------------------------------------
 -- Insert sample data into users table --
 -------------------------------------------
-INSERT INTO users (username, password, email, name, admin) VALUES
-('alice123', 'hashed_password_1', 'alice@example.com', 'Alice', FALSE),
-('bob_dev', 'hashed_password_2', 'bob@example.com', 'Bob', FALSE),
-('charlie99', 'hashed_password_3', 'charlie@example.com', 'Charlie', FALSE),
-('david_admin', 'hashed_password_4', 'david@example.com', 'David', TRUE),
-('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE),
-('Ceenen', 'hashed_password_6', 'phuhn.a1.2124@gmail.com', 'Fuu', TRUE);
+INSERT INTO users (username, password, email, name, admin, goal) VALUES
+('alice123', 'hashed_password_1', 'alice@example.com', 'Alice', FALSE, 1),
+('bob_dev', 'hashed_password_2', 'bob@example.com', 'Bob', FALSE, 1),
+('charlie99', 'hashed_password_3', 'charlie@example.com', 'Charlie', FALSE, 1),
+('david_admin', 'hashed_password_4', 'david@example.com', 'David', TRUE, 2),
+('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE, 3),
+('Ceenen', 'hashed_password_6', 'phuhn.a1.2124@gmail.com', 'Fuu', TRUE, 2),
+('cnn', '$2b$12$yikB/GYPtljv6lJDQd8OgO034wiNSWNO4Hl4kgpQ3phx/HqvmNudO', 'phu@gmail.com', 'cnn', True, 3);
 
 ------------------------------------------------------
 -- Insert samples into sensor_data records --
@@ -102,10 +113,5 @@ INSERT INTO forgot_password (email, hashed_timestamp) VALUES
 ------------------------------------------------------
 -- Insert Personal Stat --
 ------------------------------------------------------
-CREATE TABLE personal_stat ( 
-    person_id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(user_id),
-    weight FLOAT NOT NULL DEFAULT 70,
-    height FLOAT NOT NULL DEFAULT 1.7,
-    age INT NOT NULL DEFAULT 20
-);
+INSERT INTO personal_stat (user_id, weight, height, age) VALUES
+(7, 70, 169, 19);

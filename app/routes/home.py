@@ -2,16 +2,12 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required
 from app.models import Personal_Stat
 from flask_login import current_user
-from ..extensions import db
 
+from ..extensions import db
+from ..models import User
 
 home_bp = Blueprint('home', __name__)
 
-
-
-# @app.route('/about')
-# def about():
-#     return render_template('about.html')
 @home_bp.route('/')
 def index():
     return render_template('home/index.html')
@@ -27,11 +23,11 @@ def about():
 @home_bp.route('/set-goal', methods = ["GET", "POST"])
 def set_goal():
     if request.method == "POST":
-        goal = request.form["goal"]
-        print(goal)
+        new_goal = request.form["goal"]
+        print(new_goal)
+        User.update_goal(user_id = current_user.user_id, new_goal = new_goal)
         return render_template("home/homepage.html")
     return render_template("home/set_goal.html")
-
 
 @home_bp.route('/profile', methods = ["GET", "POST"])
 @login_required

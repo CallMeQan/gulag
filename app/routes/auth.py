@@ -51,7 +51,7 @@ def register():
 
         # Hashing password
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(username = username, email = email, password = hashed_password, name = username, admin = False)
+        new_user = User(username = username, email = email, password = hashed_password, name = username, admin = False, goal = 1)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("auth.login"))
@@ -147,7 +147,7 @@ def mobile_check():
             # Create session or add them
             Mobile_Session.create_session(user_id = user.user_id, created_at = created_at, hashed_timestamp = hashed_timestamp)
             
-            # TODO: Send the token to mobile app.
+            # Send the token to mobile app.
             return jsonify({"hashed_timestamp": hashed_timestamp, "user_id": user.user_id}), 200
         return jsonify({"error": "Invalid email or password"}), 401
     return jsonify({"error": "Invalid request method"}), 405
