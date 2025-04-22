@@ -18,28 +18,31 @@ head %} {{ super() }}
 <!-- Main content of the about us page -->
 <div class="main">
   <div class="overlap-wrapper">
-    <div class="setgoal-container"><p>Set goal</p></div>
-
-    <div class="goal-container">
-      <input
-        type="number"
-        id="goal"
-        class="goal-input"
-        value="0"
-        min="0"
-        max="999"
-      />
-      <!-- input to backend: using id-->
-      <span class="goal-unit">KM</span>
+    <div class="setgoal-container">
+      <p>Set goal</p>
+      <a href="{{ url_for('home.homepage') }}" class="exit-button">
+        <img
+          src="{{ url_for('static', filename='images/close_icon.png') }}"
+          alt="Close"
+          class="exit-icon"
+        />
+      </a>
     </div>
 
-    <div class="checkbox-container">
-      <label for="run-checkbox">Only for this run</label>
-      <input type="checkbox" id="run-checkbox" />
-    </div>
-    <!-- <button class="savebtn" type="submit">Save</button> -->
-    <button type="submit">Save</button>
-    <!-- button -->
+    <form method="POST" class="profile_stats">
+      <div class="goal-container">
+        <input
+          type="number"
+          id="goal"
+          class="goal-input"
+          value="0"
+          min="0"
+          max="999"
+        />
+        <span class="goal-unit">KM</span>
+      </div>
+      <button class="savebtn" type="submit">Save</button>
+    </form>
   </div>
 </div>
 {% endblock %}

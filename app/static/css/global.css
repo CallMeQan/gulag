@@ -19,7 +19,6 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #8a0b16;
-  z-index: -1; /* Để không che nội dung khác */
 }
 
 /* nav bar */
@@ -91,29 +90,39 @@ body {
 /* Nội dung khung */
 .modal-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px 20px;
   border-radius: 10px;
-  min-width: 300px;
+  min-width: 320px;
+  max-width: 90%;
   position: relative;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
 }
 
-/* Nút đóng */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
+/* Icon trong modal (nếu dùng hình ảnh) */
+.modal-icon img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
 }
 
-.btn {
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn_modal {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Inknut Antiqua";
 }
 
 .btn-danger {
@@ -132,6 +141,18 @@ body {
 
 .btn-cancel:hover {
   background-color: #bbb;
+}
+
+/* Hiệu ứng xuất hiện */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* -------------------------------------------------------------------- */

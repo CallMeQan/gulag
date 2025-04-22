@@ -1,21 +1,25 @@
-const modal = document.getElementById("logoutModal");
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("logoutModal");
 
-function openModal() {
-  modal.style.display = "flex";
-}
+  // Mở modal
+  window.openModal = function () {
+    if (modal) modal.style.display = "flex";
+  };
 
-function closeModal() {
-  modal.style.display = "none";
-}
+  // Đóng modal
+  window.closeModal = function () {
+    if (modal) modal.style.display = "none";
+  };
 
-function confirmLogout() {
-  // Redirect hoặc gửi request logout
-  window.location.href = "{{ url_for('auth.logout') }}"; // Tùy theo route logout
-}
+  // Xác nhận đăng xuất
+  window.confirmLogout = function () {
+    window.location.href = "/logout";
+  };
 
-// Đóng khi click ra ngoài modal-content
-window.onclick = function (event) {
-  if (event.target === modal) {
-    closeModal();
-  }
-};
+  // Bấm ngoài modal để đóng
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+});

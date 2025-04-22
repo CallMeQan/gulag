@@ -56,20 +56,20 @@
           <!-- Modal -->
           <div id="logoutModal" class="modal">
             <div class="modal-content">
-              <span class="close" onclick="closeModal()">&times;</span>
-              <p>Bạn có chắc muốn đăng xuất không?</p>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  margin-top: 20px;
-                "
-              >
-                <button class="btn btn-danger" onclick="confirmLogout()">
-                  Xác nhận
+              <div class="modal-icon">
+                <img
+                  src="{{ url_for('static', filename='images/logout.png') }}"
+                  alt="Logout Icon"
+                />
+              </div>
+              <h2>Oh no! You're leaving...</h2>
+              <h2>Are you sure?</h2>
+              <div class="modal-buttons">
+                <button class="btn_modal btn-cancel" onclick="closeModal()">
+                  Nah, Just Kidding
                 </button>
-                <button class="btn btn-cancel" onclick="closeModal()">
-                  Hủy
+                <button class="btn_modal btn-danger" onclick="confirmLogout()">
+                  Yes, Log Me Out
                 </button>
               </div>
             </div>
