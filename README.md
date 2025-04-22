@@ -19,6 +19,7 @@ Vietnamese-German University Labor Camp for multi-disciplinary project
 -   Create file `.env` from [.env.example](./.env.example)
 -   Get Map API Key from [Map tiler](https://cloud.maptiler.com/account/keys/)
 -   Install all packages `pip3 install -r requirements.txt`
+-   In your PostgreSQL, run all command in [mock_data.txt](./mock_data.txt) to generate data
 -   Run server with `python3 run.py`
 
 ### Structure
