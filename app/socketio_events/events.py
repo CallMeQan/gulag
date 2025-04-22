@@ -102,6 +102,7 @@ def interval_signal_to_server(message):
         namespace = getenv("SOCKETIO_PATH"))
     
     if total_distance >= User.get_goal(user_id = user_id):
+        print("\n\n\nfinish goal\n\n\n")
         emit("finish_goal",
             {},
             to = user_id,

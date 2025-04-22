@@ -2,8 +2,10 @@
 
 <!-- Link to the CSS about_us page -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/congrats.css') }}" />
 <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <style>
     #map {
         width: 100%;
@@ -126,6 +128,14 @@
             <div class="digital_clock" id="digital_clock"></div>
         </div>
     </div>
+
+    <div class="congrats_message" id="congrats_message" style="display: none;">
+        <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
+        <p class="congrats_text1">Congrats!</p>
+        <p class="congrats_text2">You have escaped from Gulag.</p>
+        <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
+    </div>
+
 </div>
 {% endblock %} {% block scripts %} {{ super() }}
 <!-- Map script -->
@@ -136,7 +146,28 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
 
+<!-- Script for Snackbar -->
+<script>
+    let timeoutId;
+    let haveEscaped = false;
+
+    function showMessage(){
+        const popup = document.getElementById('congrats_message');
+        popup.style.display = 'block';
+
+        timeoutId = setTimeout(() => {
+            popup.style.display = 'none';
+        }, 15000);
+    }
+
+    function quitMessage(){
+        clearTimeout(timeoutId);
+        document.getElementById('congrats_message').style.display = 'none';
+    }
+</script>
+
 <!-- Script for map (Must be put here) and SocketIO -->
+<script>let socket_server;</script>
 <script>
     localStorage.removeItem("locations", "myGeoJSON");
     var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
@@ -180,7 +211,6 @@
 
     localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-    let socket_server;
 
     $(document).ready(function () {
         // Connect to SocketIO
@@ -243,7 +273,10 @@
 
             // Check condition
             socket_server.on("finish_goal", function () {
-                document.getElementById("message").style.display = "block";
+                if(!haveEscaped){
+                    showMessage();
+                    haveEscaped = true;
+                }
             });
         });
     });

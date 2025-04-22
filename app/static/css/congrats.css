@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+  
+  .congrats_message {
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+  
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* perfectly center */
+    
+    background-color: #fff;
+    width: 60%;
+    max-width: 600px;
+    height: auto;
+    padding: 5vw; /* responsive padding */
+    
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    line-height: 1.5;
+    font-weight: bold;
+    color: #730202;
+  
+    box-shadow:
+      inset #009688 0 0 0 5px, 
+      inset #059c8e 0 0 0 1px, 
+      inset #0cab9c 0 0 0 10px, 
+      inset #1fbdae 0 0 0 11px, 
+      inset #8ce9ff 0 0 0 16px, 
+      inset #48e4d6 0 0 0 17px, 
+      inset #e5f9f7 0 0 0 21px, 
+      inset #bfecf7 0 0 0 22px;
+      
+    text-shadow: 3px 3px 1px #bfecf7;
+    border-radius: 16px;
+  }
+  
+  .congrats_text1 {
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    color: #2e2e2e;
+    margin-top: 5%;
+  }
+  
+  .congrats_text2 {
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    color: #2e2e2e;
+    margin-top: 3%;
+  }
+  
+  .continue_text {
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    color: #aaa;
+    background-color: #fff;
+    margin-top: 2%;
+    align-self: flex-end;
+    padding: 0.4em 0.8em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+
+.congrats_message::after {
+    content: '';
+    position: absolute;
+    left: 22px;
+    right: 0px;
+    bottom: 10%;
+    height: 12px;
+    background: red; /* Match the color with your icon or theme */
+    animation: shrink 15s linear forwards;
+    border-radius: 0 0 8px 0; /* Match the bottom corners of the parent */
+  }
+
+  @keyframes shrink {
+    from { width: calc(100% - 22px - 22px); } /* the border is 22px each */
+    to   { width: 0; }
+}
