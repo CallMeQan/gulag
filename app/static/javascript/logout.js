@@ -1,25 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
+// Mở modal
+function openModal() {
   const modal = document.getElementById("logoutModal");
+  if (modal) modal.style.display = "flex";
+}
 
-  // Mở modal
-  window.openModal = function () {
-    if (modal) modal.style.display = "flex";
-  };
+// Đóng modal
+function closeModal() {
+  const modal = document.getElementById("logoutModal");
+  if (modal) modal.style.display = "none";
+}
 
-  // Đóng modal
-  window.closeModal = function () {
-    if (modal) modal.style.display = "none";
-  };
+// Xác nhận đăng xuất
+function confirmLogout() {
+  fetch("/logout", {
+    method: "POST",
+  })
+    .then(() => {
+      closeModal();
 
-  // Xác nhận đăng xuất
-  window.confirmLogout = function () {
-    window.location.href = "/logout";
-  };
+      // Hiện overlay/ảnh logout thành công
+      document.getElementById("logoutSuccessModal").style.display = "flex";
+    })
+    .catch((err) => {
+      console.error("Logout failed", err);
+    });
+}
 
-  // Bấm ngoài modal để đóng
-  window.addEventListener("click", function (event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
+// Chuyển về trang login
+function goToLogin() {
+  window.location.href = "/auth/login";
+}
+
+// Đóng modal khi click ra ngoài
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("logoutModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
 });

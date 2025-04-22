@@ -74,6 +74,24 @@
               </div>
             </div>
           </div>
+
+          <!-- Logout Success Modal -->
+          <div id="logoutSuccessModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-icon">
+                <img
+                  src="{{ url_for('static', filename='images/like.png') }}"
+                  alt="Logout Icon"
+                />
+              </div>
+              <h2>You’ve successfully<br />Logged out.</h2>
+              <div class="modal-buttons">
+                <button class="btn_modal btn-danger" onclick="goToLogin()">
+                  Back to Login
+                </button>
+              </div>
+            </div>
+          </div>
         </nav>
       </div>
       <div class="main_background">
