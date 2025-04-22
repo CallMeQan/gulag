@@ -4,16 +4,6 @@
 import polars as pls
 from geopy.distance import geodesic
 
-"""
-
-What does this do:
-    - Get data input for **run_history** table:
-        + Table **run_history** will have nullable fields (start, end, velocity, etc)
-        + Query the table **sensor_data** database to get the GIS data from start_time to end_time.
-        + Process data in **sensor_data** (multiple rows) and put into **run_history** (one row).
-
-""" 
-
 # ======================
 # |    FUNCTIONS       |
 # ======================
