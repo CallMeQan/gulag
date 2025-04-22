@@ -45,11 +45,35 @@
               alt="Logo"
             />
           </div>
+          <div class="gradient-text">| RUN FOR YOUR LIFE</div>
           <ul class="nav-links">
             <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
             <li><a href="{{ url_for('home.about') }}">About Us</a></li>
             <li><a href="{{ url_for('home.profile') }}">Profile</a></li>
+            <li><a role="button" onclick="openModal()">Log out</a></li>
           </ul>
+
+          <!-- Modal -->
+          <div id="logoutModal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <p>Bạn có chắc muốn đăng xuất không?</p>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  margin-top: 20px;
+                "
+              >
+                <button class="btn btn-danger" onclick="confirmLogout()">
+                  Xác nhận
+                </button>
+                <button class="btn btn-cancel" onclick="closeModal()">
+                  Hủy
+                </button>
+              </div>
+            </div>
+          </div>
         </nav>
       </div>
       <div class="main_background">
@@ -62,6 +86,7 @@
     <!-- place for JS scripts -->
     <!-- Hammer for page transition-->
     <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/logout.js') }}"></script>
     {% endblock %}
   </body>
 </html>
