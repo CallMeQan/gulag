@@ -16,9 +16,9 @@ def load_user(user_id):
 
 
 # Main
-@statistics_bp.route("/show_graph", methods = ["GET", "POST"])
+@statistics_bp.route("/", methods = ["GET", "POST"])
 def show_graph():
     user_id = current_user.user_id
     user = User.query.get(user_id)
     stat = Personal_Stat.query.filter_by(user_id = user_id).first()
-    return render_template("dashboard/map.html", socketio_url = getenv("SOCKETIO_URL"), map_key = getenv("MAP_API_KEY"), personal_stat=stat, username = user.username) 
+    return render_template('home/statistics.html', segment='index') 
