@@ -166,3 +166,18 @@ body {
 .no-underline {
   text-decoration: none;
 }
+
+.text-light {
+  color: aliceblue;
+}
+
+h3 {
+  color: white; 
+}
+
+.text-white {
+  color: #fff !important; }
+
+.mb-0 {
+  font-weight: bold;
+}
