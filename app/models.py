@@ -96,7 +96,78 @@ class Sensor_Data(db.Model):
             filter(
             and_(self.user_id == user_id, self.start_time == start_time)
         ).all()
+
+class Run_History(db.Model):
+    __tablename__ = 'run_history'
     
+    run_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    start_time: Mapped[datetime.datetime] = mapped_column(
+        nullable=False, 
+        default=func.now()
+    )
+
+    finish_goal: Mapped[bool] = mapped_column(nullable=False)
+    calorie: Mapped[float] = mapped_column(nullable=False)
+    step: Mapped[int] = mapped_column(nullable=False)
+    total_distance: Mapped[float] = mapped_column(nullable=False)
+    total_time: Mapped[datetime.timedelta] = mapped_column(nullable=False)
+    pace: Mapped[float] = mapped_column(nullable=False)
+
+    def to_dict(self):
+        return {
+            "run_id": self.run_id,
+            "timestart": self.start_time.isoformat(),
+            "finish_goal": self.finish_goal,
+            "calorie": self.calorie,
+            "step": self.step,
+            "total_distance": self.total_distance,
+            "total_time": self.total_time.total_seconds(),
+            "pace": self.pace,
+        }
+
+    @classmethod
+    def get_by_day(self, target_day: datetime.date) -> list["Run_History"]:
+        """
+        Return list of Run_History timestart of target_day (timezone).
+        """
+        return (
+            db.session.query(self)
+            .filter(func.date(self.start_time) == target_day)
+            .order_by(self.start_time)
+            .all()
+        )
+
+    @classmethod
+    def get_by_month(self, year: int, month: int) -> list["Run_History"]:
+        """
+        List Run_History within the year and month of the timestart
+        """
+        return (
+            db.session.query(self)
+            .filter(func.extract('year', self.start_time) == year)
+            .filter(func.extract('month', self.start_time) == month)
+            .order_by(self.start_time)
+            .all()
+        )
+
+    @classmethod
+    def get_by_week(self, some_date: datetime.date) -> list["Run"]:
+        """
+        List Run_History of the week with the date.
+        Week starts from Monday
+        """
+        # Tính ngày thứ Hai của tuần
+        week_start = some_date - datetime.timedelta(days=some_date.weekday())
+        # Tuần kết thúc vào Chủ Nhật cùng tuần
+        week_end = week_start + datetime.timedelta(days=6)
+        return (
+            db.session.query(self)
+            .filter(self.start_time >= datetime.datetime.combine(week_start, datetime.datetime.min.time()))
+            .filter(self.start_time <  datetime.datetime.combine(week_end + datetime.timedelta(days=1), datetime.datetime.min.time()))
+            .order_by(self.start_time)
+            .all()
+        )
+
 class Forgot_Password(db.Model):
     __tablename__ = "forgot_password"
     fp_id: Mapped[int] = mapped_column("fp_id", primary_key = True)
