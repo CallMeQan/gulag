@@ -1,54 +1,44 @@
 {% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
-  head %} {{ super() }}
-  <!-- Link to the CSS set_goal page -->
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/set_goal.css') }}"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
-    rel="stylesheet"
-  />
-  {% endblock %} {% block content %}
-  
-  <!-- Main content of the about us page -->
-  <div class="main">
-    <div class="overlap-wrapper">
-      <div class="setgoal-container"><p>Set goal</p></div>
-  
-      <!-- Form to set goal -->
-      <form method="post" action="{{ url_for('home.set_goal') }}">
-        <div class="goal-container">
-          <!-- Bắt buộc phải có name="goal" -->
-          <input
-            type="number"
-            id="goal"
-            name="goal"
-            class="goal-input"
-            value="0"
-            min="0"
-            max="999"
-          />
-          <span class="goal-unit">KM</span>
-        </div>
-      
-        <div class="checkbox-container">
-          <label for="run-checkbox">Only for this run</label>
-          <input
-            type="checkbox"
-            id="run-checkbox"
-            name="only_this_run"
-          />
-        </div>
-      
-        <button class="savebtn" type="submit">Save</button>
-      </form>
-  
+head %} {{ super() }}
+<!-- Link to the CSS set_goal page -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/set_goal.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+
+<!-- Main content of the about us page -->
+<div class="main">
+  <div class="overlap-wrapper">
+    <div class="setgoal-container">
+      <p>Set goal</p>
+      <a href="{{ url_for('home.homepage') }}" class="exit-button">
+        <img
+          src="{{ url_for('static', filename='images/close_icon.png') }}"
+          alt="Close"
+          class="exit-icon"
+        />
+      </a>
     </div>
+
+    <!-- Form to set goal -->
+    <form method="post" action="{{ url_for('home.set_goal') }}">
+      <div class="goal-container">
+        <!-- Must have name="goal" -->
+        <input type="number" id="goal" name="goal" class="goal-input" value="0" min="0" max="999" />
+        <span class="goal-unit">KM</span>
+      </div>
+    
+      <button class="savebtn" type="submit">Save</button>
+    </form>
   </div>
   {% endblock %}
   

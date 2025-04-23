@@ -9,7 +9,7 @@
 
 .profile-container {
   width: 33%;
-  height: 80%;
+  height: 82%;
   justify-content: center;
   border-radius: 16px;
   display: flex;
@@ -17,16 +17,28 @@
   background-color: #ffffff;
 }
 
+.profile_stats {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 80%;
+  gap: 20px;
+}
+
 .profile_heading {
   color: black;
-  padding-left: 5%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  font-family: "Inknut Antiqua";
+  font-size: 180%;
 }
+
 .stat1 {
   background-color: #ffffff;
   display: flex;
   justify-content: left; /* Centers horizontally */
   border-radius: 20px;
-  height: 30%;
   flex-direction: column;
 }
 
@@ -36,9 +48,9 @@
   border-radius: 20px;
   font-size: 165%;
   font-family: "Inknut Antiqua";
-  margin-top: 5.5%;
+  margin-top: -4%;
   margin-left: 8%;
-  margin-bottom: -1.5%;
+  margin-bottom: -1.4%;
 }
 
 .age-value {
@@ -53,6 +65,17 @@
   padding: 3%;
   width: 77%;
   height: 52px;
+  border: 3px solid #c56b70;
+}
+
+.age-value:hover {
+  border-color: #c56b70;
+}
+
+/* Focus effect */
+.age-value:focus {
+  border-color: #a8434c;
+  box-shadow: 0 0 5px rgba(168, 67, 76, 0.5);
 }
 
 .stat2 {
@@ -61,7 +84,6 @@
   justify-content: left; /* Centers horizontally */
   border-radius: 20px;
   flex-direction: column;
-  margin-top: 1%;
 }
 
 .height-label {
@@ -89,12 +111,23 @@
   width: 57%;
   padding: 3%;
   height: 52px;
+  border: 3px solid #c28b8b;
+}
+
+.height-value:hover {
+  border-color: #c56b70;
+}
+
+/* Focus effect */
+.height-value:focus {
+  border-color: #a8434c;
+  box-shadow: 0 0 5px rgba(168, 67, 76, 0.5);
 }
 
 .height-unit {
   font-size: 165%;
   font-family: "Inknut Antiqua";
-  margin-left: 9%;
+  margin-left: 10%;
 }
 
 .stat3 {
@@ -103,7 +136,6 @@
   justify-content: left; /* Centers horizontally */
   border-radius: 20px;
   flex-direction: column;
-  margin-top: 0.5%;
 }
 
 .weight-label {
@@ -130,12 +162,23 @@
   width: 57%;
   padding: 3%;
   height: 52px;
+  border: 3px solid #c28b8b;
+}
+
+.weight-value:hover {
+  border-color: #c56b70;
+}
+
+/* Focus effect */
+.weight-value:focus {
+  border-color: #a8434c;
+  box-shadow: 0 0 5px rgba(168, 67, 76, 0.5);
 }
 
 .weight-unit {
   font-size: 165%;
   font-family: "Inknut Antiqua";
-  margin-left: 10%;
+  margin-left: 11%;
 }
 
 .btn {
@@ -148,14 +191,14 @@
   flex-wrap: nowrap;
   margin-left: auto;
   margin-right: 9%;
-  margin-top: 6%;
+
   height: 52px;
   color: white;
   font-family: "Inknut Antiqua";
   font-size: 100%;
   border: none;
   height: 40px;
-  width: 150px;
+  width: 180px;
 }
 
 .btn:hover {

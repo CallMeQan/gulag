@@ -1,0 +1,42 @@
+{% extends "home/layout.html" %} {% block title %}Home{% endblock %} {% block
+head %} {{ super() }}
+<!-- Link to homepage-specific CSS -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/intro.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+<!-- Header section with background image and fog effect -->
+<div class="wrapper">
+  <div
+    class="page-header section-dark"
+    style="background-image: url('{{ url_for('static', filename='images/intro_background.png') }}')"
+  >
+    <div class="filter"></div>
+    <div class="content-center">
+      <div class="container">
+        <div class="title-brand">
+          <h1 class="presentation-title">WELCOME TO GULAG RUNNING</h1>
+        </div>
+        <a href="{{ url_for('home.homepage') }}" class="enter-button"
+          >The Chase Begin</a
+        >
+      </div>
+    </div>
+    <div
+      class="moving-clouds"
+      style="
+        background-image: url('https://demos.creative-tim.com/paper-kit-2/assets/img/clouds.png');
+      "
+    ></div>
+  </div>
+</div>
+{% endblock %}
