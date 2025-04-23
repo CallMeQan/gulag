@@ -1,16 +1,17 @@
-{% extends 'home/base_statistics.html' %}
+{% extends 'home/layout_statistics.html' %}
 
 {% block title %} Statistics {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage_statistics.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/statistics.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/transition.css') }}" />
 {% endblock stylesheets %}
 
 {% block content %}
 <div class="main">
+
   <div class="cards">
     <!-- Card stats -->
     <div class="row">
@@ -107,7 +108,7 @@
 
   <div class="graphs">
     <!-- Page content -->
-    <div class="container-fluid mt--6" style="margin-top: 122px;">
+    <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-8">
           <div class="card bg-default">
