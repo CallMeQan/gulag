@@ -1,18 +1,10 @@
 {% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
 head %} {{ super() }}
 <!-- Link to the CSS set_goal page -->
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/set_goal.css') }}"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
-  rel="stylesheet"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/set_goal.css') }}"/>
+<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet"/>
+
 {% endblock %} {% block content %}
 
 <!-- Main content of the about us page -->

@@ -12,6 +12,10 @@ home_bp = Blueprint('home', __name__)
 def index():
     return render_template('home/index.html')
 
+@home_bp.route('/intro')
+def intro():
+    return render_template('home/intro.html')
+
 @home_bp.route('/homepage')
 def homepage():
     return render_template('home/homepage.html')
@@ -50,3 +54,7 @@ def profile():
         return redirect(url_for("home.profile"))
 
     return render_template("home/profile.html", username=current_user.username, personal_stat=stat)
+
+@home_bp.route('/statistics')
+def statistics():
+    return render_template('home/statistics.html')
