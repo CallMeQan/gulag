@@ -35,7 +35,7 @@
 #transition-overlay.hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 2s ease;
+  transition: opacity 1s ease;
 }
 
 /* This is animation for loading text */

@@ -28,7 +28,7 @@
   height: 100%;
   gap: 40px;
   color: white;
-  font-family: "Inknut Antiqua"; /* Match your font */
+  font-family: "Inknut Antiqua";
 }
 
 .headline-text h1 {
@@ -44,7 +44,8 @@
 .bottom-links {
   display: flex;
   gap: 300px;
-  padding-top: 30%;
+  margin-top: auto;
+  padding-bottom: 5%;
 }
 
 .red-button {
