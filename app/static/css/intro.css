@@ -1,0 +1,126 @@
+/*!
+
+ =========================================================
+ * Paper Kit 2 - v2.0.0
+ =========================================================
+
+ * Product Page: http://www.creative-tim.com/product/paper-kit-2
+ * Copyright 2017 Creative Tim (http://www.creative-tim.com)
+ * Licensed under MIT (https://github.com/timcreative/paper-kit/blob/master/LICENSE.md)
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ */
+/*      light colors - used for select dropdown         */
+/*           Font Smoothing      */
+
+/* -------------------------------------------------------------------- */
+.page-header {
+  height: 90vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ------------------------------------------------------------------ */
+.presentation-title {
+  font-size: 80px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  background: #fbf8ec;
+  background: -moz-linear-gradient(top, #ffffff 35%, #4e6773 100%);
+  background: -webkit-linear-gradient(top, #ffffff 35%, #4e6773 100%);
+  background: linear-gradient(to bottom, #ffffff 35%, #4e6773 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.presentation-subtitle {
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.fog-low {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-left: -35%;
+  margin-bottom: -50px;
+  width: 110%;
+  opacity: 0.85;
+}
+.fog-low img {
+  width: 100%;
+}
+.fog-low.right {
+  margin-left: 30%;
+  opacity: 1;
+}
+/* ------------------ quan trong ----------------------------- */
+.enter-button {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 80px;
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  font-family: "Inknut Antiqua";
+  box-sizing: border-box;
+
+  background: linear-gradient(270deg, #2c0b0e, #4a1a2c, #6b1d24, #2c0b0e);
+  background-size: 400%;
+  border-radius: 30px;
+  z-index: 4;
+  transition: all 0.3s ease;
+
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enter-button:hover {
+  animation: animate 4s linear infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  opacity: 0.9;
+  filter: brightness(1.1);
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+.moving-clouds {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  width: 250.625em;
+  height: 43.75em;
+  -webkit-animation: cloudLoop 80s linear infinite;
+  animation: cloudLoop 80s linear infinite;
+}
+
+@keyframes cloudLoop {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
