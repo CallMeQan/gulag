@@ -1,53 +1,71 @@
+@media (max-width: 847px) {
+  .background {
+    height: auto !important;
+  }
+}
+
 .main_background {
   display: flex;
-  overflow-x: auto;
+  height: auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .main {
-  width: 100%;
-  height: 100%;
   display: flex;
+  height: auto;
+  width: 100%;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  gap: 3rem;
 }
 
 /* Cards */
 .cards {
-  flex: 0 0 30%;
-  width: 100%;
+  flex: 0 0 40%;
 
   display: flex;
-  gap: 10%;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
 /* Graphs */
 .graphs {
-  flex: 0 0 65%;
+  flex: 0 0 60%;
   width: 100%;
-
-  margin-top: 5%;
+  height: auto;
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
-.container-fluid mt--6 {
+.graphs > * {
   width: 80%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10%;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  gap: 1rem;
 }
 
 .row col-xl-8 {
-  width: 40%;
+  width: 30%;
+  height: 30%;
 }
 
 .row col-xl-4 {
-  width: 40%;
+  width: 30%;
+  height: 30%;
 }
 
 
@@ -59,16 +77,6 @@ html,
 body {
   height: 100%;
   overflow-x: hidden; /* Chặn cuộn ngang trên toàn bộ trang */
-}
-
-/* background of nav and main */
-.background {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  background-color: #8a0b16;
-  z-index: -1; /* Để không che nội dung khác */
 }
 
 /* nav bar */
