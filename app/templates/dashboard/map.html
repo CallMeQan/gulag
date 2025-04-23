@@ -155,7 +155,7 @@
 
     current_pos = [11.107583, 106.613529];
 
-    const map = L.map("map").setView(current_pos, 14); //starting position
+    const map = L.map("map").setView(current_pos, 20	); //starting position
 
     L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={{ map_key }}`, {
         //style URL
@@ -220,7 +220,7 @@
             myGeoJSON.features[0].geometry.coordinates = saved_locations;
             localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-            map.setView(current_pos, 14);
+            map.setView(current_pos, 20);
 
             // Remove old marker and add a new one
             if (map.hasLayer(marker)) {
