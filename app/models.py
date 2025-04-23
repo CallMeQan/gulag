@@ -101,6 +101,7 @@ class Run_History(db.Model):
     __tablename__ = 'run_history'
     
     run_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(nullable = False)
     start_time: Mapped[datetime.datetime] = mapped_column(
         nullable=False, 
         default=func.now()
@@ -116,7 +117,8 @@ class Run_History(db.Model):
     def to_dict(self):
         return {
             "run_id": self.run_id,
-            "timestart": self.start_time.isoformat(),
+            "user_id": self.user_id,
+            "start_time": self.start_time.isoformat(),
             "finish_goal": self.finish_goal,
             "calorie": self.calorie,
             "step": self.step,
@@ -126,32 +128,37 @@ class Run_History(db.Model):
         }
 
     @classmethod
-    def get_by_day(self, target_day: datetime.date) -> list["Run_History"]:
+    def get_by_day(self, user_id: int, target_day: datetime.date) -> list["Run_History"]:
         """
         Return list of Run_History timestart of target_day (timezone).
         """
         return (
             db.session.query(self)
-            .filter(func.date(self.start_time) == target_day)
+            .filter(
+                and_(func.date(self.start_time) == target_day, self.user_id == user_id)
+            )
             .order_by(self.start_time)
             .all()
         )
 
     @classmethod
-    def get_by_month(self, year: int, month: int) -> list["Run_History"]:
+    def get_by_month(self, user_id: int, year: int, month: int) -> list["Run_History"]:
         """
         List Run_History within the year and month of the timestart
         """
         return (
             db.session.query(self)
-            .filter(func.extract('year', self.start_time) == year)
-            .filter(func.extract('month', self.start_time) == month)
+            .filter(and_(
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month,
+                self.user_id == user_id
+                ))
             .order_by(self.start_time)
             .all()
         )
 
     @classmethod
-    def get_by_week(self, some_date: datetime.date) -> list["Run"]:
+    def get_by_week(self, user_id: int, some_date: datetime.date) -> list["Run"]:
         """
         List Run_History of the week with the date.
         Week starts from Monday
@@ -162,12 +169,43 @@ class Run_History(db.Model):
         week_end = week_start + datetime.timedelta(days=6)
         return (
             db.session.query(self)
-            .filter(self.start_time >= datetime.datetime.combine(week_start, datetime.datetime.min.time()))
-            .filter(self.start_time <  datetime.datetime.combine(week_end + datetime.timedelta(days=1), datetime.datetime.min.time()))
+            .filter(and_(
+                self.start_time >= datetime.datetime.combine(week_start, datetime.datetime.min.time()),
+                self.start_time < datetime.datetime.combine(week_end + datetime.timedelta(days=1), datetime.datetime.min.time()),
+                self.user_id == user_id
+                ))
             .order_by(self.start_time)
             .all()
         )
-
+    
+    @classmethod
+    def get_older_than_months(self, months: int = 1) -> list["Run_History"]:
+        """
+        Return a list of record with start_time more than 'months'.
+        """
+        # Calculate the cuttoff date
+        cutoff_date = datetime.datetime.now() - datetime.timedelta(days = 30 * months)
+        return (
+            db.session.query(self)
+            .filter(self.start_time < cutoff_date)
+            .order_by(self.start_time)
+            .all()
+        )
+    
+    @classmethod
+    def get_newer_than_months(self, months: int = 1) -> list["Run_History"]:
+        """
+        Return a list of record with start_time less than 'months'.
+        """
+        # Calculate the cuttoff date
+        cutoff_date = datetime.datetime.now() - datetime.timedelta(days = 30 * months)
+        return (
+            db.session.query(self)
+            .filter(self.start_time > cutoff_date)
+            .order_by(self.start_time)
+            .all()
+        )
+    
 class Forgot_Password(db.Model):
     __tablename__ = "forgot_password"
     fp_id: Mapped[int] = mapped_column("fp_id", primary_key = True)
