@@ -129,13 +129,19 @@
         </div>
     </div>
 
-    <div class="congrats_message" id="congrats_message" style="display: none;">
+    <div class="message" id="success_message" style="display: none;">
         <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
         <p class="congrats_text1">Congrats!</p>
         <p class="congrats_text2">You have escaped from Gulag.</p>
         <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
     </div>
 
+    <div class="message" id="fail_message" style="display: none;">
+        <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
+        <p class="congrats_text1">Congrats!</p>
+        <p class="congrats_text2">You have escaped from Gulag.</p>
+        <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
+    </div>
 </div>
 {% endblock %} {% block scripts %} {{ super() }}
 <!-- Map script -->
@@ -149,10 +155,19 @@
 <!-- Script for Snackbar -->
 <script>
     let timeoutId;
-    let haveEscaped = false;
+    let haveDone = false;
 
-    function showMessage(){
-        const popup = document.getElementById('congrats_message');
+    function showSuccess(){
+        const popup = document.getElementById('success_message');
+        popup.style.display = 'block';
+
+        timeoutId = setTimeout(() => {
+            popup.style.display = 'none';
+        }, 15000);
+    }
+
+    function showFail(){
+        const popup = document.getElementById('fail_message');
         popup.style.display = 'block';
 
         timeoutId = setTimeout(() => {
@@ -162,7 +177,8 @@
 
     function quitMessage(){
         clearTimeout(timeoutId);
-        document.getElementById('congrats_message').style.display = 'none';
+        document.getElementById('success_message').style.display = 'none';
+        document.getElementById('fail_message').style.display = 'none';
     }
 </script>
 
@@ -272,10 +288,16 @@
             });
 
             // Check condition
-            socket_server.on("finish_goal", function () {
-                if(!haveEscaped){
-                    showMessage();
-                    haveEscaped = true;
+            socket_server.on("finish_running", function (goal_status) {
+                if(!haveDone){
+                    if(goal_status.message == "success"){
+                        showSuccess();
+                        haveDone = true;
+                    }
+                    else{
+                        showFail();
+                        haveDone = true;
+                    }
                 }
             });
         });
