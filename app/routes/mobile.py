@@ -3,15 +3,10 @@ from flask import Blueprint, jsonify, request
 
 from flask_socketio import emit
 
-from ..models import User, Mobile_Session, Sensor_Data
-from ..extensions import db, login_manager
+from ..models import Mobile_Session, Sensor_Data
+from ..extensions import db
 
 mobile_bp = Blueprint('mobile', __name__)
-
-# User loader to get user object from the session when a request is made
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 @mobile_bp.route("/send_mobile_data", methods = ["GET", "POST"])
 def send_mobile_data():

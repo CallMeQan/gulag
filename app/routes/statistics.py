@@ -1,12 +1,11 @@
 from os import getenv
 from flask import Blueprint, render_template
-from flask import render_template, session
+from flask import render_template
 from flask_login import current_user, login_required
-from flask import jsonify
 
 import datetime
 
-from ..models import Personal_Stat, User, Run_History
+from ..models import User, Run_History
 from ..extensions import login_manager
 
 # Month mapping
@@ -44,14 +43,15 @@ def load_user(user_id):
 
 # Main
 @statistics_bp.route("/", methods = ["GET", "POST"])
+@login_required
 def show_graph():
-    print("\n\n\n======= Hello ============\n\n\n")
     user_id = current_user.user_id
 
     today = datetime.datetime.now()
     current_month = today.month
     current_year = today.year
     
+    # Get list of data to put into graph
     six_months_from_now = get_months(current_month = current_month, current_year = current_year)
     six_month_distances = []
     six_month_nums = []
@@ -61,8 +61,8 @@ def show_graph():
         six_month_distances.append(month_overall["total_distance"])
         six_month_nums.append(month_overall["total_run_num"])
         six_month_calories.append(month_overall["total_calories"])
-        print(six_month_distances, six_month_nums, six_month_calories)
 
+    # Get overall data to put into achievement
     month_overall = Run_History.get_overall_month(user_id = user_id, month = current_month, year = current_year)
     month_distance = round(month_overall["total_distance"], 1)
     month_longest_run = round(month_overall["longest_run"], 1)
@@ -76,7 +76,6 @@ def show_graph():
     total_run_num = overall["total_run_num"]
     success_rate = overall["success_rate"]
 
-    d_distance, d_longest, d_pace, d_calories = 1, 1, 1, 1
     return render_template('home/statistics.html', segment='index',
                            total_distance = total_distance, month_distance = month_distance,
                            longest_run = longest_run, month_longest_run = month_longest_run,
@@ -84,15 +83,3 @@ def show_graph():
                            total_run_num = total_run_num, success_rate = success_rate,
                            six_months_from_now = six_months_from_now, six_month_distances = six_month_distances,
                            six_month_nums = six_month_nums, six_month_calories = six_month_calories)
-
-    # Main
-@statistics_bp.route("/get", methods = ["GET", "POST"])
-def get():
-    print("/n/n/n======= Hello ============\n\n\n")
-    user_id = current_user.user_id
-    runs_today = Run_History.get_by_day(user_id = user_id, target_day = datetime.date.today())
-    runs_less_1_month = Run_History.get_distance_older_than_months(user_id = user_id, months = 1)
-    runs_today = [run.to_dict() for run in runs_today]
-
-    overall = Run_History.get_overall(user_id = user_id)
-    return jsonify(overall), 200
