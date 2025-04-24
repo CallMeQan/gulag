@@ -52,9 +52,6 @@
           </div>
 
           <div class="links">
-            <a href="{{ url_for('auth.register') }}" class="create"
-              >Create new account</a
-            >
             <a href="{{ url_for('auth.forgot_password') }}" class="forgot"
               >Forgot password?</a
             >
@@ -63,6 +60,12 @@
           <button type="submit" id="begin-running-btn" class="btn">
             Begin Running
           </button>
+
+          <div class="links">
+            <a href="{{ url_for('auth.register') }}" class="register"
+              >Don't have an account? Sign up</a
+            >
+          </div>
         </form>
       </div>
     </div>
