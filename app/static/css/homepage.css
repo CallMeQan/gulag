@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   overflow: hidden;
   height: 100%;
   touch-action: none; /* disables touch scrolling */
@@ -18,9 +19,7 @@ html, body {
   padding-right: 5%;
   padding-top: 7%;
   z-index: 2;
-  
 }
-
 
 .homepage-image {
   position: absolute;
@@ -102,7 +101,7 @@ html, body {
 
 .setgoal-container,
 .statistic-container {
-  display: flex;;
+  display: flex;
   font-size: 24px;
   font-family: "Inknut Antiqua";
   white-space: nowrap; /* Prevent text wrapping */
