@@ -1,16 +1,32 @@
 {% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
 head %} {{ super() }}
 <!-- Link to the CSS Home page -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}" />
-<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/homepage.css') }}"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap"
+  rel="stylesheet"
+/>
 
 {% endblock %} {% block content %}
 
 <!-- Main content of the about us page -->
 <div class="main_background">
-  <img src="{{ url_for('static', filename='images/home_background.png') }}" alt="Homepage Background" class="homepage-image" />
+  <img
+    src="{{ url_for('static', filename='images/home_background.png') }}"
+    alt="Homepage Background"
+    class="homepage-image"
+  />
 
   <div class="main">
     <!-- The content -->
@@ -22,13 +38,19 @@ head %} {{ super() }}
 
       <!-- Start running butoon -->
       <div class="start-button">
-        <a href="{{ url_for('dashboard.map') }}" class="red-button">Start Running</a>
+        <a href="{{ url_for('dashboard.map') }}" class="red-button"
+          >Start Running</a
+        >
       </div>
 
       <!-- The bottom link -->
       <div class="bottom-links">
-        <a href="{{ url_for('home.set_goal') }}" class="setgoal-container">Set your goal</a>
-        <a href="{{ url_for('statistics.graph') }}" class="statistic-container">My escape logs</a>
+        <a href="{{ url_for('home.set_goal') }}" class="setgoal-container"
+          >Set your goal</a
+        >
+        <a href="{{ url_for('statistics.graph') }}" class="statistic-container"
+          >My escape logs</a
+        >
       </div>
     </div>
   </div>
