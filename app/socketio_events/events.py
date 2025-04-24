@@ -14,7 +14,7 @@ def joined(message):
     """
     Join a room based on the user_id or hashed timestamp.
     """
-    user_id = "user"]["user_id"]
+    user_id = session["user"]["user_id"]
     print(user_id)
 
     if user_id:
