@@ -10,8 +10,9 @@
   display: flex;
   min-height: 85vh;
   background-color: #2656bd;
+  flex-wrap: wrap;
+  min-height: auto;
 }
-
 /* left section  */ /*main*/
 .left {
   background-color: #8a0b16;
@@ -22,6 +23,7 @@
   height: 100%;
   width: 100%;
   z-index: 1;
+  object-fit: cover;
 }
 
 .left::after {
@@ -55,12 +57,14 @@
   font-family: "Newsreader";
   position: absolute;
   left: -8%;
+  
 }
 
 .general_info {
   display: flex;
   flex: 0 0 40%;
   flex-direction: column;
+  margin-top:-10%
 }
 
 /* word editing */
@@ -80,15 +84,7 @@ h1 {
 
 /* -------------------------------------------------- */
 /* bottom container */
-.personal-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Chia thành 2 cột bằng nhau */
-  grid-template-rows: repeat(3, minmax(300px, auto));
-  place-items: center;
-  gap: 20px; /* Khoảng cách giữa các items */
-  padding-top: 4%;
-  background-color: #8a0b16;
-}
+
 
 .card {
   display: flex;
@@ -147,4 +143,56 @@ h1 {
 .card.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.personal-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+  padding: 4%;
+  background-color: #8a0b16;
+}
+
+@media (max-width: 768px) {
+  .personal-container {
+    grid-template-columns: 1fr; /* Single column on tablets and phones */
+  }
+
+  .card {
+    flex-direction: column;
+    width: 90%;
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .info {
+    padding: 5%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .about_us_text {
+    font-size: 48px;
+    left: 5%;
+    position: static;
+    padding: 10px;
+    margin-top: -40%;
+  }
+
+  .general_info p{
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 18px;
+    margin-top: -35%;
+  }
+
+  h1 {
+    font-size: 64px;
+  }
 }
