@@ -158,4 +158,4 @@ def logout():
     logout_user()
     session.pop('user', None)
     session.clear()
-    return redirect(url_for("login"))
+    return redirect(url_for("auth.login"))

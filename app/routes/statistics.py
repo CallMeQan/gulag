@@ -42,9 +42,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # Main
-@statistics_bp.route("/", methods = ["GET", "POST"])
+@statistics_bp.route("/graph", methods = ["GET", "POST"])
 @login_required
-def show_graph():
+def graph():
     user_id = current_user.user_id
 
     today = datetime.datetime.now()
@@ -76,6 +76,7 @@ def show_graph():
     total_run_num = overall["total_run_num"]
     success_rate = overall["success_rate"]
 
+    print(f"\n\n\n\n{six_month_distances}\n\n\n")
     return render_template('home/statistics.html', segment='index',
                            total_distance = total_distance, month_distance = month_distance,
                            longest_run = longest_run, month_longest_run = month_longest_run,

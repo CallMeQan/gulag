@@ -9,10 +9,6 @@ from ..models import User
 home_bp = Blueprint('home', __name__)
 
 @home_bp.route('/')
-def index():
-    return render_template('home/index.html')
-
-@home_bp.route('/intro')
 def intro():
     return render_template('home/intro.html')
 

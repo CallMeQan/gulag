@@ -29,10 +29,8 @@ head %} {{ super() }}
 
       <!-- The bottom link -->
       <div class="bottom-links">
-        <a href="{{ url_for('home.set_goal') }}" class="setgoal-container"
-          >Set your goal</a
-        >
-        <a href="{{ url_for('home.statistics') }}" class="statistic-container">My escape logs</a>
+        <a href="{{ url_for('home.set_goal') }}" class="setgoal-container">Set your goal</a>
+        <a href="{{ url_for('statistics.graph') }}" class="statistic-container">My escape logs</a>
       </div>
     </div>
   </div>
