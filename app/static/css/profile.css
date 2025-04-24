@@ -204,3 +204,94 @@
 .btn:hover {
   background-color: #444444; /* Darker on hover */
 }
+
+@media (max-width: 1024px) {
+  .profile-container {
+    width: 50%;
+  }
+
+  .profile_heading {
+    font-size: 150%;
+  }
+
+  .age-label,
+  .height-label,
+  .weight-label,
+  .height-unit,
+  .weight-unit {
+    font-size: 140%;
+  }
+
+  .age-value,
+  .height-value,
+  .weight-value {
+    font-size: 170%;
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    width: 80%;
+    height: auto;
+  }
+
+  .profile_heading {
+    font-size: 130%;
+    text-align: center;
+  }
+
+  .age-label,
+  .height-label,
+  .weight-label,
+  .height-unit,
+  .weight-unit {
+    font-size: 120%;
+  }
+
+  .age-value,
+  .height-value,
+  .weight-value {
+    font-size: 150%;
+    width: 90%;
+  }
+
+  .btn {
+    width: 100%;
+    margin: 20px auto 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .profile-container {
+    width: 100%;
+    padding: 5%;
+  }
+
+  .age-label,
+  .height-label,
+  .weight-label {
+    margin-left: 0;
+  }
+
+  .age-value,
+  .height-value,
+  .weight-value {
+    margin-left: 0;
+  }
+
+  .height-unit,
+  .weight-unit {
+    margin-left: 5%;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 90%;
+  }
+}
