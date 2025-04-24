@@ -126,6 +126,55 @@ class Run_History(db.Model):
             "total_time": self.total_time.total_seconds(),
             "pace": self.pace,
         }
+    
+    @classmethod
+    def get_overall(self, user_id: int) -> dict:
+        """
+        Return a dict of overall statistics of user's: total distance, longest_run, avg_pace, total_calories
+        """
+        # run_count = db.session.query(self.run_id).count()
+        distance = db.session.query(func.sum(Run_History.total_distance)).filter(Run_History.user_id == user_id).scalar() or 0.0
+        longest_run = db.session.query(func.max(Run_History.total_distance)).filter(Run_History.user_id == user_id).scalar() or 0.0
+        fastest_pace = db.session.query(func.max(Run_History.pace)).filter(Run_History.user_id == user_id).scalar() or 0.0
+
+        total_run_num = db.session.query(Run_History.run_id).filter(Run_History.user_id == user_id).count() or 0.0
+        try:
+            success_rate = (db.session.query(func.sum(Run_History.finish_goal)).filter(Run_History.user_id == user_id).scalar() or 0.0) * 100 / total_run_num
+            success_rate = round(success_rate, 0)
+        except ZeroDivisionError:
+            success_rate = "null"
+
+        return {"total_distance": distance, "longest_run": longest_run, "fastest_pace": fastest_pace,
+                "total_run_num": total_run_num, "success_rate": success_rate}
+
+    @classmethod
+    def get_overall_month(self, user_id: int, year: int, month: int) -> list["Run_History"]:
+        """
+        List Run_History within the year and month of the timestart
+        """
+        distance = db.session.query(func.sum(Run_History.total_distance)).filter(
+            and_(Run_History.user_id == user_id,
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month)).scalar() or 0.0
+        longest_run = db.session.query(func.max(Run_History.total_distance)).filter(
+            and_(Run_History.user_id == user_id,
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month)).scalar() or 0.0
+        fastest_pace = db.session.query(func.max(Run_History.pace)).filter(
+            and_(Run_History.user_id == user_id,
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month)).scalar() or 0.0
+        total_run_num = db.session.query(Run_History.run_id).filter(
+            and_(Run_History.user_id == user_id,
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month)).count() or 0.0
+        total_calories = db.session.query(func.max(Run_History.calorie)).filter(
+            and_(Run_History.user_id == user_id,
+                func.extract('year', self.start_time) == year,
+                func.extract('month', self.start_time) == month)).scalar() or 0.0
+
+        return {"total_distance": distance, "longest_run": longest_run, "fastest_pace": fastest_pace,
+                "total_run_num": total_run_num, "total_calories": total_calories}
 
     @classmethod
     def get_by_day(self, user_id: int, target_day: datetime.date) -> list["Run_History"]:
@@ -158,13 +207,13 @@ class Run_History(db.Model):
         )
 
     @classmethod
-    def get_by_week(self, user_id: int, some_date: datetime.date) -> list["Run"]:
+    def get_by_week(self, user_id: int, some_date: datetime.date) -> list["Run_History"]:
         """
         List Run_History of the week with the date.
         Week starts from Monday
         """
         # Tính ngày thứ Hai của tuần
-        week_start = some_date - datetime.timedelta(days=some_date.weekday())
+        week_start = some_date - datetime.timedelta(days = some_date.weekday())
         # Tuần kết thúc vào Chủ Nhật cùng tuần
         week_end = week_start + datetime.timedelta(days=6)
         return (
@@ -179,32 +228,46 @@ class Run_History(db.Model):
         )
     
     @classmethod
-    def get_older_than_months(self, months: int = 1) -> list["Run_History"]:
+    def get_distance_older_than_months(self, user_id: int, months: int = 1) -> list["Run_History"]:
         """
         Return a list of record with start_time more than 'months'.
         """
         # Calculate the cuttoff date
         cutoff_date = datetime.datetime.now() - datetime.timedelta(days = 30 * months)
-        return (
+        data = (
             db.session.query(self)
-            .filter(self.start_time < cutoff_date)
+            .filter(and_(self.start_time < cutoff_date,
+                         self.user_id == user_id
+                         ))
             .order_by(self.start_time)
             .all()
         )
+
+        data = [{"start_time": run.start_time,
+                 "total_distance": run.total_distance}
+                 for run in data]
+        return data
     
     @classmethod
-    def get_newer_than_months(self, months: int = 1) -> list["Run_History"]:
+    def get_distance_older_than_months(self, user_id: int, months: int = 1) -> list["dict"]:
         """
-        Return a list of record with start_time less than 'months'.
+        Return a LIST of DICT record with start_time less than 'months'.
         """
         # Calculate the cuttoff date
         cutoff_date = datetime.datetime.now() - datetime.timedelta(days = 30 * months)
-        return (
-            db.session.query(self)
-            .filter(self.start_time > cutoff_date)
+        data = (
+            db.session.query(self.start_time, self.total_distance)
+            .filter(and_(self.start_time > cutoff_date,
+                         self.user_id == user_id
+                         ))
             .order_by(self.start_time)
             .all()
         )
+
+        data = [{"start_time": run.start_time,
+                 "total_distance": run.total_distance}
+                 for run in data]
+        return data
     
 class Forgot_Password(db.Model):
     __tablename__ = "forgot_password"
