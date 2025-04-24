@@ -52,6 +52,7 @@
 }
 
 .about_us_text {
+  font-family: "Newsreader";
   position: absolute;
   left: -8%;
 }
@@ -126,6 +127,10 @@ h1 {
   color: #7b0d0d;
 }
 
+.e-mail,
+.introduce {
+  margin-top: 1.75%;
+}
 .introduce {
   font-size: 20px;
   font-style: italic;

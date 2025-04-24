@@ -13,17 +13,44 @@ head %} {{ super() }}
   href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
   rel="stylesheet"
 />
+<link
+  href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap"
+  rel="stylesheet"
+/>
+
 {% endblock %} {% block content %}
 
 <!-- Main content of the about us page -->
-<div class="main">
-  <a href="{{ url_for('home.set_goal') }}" class="setgoal-container"
-    >Set Goal</a
-  >
+<div class="main_background">
+  <img
+    src="{{ url_for('static', filename='images/home_background.png') }}"
+    alt="Homepage Background"
+    class="homepage-image"
+  />
 
-  <a href="{{ url_for('dashboard.map') }}" class="red-button"> Start Running</a>
+  <div class="main">
+    <!-- The content -->
+    <div class="content-container">
+      <!-- Heading text -->
+      <div class="headline-text">
+        <h1>Your freedom<br />starts with<br />a step.</h1>
+      </div>
 
-  <a class="statistic-container">Statistic</a>
-  <!--need to change url to dashboard-->
+      <!-- Start running butoon -->
+      <div class="start-button">
+        <a href="{{ url_for('dashboard.map') }}" class="red-button"
+          >Start Running</a
+        >
+      </div>
+
+      <!-- The bottom link -->
+      <div class="bottom-links">
+        <a href="{{ url_for('home.set_goal') }}" class="setgoal-container"
+          >Set your goal</a
+        >
+        <a class="statistic-container">My escape logs</a>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

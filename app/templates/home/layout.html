@@ -45,11 +45,53 @@
               alt="Logo"
             />
           </div>
+          <div class="gradient-text">| RUN FOR YOUR LIFE</div>
           <ul class="nav-links">
             <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
             <li><a href="{{ url_for('home.about') }}">About Us</a></li>
             <li><a href="{{ url_for('home.profile') }}">Profile</a></li>
+            <li><a role="button" onclick="openModal()">Log out</a></li>
           </ul>
+
+          <!-- Modal -->
+          <div id="logoutModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-icon">
+                <img
+                  src="{{ url_for('static', filename='images/logout.png') }}"
+                  alt="Logout Icon"
+                />
+              </div>
+              <h2>Oh no! You're leaving...</h2>
+              <h2>Are you sure?</h2>
+              <div class="modal-buttons">
+                <button class="btn_modal btn-cancel" onclick="closeModal()">
+                  Nah, Just Kidding
+                </button>
+                <button class="btn_modal btn-danger" onclick="confirmLogout()">
+                  Yes, Log Me Out
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logout Success Modal -->
+          <div id="logoutSuccessModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-icon">
+                <img
+                  src="{{ url_for('static', filename='images/like.png') }}"
+                  alt="Logout Icon"
+                />
+              </div>
+              <h2>You’ve successfully<br />Logged out.</h2>
+              <div class="modal-buttons">
+                <button class="btn_modal btn-danger" onclick="goToLogin()">
+                  Back to Login
+                </button>
+              </div>
+            </div>
+          </div>
         </nav>
       </div>
       <div class="main_background">
@@ -62,6 +104,7 @@
     <!-- place for JS scripts -->
     <!-- Hammer for page transition-->
     <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/logout.js') }}"></script>
     {% endblock %}
   </body>
 </html>

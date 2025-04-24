@@ -1,63 +1,109 @@
 .main_background {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 /* main components */
 .main {
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25%;
+  flex: 0 0 50%;
+  justify-content: flex-end;
+  padding-right: 5%;
+  padding-top: 7%;
+  z-index: 2;
+}
+
+.homepage-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 90vh;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 40px;
+  color: white;
+  font-family: "Inknut Antiqua";
+}
+
+.headline-text h1 {
+  font-family: "Newsreader";
+  font-weight: 400;
+  font-size: 75px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: #ffffff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* tạo drop shadow nhẹ như Figma */
+}
+
+.bottom-links {
+  display: flex;
+  gap: 300px;
+  margin-top: auto;
+  padding-bottom: 5%;
 }
 
 .red-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff; /* Dark Red */
-  color: #8a0b16; /* White text */
-  height: 250px;
-  padding: 0 40px;
-  font-size: 40px;
-  white-space: nowrap; /* Prevent text wrapping */
-  font-family: "Inknut Antiqua"; /* Match your font */
-  border: none; /* Remove default border */
-  border-radius: 90px; /* Makes it rounded */
+  background-color: #8a0b16; /* Màu đỏ đậm */
+  color: #ffffff; /* Màu chữ trắng */
+  padding: 3px 74px; /* Gọn gàng hơn */
+  font-size: 20px;
+  font-family: "Inknut Antiqua";
+  border: none;
+  border-radius: 8px; /* Bo nhẹ hơn */
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  text-decoration: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25); /* Nhẹ hơn */
 }
 
 /* Hover Effect */
-
-.red-button:active {
-  background-color: #600000; /* Even darker red */
-  transform: scale(0.99); /* Shrinks a little */
+.red-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.2),
+    0 16px 32px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(
+    0deg,
+    rgba(165, 15, 40, 1) 0%,
+    rgba(180, 25, 50, 1) 100%
+  );
 }
 
-.setgoal-container {
+/* Active: đẩy xuống, giống nhấn thật */
+.red-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    0deg,
+    rgba(100, 0, 10, 1) 0%,
+    rgba(120, 5, 15, 1) 100%
+  );
+}
+
+.setgoal-container,
+.statistic-container {
   display: flex;
 
-  font-size: 40px;
+  font-size: 23px;
   font-family: "Inknut Antiqua";
   white-space: nowrap; /* Prevent text wrapping */
 
   color: white; /* Ensure visibility */
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 8px;
+  transition: color 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.statistic-container {
-  display: flex;
-
-  font-size: 40px;
-  font-family: "Inknut Antiqua";
-  white-space: nowrap; /* Prevent text wrapping */
-
-  color: white;
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 8px;
+.setgoal-container:hover,
+.statistic-container:hover {
+  color: #a50f28; /* màu đỏ sáng hơn */
+  transform: scale(1.05); /* phóng to 5% */
 }

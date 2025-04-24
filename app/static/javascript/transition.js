@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Đợi animation, sau đó chuyển trang
         setTimeout(() => {
           window.location.href = href;
-        }, 2000); // khớp với thời gian trong CSS
+        }, 1000); // khớp với thời gian trong CSS
       }
     });
   });
