@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
         user = db.session.query(self.user_id, self.password).filter(
             or_(self.email == email)
         ).first()
-        return True if user else False
+        return user if user else None
     
     @classmethod
     def update_password(self, email: str, new_password: str) -> None:
