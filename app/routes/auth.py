@@ -87,11 +87,15 @@ def login():
         # Error handling
         if "" in [username, password]:
             return jsonify({"error": "Please input all the essential fields"}), 404
+        right_password = bcrypt.check_password_hash(user.password, password)
         
         user = User.query.filter_by(username = username).first()
-        repeat_below_5 = User_Login_Check.record_attempt(username = username)
 
-        if repeat_below_5 and user and bcrypt.check_password_hash(user.password, password):
+        repeat_below_5 = True
+        if not right_password:
+            repeat_below_5 = User_Login_Check.record_attempt(username = username)
+
+        if repeat_below_5 and user:
             # Save user data to session
             session["user"] = {
                 'user_id': user.user_id,
