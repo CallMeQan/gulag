@@ -28,7 +28,7 @@ function confirmLogout() {
 
 // Chuyển về trang login
 function goToLogin() {
-  window.location.href = "/auth/login";
+  window.location.href = "/auth/logout";
 }
 
 // Đóng modal khi click ra ngoài

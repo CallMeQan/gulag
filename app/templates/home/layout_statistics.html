@@ -1,0 +1,138 @@
+<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+
+
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-boilerplate-dashboard-argon">
+  
+  <title>
+    {% block title %}{% endblock %}
+  </title>
+
+  <!-- Favicon - loaded as static -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/img/brand/favicon.png') }}" type="image/png"/>
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/nucleo/css/nucleo.css') }}" type="text/css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css"/>
+  <!-- Page plugins -->
+  <!-- Argon CSS -->
+
+  <!-- Specific CSS goes HERE -->
+  {% block stylesheets %}{% endblock stylesheets %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/argon.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/transition.css') }}" />
+</head>
+
+<body>
+  <!-- Background wrapper and main content -->
+  <div class="background">
+    <!-- Hammer Transition Overlay -->
+    <div class="transition-overlay" id="transition-overlay">
+      <img
+        src="{{ url_for('static', filename='images/hammer.png') }}"
+        alt="Hammer"
+        class="hammer"
+      />
+
+      <!-- Loading text Gulag-->
+      <div class="loading-text" id="loading-text">
+        <span>G</span><span>u</span><span>l</span><span>a</span><span>g</span>
+        <span>&nbsp;</span>
+        <span>l</span><span>o</span><span>a</span><span>d</span><span>i</span
+        ><span>n</span><span>g</span><span>.</span><span>.</span
+        ><span>.</span>
+      </div>
+    </div>
+    <!-- Navbar and main content wrapper -->
+    <div class="navbar_background">
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" />
+        </div>
+        <div class="gradient-text">| RUN FOR YOUR LIFE</div>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+          <li><a href="{{ url_for('home.about') }}">About Us</a></li>
+          <li><a href="{{ url_for('home.profile') }}">Profile</a></li>
+          <li><a role="button" onclick="openModal()">Log out</a></li>
+        </ul>
+
+        <!-- Modal -->
+        <div id="logoutModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-icon">
+              <img
+                src="{{ url_for('static', filename='images/logout.png') }}"
+                alt="Logout Icon"
+              />
+            </div>
+            <h2>Oh no! You're leaving...</h2>
+            <h2>Are you sure?</h2>
+            <div class="modal-buttons">
+              <button class="btn_modal btn-cancel" onclick="closeModal()">
+                Nah, Just Kidding
+              </button>
+              <button class="btn_modal btn-danger" onclick="confirmLogout()">
+                Yes, Log Me Out
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Success Modal -->
+        <div id="logoutSuccessModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-icon">
+              <img
+                src="{{ url_for('static', filename='images/like.png') }}"
+                alt="Logout Icon"
+              />
+            </div>
+            <h2>You’ve successfully<br />Logged out.</h2>
+            <div class="modal-buttons">
+              <button class="btn_modal btn-danger" onclick="goToLogin()">
+                Back to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="main_background">
+        <!-- Main content goes here -->
+        {% block content %}
+        {% endblock %}
+    </div>
+  </div>
+
+  {% include "includes/scripts.html" %}
+
+  <!-- Specific JS goes HERE --> 
+  <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
+  {% block javascripts %}{% endblock javascripts %}
+  
+
+</body>
+
+</html>

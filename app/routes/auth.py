@@ -1,7 +1,7 @@
 from os import getenv
 from flask import Blueprint, jsonify, render_template
 from flask import render_template, redirect, url_for, session, request
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 import time, hmac, hashlib
 
 import datetime
@@ -151,3 +151,11 @@ def mobile_check():
             return jsonify({"hashed_timestamp": hashed_timestamp, "user_id": user.user_id}), 200
         return jsonify({"error": "Invalid email or password"}), 401
     return jsonify({"error": "Invalid request method"}), 405
+
+@auth_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    session.pop('user', None)
+    session.clear()
+    return redirect(url_for("auth.login"))

@@ -1,0 +1,183 @@
+@media (max-width: 847px) {
+  .background {
+    height: auto !important;
+  }
+}
+
+.main_background {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  height: auto;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3rem;
+}
+
+/* Cards */
+.cards {
+  flex: 0 0 40%;
+
+  display: flex;
+  width: 100%;
+}
+
+/* Graphs */
+.graphs {
+  flex: 0 0 60%;
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.graphs > * {
+  width: 80%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10%;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  gap: 1rem;
+}
+
+.row col-xl-8 {
+  width: 30%;
+  height: 30%;
+}
+
+.row col-xl-4 {
+  width: 30%;
+  height: 30%;
+}
+
+
+
+/* GLOBAL */
+/* global for dashboard, user pages, etc. */
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden; /* Chặn cuộn ngang trên toàn bộ trang */
+}
+
+/* nav bar */
+.navbar {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 15.37%;
+  background-color: #ffffff;
+  align-items: center;
+  z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
+  padding-left: 5%;
+  overflow: hidden;
+}
+
+.navbar_background {
+  display: flex;
+  flex: 0 0 15.12%;
+}
+
+.main_background {
+  flex: 1;
+}
+
+.logo img {
+  height: 10vh;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 5vw;
+  padding-left: 5%;
+  font-family: "Inknut Antiqua";
+  text-align: center;
+  justify-content: space-between;
+}
+
+.icon {
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+.icon img {
+  height: 10vh;
+}
+
+/* -------------------------------------------------------------------- */
+/* Hover Animation for Nav-link */
+
+.navbar_link {
+  text-decoration: none;
+  font-size: 48px;
+  color: #8a0b16;
+  transition: color 0.3s ease-in-out;
+  position: relative;
+}
+
+/* Tạo nền hình vuông ẩn dưới chữ */
+.navbar_link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0%;
+  height: 0%;
+  background-color: rgba(128, 0, 0, 0.2); /* Màu nền */
+  transition: all 0.3s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Khi hover, nền mở rộng ra 100% */
+.navbar_link:hover {
+  color: #8a0b16;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar_link:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Other things */
+.no-underline {
+  text-decoration: none;
+}
+
+.text-light {
+  color: aliceblue;
+}
+
+h3 {
+  color: white; 
+}
+
+.text-white {
+  color: #fff !important; }
+
+.mb-0 {
+  font-weight: bold;
+}

@@ -4,10 +4,13 @@ from flask_socketio import join_room, emit
 
 import polars as pls
 
+import datetime
+
 from .. import socketio
 
 from ..modules.data_module import process_data, calculate_data
-from ..models import User
+from ..models import User, Personal_Stat, Run_History
+from ..extensions import db
 
 @socketio.on("joined", namespace = getenv("SOCKETIO_PATH")) # SOCKETIO_PATH can be "/data_room"
 def joined(message):
@@ -34,9 +37,16 @@ def interval_signal_to_server(message):
     user_id = session["user"]["user_id"]
     time_start = message["time_start"]
     
-    # TODO: Add a database for weight and height of people => get weight and stride length from that
-    weight = 65 # kg
-    stride_length = 0.6 # meter
+    # Add a database for weight and height of people => get weight and stride length from that
+    weight = Personal_Stat.get_weight(user_id = user_id)
+    height = Personal_Stat.get_height(user_id = user_id)
+
+    if weight is None or height is None:
+        weight = 65 # kg
+        height = 170 # cm
+    
+    height = height / 100
+    step_length = height * 0.41 # Wikihow: Measure step length from height
 
     run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.user_id = {user_id} AND sensor_data.start_time = {time_start};"
     # run_session_query = f"SELECT sensor_data.created_at, ST_X(sensor_data.location) AS latitude, ST_Y(sensor_data.location) AS longitude FROM sensor_data WHERE sensor_data.start_time = {time_start};"
@@ -75,7 +85,7 @@ def interval_signal_to_server(message):
 
     # Converting and rounding
     calorie = round(calorie, 1)
-    step_num = int(total_distance / stride_length) # steps
+    step_num = int(total_distance / step_length) # steps
     total_distance = round(total_distance / 1000, 1) # km
     total_time = round(total_time, 1) # seconds
     try:
@@ -95,7 +105,18 @@ def interval_signal_to_server(message):
         namespace = getenv("SOCKETIO_PATH"))
     
     if total_distance >= User.get_goal(user_id = user_id):
-        emit("finish_goal",
-            {},
+        time_start = datetime.datetime.fromtimestamp(time_start)
+        total_time = datetime.timedelta(seconds = total_time) # Seconds
+        
+        run = Run_History(user_id = user_id, start_time = time_start, finish_goal = 1,
+                          calorie = calorie, step = step_num, total_distance = total_distance,
+                          total_time = total_time, pace = pace)
+        db.session.add(run)
+        db.session.commit()
+
+        print("\n\n\nFinished running\n\n\n")
+
+        emit("finish_running",
+            {"message": "success"},
             to = user_id,
             namespace = getenv("SOCKETIO_PATH"))
