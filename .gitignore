@@ -1,7 +1,6 @@
 # Data
 **/data/
 uploads/
-Images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
