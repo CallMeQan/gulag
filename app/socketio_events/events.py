@@ -105,6 +105,7 @@ def interval_signal_to_server(message):
         namespace = getenv("SOCKETIO_PATH"))
     
     if total_distance >= User.get_goal(user_id = user_id):
+        print(lz_frame)
         time_start = datetime.datetime.fromtimestamp(time_start)
         total_time = datetime.timedelta(seconds = total_time) # Seconds
         
