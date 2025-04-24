@@ -33,9 +33,9 @@ class User(db.Model, UserMixin):
         """
         Check if the hashed email exist.
         """
-        user = db.session.query(self.user_id).filter(
+        user = db.session.query(self.user_id, self.password).filter(
             or_(self.email == email)
-        ).first() 
+        ).first()
         return True if user else False
     
     @classmethod

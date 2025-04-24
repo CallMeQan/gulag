@@ -62,11 +62,11 @@ def register():
 
         # Check if confirm password is correct
         if password != password_confirm:
-            return render_template("auth/register-not-confirmed.html")
+            return jsonify({"error": "The password and confirm must be the same"}), 404
         
         # Check if username or email is duplicated
         if User.is_duplicate(username = username, email = hashed_email):
-            return render_template("auth/register-duplicated.html")
+            return jsonify({"error": "The username or email is duplicated"}), 404
 
         new_user = User(username = username, email = hashed_email, password = hashed_password, name = username, admin = False, goal = 1)
         db.session.add(new_user)
@@ -79,8 +79,6 @@ def register():
 def login():
     # Get user to homepage if already login
     user = session.get("user")
-    if user is not None:
-        return redirect(url_for("home.homepage"))
     
     if request.method == "POST":
         username = request.form["username"]
@@ -121,8 +119,9 @@ def forgot_password():
         hashed_email = generate_email_hash(email)
 
         # Check if email is valid
+        print(f"\n\n\n{email}\n\n\n")
         if not User.email_exist(email = hashed_email):
-            return render_template("auth/register.html")
+            return render_template("auth/email_not_found.html")
         
         hashed_timestamp = generate_timestamp_token()
 
@@ -135,10 +134,8 @@ def forgot_password():
         db.session.commit()
 
         # Send email (not hashed)
-        print(f"\n\n\n\n===================={email}=================\n\n\n\n")
-        send_email(restore_link = reset_link, client_email = email)
-        return f"Reset link sent to your email: {email}"
-    
+        # send_email(restore_link = reset_link, client_email = email)
+        return render_template("auth/email_sent.html", email = email)
     return render_template("auth/forgot_password.html")
 
 @auth_bp.route("/recover-password?a=<token>", methods = ["GET", "POST"])

@@ -137,9 +137,9 @@
     </div>
 
     <div class="message" id="fail_message" style="display: none;">
-        <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
-        <p class="congrats_text1">Congrats!</p>
-        <p class="congrats_text2">You have escaped from Gulag.</p>
+        <i class="fas fa-skull fa2"></i> <!-- Replaced the quote-left with a star -->
+        <p class="congrats_text1">Oh no!</p>
+        <p class="congrats_text2">It seems like you are cooked ...</p>
         <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
     </div>
 </div>
@@ -291,7 +291,7 @@
             socket_server.on("finish_running", function (goal_status) {
                 if(!haveDone){
                     if(goal_status.message == "success"){
-                        showSuccess();
+                        showFail();
                         haveDone = true;
                     }
                     else{
