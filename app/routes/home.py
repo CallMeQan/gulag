@@ -20,10 +20,6 @@ def homepage():
 def about():
     return render_template('home/about_us.html')
 
-@home_bp.route('/intro')
-def intro():
-    return render_template('home/intro.html')
-
 @home_bp.route('/set-goal', methods = ["GET", "POST"])
 def set_goal():
     if request.method == "POST":

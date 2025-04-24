@@ -1,54 +1,98 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Đăng ký</title>
-        <!-- Sử dụng cùng file CSS của trang login -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký</title>
+    <!-- Sử dụng cùng file CSS của trang login -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/register.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-    <body>
-        <div class="container">
-            <!-- Phần bên trái: logo -->
-            <div class="left">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" />
+  <body>
+    <div class="container">
+      <!-- Phần bên trái: logo -->
+      <div class="left">
+        <img
+          src="{{ url_for('static', filename='images/login_logo.png') }}"
+          alt="Logo"
+          class="logo"
+        />
+      </div>
+
+      <!-- Phần bên phải: form đăng nhập -->
+      <div class="right">
+        <div class="register-container">
+          <div class="pulse-dot"></div>
+
+          <form action="{{ url_for('auth.register') }}" method="post">
+            <h1>Register</h1>
+            <div class="form-all">
+              <div class="form-group">
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder=" "
+                  required
+                />
+                <label for="username" class="username-lable">Username</label>
+              </div>
+
+              <div class="form-group">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder=" "
+                  required
+                />
+                <label for="email">Email</label>
+              </div>
+
+              <div class="form-group">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder=" "
+                  required
+                />
+                <label for="password">Password</label>
+              </div>
+
+              <div class="form-group">
+                <input
+                  type="password"
+                  id="password_confirm"
+                  name="password_confirm"
+                  placeholder=" "
+                  required
+                />
+                <label for="password_confirm">Confirm your password</label>
+              </div>
             </div>
 
-            <!-- Phần bên phải: form đăng nhập -->
-            <div class="right">
-                <div class="register-container">
-                    <form action="{{ url_for('auth.register') }}" method="post">
-                        <h1>Register</h1>
+            <button type="submit" class="btn">Submit</button>
 
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Insert username" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Insert email" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Insert password" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="confirm_password">Confirm your Password</label>
-                            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirm password" />
-                        </div>
-
-                        <div class="links">
-                            <a href="{{ url_for('auth.login') }}" class="create">Already got an account?</a>
-                        </div>
-
-                        <button type="submit" class="btn">Register</button>
-                    </form>
-                </div>
+            <div class="links">
+              <a href="{{ url_for('auth.login') }}" class="sign-in"
+                >Already got an account? Sign in</a
+              >
             </div>
+          </form>
         </div>
-    </body>
+      </div>
+    </div>
+  </body>
 </html>

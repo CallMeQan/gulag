@@ -1,218 +1,303 @@
 /* Reset cơ bản */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
-    overflow: hidden;
-    font-family: "Vollkorn", serif;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Vollkorn", serif;
 }
 
 .container {
-    display: flex;
-    height: 100%;
-    background: url("../images/background.png") no-repeat center center/cover;
+  display: flex;
+  height: 100%;
+  background: url("../images/background.png") no-repeat center center/cover;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Phần bên trái chứa logo */
 .left {
-    flex: 0 0 47.50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 26%;
 }
 
 .logo {
-    max-width: 60%;
-    height: auto;
+  max-width: 60%;
+  height: auto;
+  margin-right: 80%;
 }
 
 /* Phần bên phải chứa form đăng nhập */
 .right {
-    flex: 0 0 52.50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 2%;
+  width: 28%;
+  height: 78%;
+  border-radius: 12px;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 8px 5px 0 #646464;
+  border: 5px solid #000000;
+  box-sizing: border-box;
 }
 
 /* Style cho form đăng nhập */
 
 .register-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60%;
-    height: auto;
-    /* margin-left: 20%; */
+  position: relative;
+}
+
+.pulse-dot {
+  width: 20px;
+  height: 20px;
+  background-color: #8a0b16;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  margin-top: 20%;
+  top: 3%;
+  left: 3%;
+}
+
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: #8a0b16;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s ease-out infinite;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
 }
 
 form {
-    padding: 2rem;
-    border-radius: 8px;
-    width: 105%;
-    max-width: 500px;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 112%;
+  max-width: 500px;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+  position: relative;
+  margin-top: 2rem;
+  width: 100%;
 }
 
 form h1 {
-    color: white;
-    font-family: "Inknut Antiqua";
-    text-align: center;
-    margin-bottom: 7%;
-    font-size: 3rem;
-
+  color: #8a0b16;
+  font-family: "Inknut Antiqua";
+  font-size: 320%;
+  text-align: center;
+  margin-top: -30%;
+  margin-right: 5%;
+  font-weight: bold;
 }
 
-label {
-    color: white;
-    font-family: "Inknut Antiqua";
-    font-size: 1.5rem;
-    /* Tăng kích thước chữ */
-    margin-bottom: 0.5rem;
-    display: block;
+.form-all {
+  margin-top: -10%;
+  margin-left: 5%;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 100%;
-    font-family: "Garamond";
-    padding: 0.5rem;
-    font-size: 1.2rem;
-    border: 1px solid #ffffff;
-    border-radius: 4px;
-    background-color: #ffffff;
-    outline: none;
-    color: #000;
+  width: 115%;
+  margin-left: -17%;
+  margin-bottom: -15%;
+  font-family: "serif";
+  padding: 5%;
+  padding-bottom: 0.5%;
+  font-size: 135%;
+  border-radius: 10px;
+  background-color: #ffffff;
+  outline: none;
+  color: #000;
+  height: 58px;
+  border: 3px solid #8a0b16;
 }
 
-.links {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    color: white;
+.form-group label {
+  position: absolute;
+  left: -10%;
+  top: 15%;
+  color: #000;
+  font-size: 110%;
+  font-family: "Inknut Antiqua";
+  pointer-events: none;
+  transition: all 0.2s ease-out;
+  padding: 0 0px;
 }
 
-.links a {
-    text-decoration: underline;
-    color: white;
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -6%;
+  left: -12%;
+  font-size: 80%;
+  color: #000;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover {
+  border-color: #c56b70;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #a8434c;
+  box-shadow: 0 0 5px rgba(168, 67, 76, 0.5);
+}
+
+.sign-in {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: "Inknut Antiqua";
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+  color: #4d3033;
+  text-decoration: none;
+  margin-left: -6%;
 }
 
 .btn {
-    margin-top: 5%;
-    width: 100%;
-    padding: 0.3rem;
-    border: none;
-    border-radius: 0px;
-    background-color: #fff7f7;
-    /* Khi hover, nền trắng sẽ trở thành màu đỏ */
-    color: rgb(87, 0, 0);
-    font-family: "Garamond";
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
+  position: relative;
+  border: none;
+  background-color: #8a0b16;
+  color: #ffffff;
+  font-family: "Inknut Antiqua";
+  cursor: pointer;
+  margin-top: 8%;
+  width: 109%;
+  margin-left: -11%;
+  font-size: 120%;
+  border-radius: 10px;
+  outline: none;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease-in-out;
+  box-shadow: 0 0 5px rgba(168, 67, 76, 0.5);
 }
 
-.btn:hover {
-
-    background-color: rgb(38, 35, 35);
-    /* Nền trắng nhưng rất trong suốt */
-    color: #fff;
+.btn:active {
+  transform: scale(0.99);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.3);
+  background-color: #790b14;
 }
 
 @media (max-width: 800px) {
-    .logo {
-        margin-top: 5%;
-        width: 30%;
-        height: auto;
-    }
+  .logo {
+    margin-top: 5%;
+    width: 30%;
+    height: auto;
+  }
 
-    .container {
-        display: flex;
-        flex-direction: column;
-        background: #911818;
-        align-items: center;
-        justify-content: center;
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    background: #911818;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .left-container {
-        margin-right: 0%;
-        width: 100%;
-        height: 20%;
-        flex: 0 0 25%;
-        border-right: none;
-        background-color: rgb(255, 255, 255);
-        padding: 2rem;
-    }
+  .left-container {
+    margin-right: 0%;
+    width: 100%;
+    height: 20%;
+    flex: 0 0 25%;
+    border-right: none;
+    background-color: rgb(255, 255, 255);
+    padding: 2rem;
+  }
 
-    .right-container {
-        width: 100%;
-        height: 100%;
-        padding: 0rem;
-        background: #911818;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+  .right-container {
+    width: 100%;
+    height: 100%;
+    padding: 0rem;
+    background: #911818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    form {
-        width: 100%;
-        max-width: 500px;
-    }
+  form {
+    width: 100%;
+    max-width: 500px;
+  }
 }
 
 @media (max-width: 800px) and (max-height: 660px) {
+  html,
+  body {
+    position: fixed;
+    overflow: auto;
+  }
 
-    html,
-    body {
-        position: fixed;
-        overflow: auto;
-    }
+  .logo {
+    width: 30%;
+    height: auto;
+  }
 
-    .logo {
-        width: 30%;
-        height: auto;
-    }
+  .container {
+    height: 660px;
+    background: #911818;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .container {
-        height: 660px;
-        background: #911818;
-        align-items: center;
-        justify-content: center;
-    }
-
-    form {
-        width: 100%;
-        max-width: 500px;
-    }
+  form {
+    width: 100%;
+    max-width: 500px;
+  }
 }
 
 @media (min-width: 800px) and (max-height: 565px) {
+  html,
+  body {
+    overflow: auto;
+    position: fixed;
+  }
 
-    html,
-    body {
-        overflow: auto;
-        position: fixed;
-    }
+  .logo {
+    width: 60%;
+    height: auto;
+  }
 
-    .logo {
-        width: 60%;
-        height: auto;
-    }
-
-    .container {
-        height: 565px;
-        align-items: center;
-        justify-content: center;
-    }
+  .container {
+    height: 565px;
+    align-items: center;
+    justify-content: center;
+  }
 }
