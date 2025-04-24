@@ -9,8 +9,8 @@ from ..models import User
 home_bp = Blueprint('home', __name__)
 
 @home_bp.route('/')
-def index():
-    return render_template('home/index.html')
+def intro():
+    return render_template('home/intro.html')
 
 @home_bp.route('/homepage')
 def homepage():
@@ -27,8 +27,7 @@ def intro():
 @home_bp.route('/set-goal', methods = ["GET", "POST"])
 def set_goal():
     if request.method == "POST":
-        new_goal = request.form["goal"]
-        print(new_goal)
+        new_goal = request.form.get("goal")
         User.update_goal(user_id = current_user.user_id, new_goal = new_goal)
         return render_template("home/homepage.html")
     return render_template("home/set_goal.html")
@@ -55,3 +54,7 @@ def profile():
         return redirect(url_for("home.profile"))
 
     return render_template("home/profile.html", username=current_user.username, personal_stat=stat)
+
+@home_bp.route('/statistics')
+def statistics():
+    return render_template('home/statistics.html')

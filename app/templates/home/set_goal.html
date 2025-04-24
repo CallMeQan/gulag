@@ -1,18 +1,10 @@
 {% extends "home/layout.html" %} {% block title %} Home {% endblock %} {% block
 head %} {{ super() }}
 <!-- Link to the CSS set_goal page -->
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/set_goal.css') }}"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Joan&display=swap"
-  rel="stylesheet"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/set_goal.css') }}"/>
+<link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet"/>
+
 {% endblock %} {% block content %}
 
 <!-- Main content of the about us page -->
@@ -29,20 +21,16 @@ head %} {{ super() }}
       </a>
     </div>
 
-    <form method="POST" class="profile_stats">
+    <!-- Form to set goal -->
+    <form method="post" action="{{ url_for('home.set_goal') }}">
       <div class="goal-container">
-        <input
-          type="number"
-          id="goal"
-          class="goal-input"
-          value="0"
-          min="0"
-          max="999"
-        />
+        <!-- Must have name="goal" -->
+        <input type="number" id="goal" name="goal" class="goal-input" value="0" min="0" max="999" />
         <span class="goal-unit">KM</span>
       </div>
+    
       <button class="savebtn" type="submit">Save</button>
     </form>
   </div>
-</div>
-{% endblock %}
+  {% endblock %}
+  

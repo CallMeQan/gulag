@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+.message {
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  text-align: center;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* perfectly center */
+  
+  background-color: #fff;
+  width: 60%;
+  max-width: 600px;
+  height: auto;
+  padding: 5vw; /* responsive padding */
+  
+  background-color: #1a1a1a;                    
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  color: #e0e0e0;
+  gap: 5%;
+
+
+  box-shadow:
+  inset 0 0 10px rgba(0, 0, 0, 0.8),
+  0 0 15px rgba(0, 0, 0, 0.9);
+  
+  
+  filter: grayscale(30%) contrast(85%);
+}
+
+.congrats_text1 {
+  flex: 0 0 40%;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  color: #9b9b9b;
+  justify-content: center; 
+  align-items: center;
+  text-align: center;
+}
+  
+.congrats_text2 {
+  flex: 0 0 20%;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: bold;
+  color: #9b9b9b;
+}
+  
+.continue_text {
+  flex: 0 0 35%;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: #962525;
+  background-color: #fff;
+  margin-top: 8%;
+  align-self: flex-end;
+  padding: 0.4em 0.8em;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+  
+
+.message::after {
+    content: '';
+    position: absolute;
+    left: 22px;
+    right: 0px;
+    margin-top: 4%;
+    height: 3%;
+    background: red; /* Match the color with your icon or theme */
+    animation: shrink 15s linear forwards;
+    border-radius: 0 0 8px 0; /* Match the bottom corners of the parent */
+  }
+
+  @keyframes shrink {
+    from { width: calc(100% - 22px - 22px); } /* the border is 22px each */
+    to   { width: 0; }
+}

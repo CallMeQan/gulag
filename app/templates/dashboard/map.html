@@ -2,8 +2,10 @@
 
 <!-- Link to the CSS about_us page -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/congrats.css') }}" />
 <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Joan&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <style>
     #map {
         width: 100%;
@@ -120,6 +122,25 @@
                 <div id="message" style="display: none; color: green; font-weight: bold">Bạn đã xong...</div>
             </div>
         </div>
+        <div class="current_datetime">
+            <div class="date_day" id="date_day"></div>
+            <div class="date_month_year" id="date_month_year"></div>
+            <div class="digital_clock" id="digital_clock"></div>
+        </div>
+    </div>
+
+    <div class="message" id="success_message" style="display: none;">
+        <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
+        <p class="congrats_text1">Congrats!</p>
+        <p class="congrats_text2">You have escaped from Gulag.</p>
+        <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
+    </div>
+
+    <div class="message" id="fail_message" style="display: none;">
+        <i class="fas fa-star fa2"></i> <!-- Replaced the quote-left with a star -->
+        <p class="congrats_text1">Congrats!</p>
+        <p class="congrats_text2">You have escaped from Gulag.</p>
+        <button class="continue_text" onclick="quitMessage()">Tap to continue</button>
     </div>
 </div>
 {% endblock %} {% block scripts %} {{ super() }}
@@ -131,7 +152,38 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script>
 
+<!-- Script for Snackbar -->
+<script>
+    let timeoutId;
+    let haveDone = false;
+
+    function showSuccess(){
+        const popup = document.getElementById('success_message');
+        popup.style.display = 'block';
+
+        timeoutId = setTimeout(() => {
+            popup.style.display = 'none';
+        }, 15000);
+    }
+
+    function showFail(){
+        const popup = document.getElementById('fail_message');
+        popup.style.display = 'block';
+
+        timeoutId = setTimeout(() => {
+            popup.style.display = 'none';
+        }, 15000);
+    }
+
+    function quitMessage(){
+        clearTimeout(timeoutId);
+        document.getElementById('success_message').style.display = 'none';
+        document.getElementById('fail_message').style.display = 'none';
+    }
+</script>
+
 <!-- Script for map (Must be put here) and SocketIO -->
+<script>let socket_server;</script>
 <script>
     localStorage.removeItem("locations", "myGeoJSON");
     var saved_locations = JSON.parse(localStorage.getItem("locations") || "[]");
@@ -175,7 +227,6 @@
 
     localStorage.setItem("myGeoJSON", JSON.stringify(myGeoJSON));
 
-    let socket_server;
 
     $(document).ready(function () {
         // Connect to SocketIO
@@ -236,12 +287,18 @@
                 time_start: server_data.time_start,
             });
 
-            // Giả sử đây là điều kiện bạn muốn kiểm tra
-            let isDone = false;
-
-            socket_server.on("finish_goal", function () {
-                isDone = true;
-                document.getElementById("message").style.display = "block";
+            // Check condition
+            socket_server.on("finish_running", function (goal_status) {
+                if(!haveDone){
+                    if(goal_status.message == "success"){
+                        showSuccess();
+                        haveDone = true;
+                    }
+                    else{
+                        showFail();
+                        haveDone = true;
+                    }
+                }
             });
         });
     });

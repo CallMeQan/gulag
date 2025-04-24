@@ -56,6 +56,7 @@ body {
   font-family: "Inknut Antiqua";
   background: linear-gradient(to right, #8a0b16, #4a1a2c, #ff6f61);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -199,3 +200,46 @@ body {
 .nav-links li a:hover {
   color: white;
 }
+
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 25vh;
+    padding: 0.5rem 5%;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .navbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .logo img {
+    height: 4vh;
+  }
+
+  .gradient-text {
+    position: absolute;
+    top: 0.3rem; /* Reduced space from the top */
+    right: 1rem;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 3px; /* Reduced gap between links */
+    margin-top: 0.5rem; /* Reduced space between links and gradient-text */
+  }
+
+  .nav-links li a {
+    font-size: 13px;
+    padding: 3px 0;
+  }
+}
+
