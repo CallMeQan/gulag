@@ -7,7 +7,8 @@ import polars as pls
 from .. import socketio
 
 from ..modules.data_module import process_data, calculate_data
-from ..models import User, Personal_Stat
+from ..models import User, Personal_Stat, Run_History
+from ..extensions import db
 
 @socketio.on("joined", namespace = getenv("SOCKETIO_PATH")) # SOCKETIO_PATH can be "/data_room"
 def joined(message):
@@ -102,7 +103,12 @@ def interval_signal_to_server(message):
         namespace = getenv("SOCKETIO_PATH"))
     
     if total_distance >= User.get_goal(user_id = user_id):
-        print("\n\n\nfinish goal\n\n\n")
+        run = Run_History(user_id = user_id, start_time = time_start, finish_goal = 1,
+                          calorie = calorie, step = step_num, total_distance = total_distance,
+                          total_time = total_time, pace = pace)
+        db.session.add(run)
+        db.session.commit()
+
         emit("finish_running",
             {"message": "success"},
             to = user_id,
