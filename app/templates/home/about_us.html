@@ -21,6 +21,11 @@ block head %} {{ super() }}
   <!------------- Top ------------>
   <div class="general-container">
     <div class="left">
+      <img
+        src="{{ url_for('static', filename='images/about_us_group.png') }}"
+        alt="Logo"
+        class="logo"
+      />
     </div>
     <div class="right">
       <div class="about_us">
@@ -31,11 +36,10 @@ block head %} {{ super() }}
       </div>
       <div class="general_info">
         <p>
-          We work together with a shared commitment to achieving our goals 
-          and delivering great results.
-          </br>
-          Through collaboration and a unified purpose, </br> we drive innovation 
-          and strive for excellence as one team.
+          We work together with a shared commitment to achieving our goals and
+          delivering great results.<br />
+          Through collaboration and a unified purpose,<br />
+          we drive innovation and strive for excellence as one team.
         </p>
       </div>
     </div>
