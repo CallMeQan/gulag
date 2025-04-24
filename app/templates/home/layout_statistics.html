@@ -26,18 +26,18 @@
   </title>
 
   <!-- Favicon - loaded as static -->
-  <link rel="icon" href="/static/assets/img/brand/favicon.png" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/img/brand/favicon.png') }}" type="image/png"/>
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
-  <link rel="stylesheet" href="/static/assets/vendor/nucleo/css/nucleo.css" type="text/css">
-  <link rel="stylesheet" href="/static/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/nucleo/css/nucleo.css') }}" type="text/css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css"/>
   <!-- Page plugins -->
   <!-- Argon CSS -->
 
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
-  <link rel="stylesheet" href="/static/assets/css/argon.css?v=1.2.0" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/argon.css') }}" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/transition.css') }}" />
 </head>
@@ -128,9 +128,10 @@
   {% include "includes/scripts.html" %}
 
   <!-- Specific JS goes HERE --> 
-  {% block javascripts %}{% endblock javascripts %}
   <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
-  <script src="/static/assets/js/argon.js?v=1.2.0"></script>
+  <script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
+  {% block javascripts %}{% endblock javascripts %}
+  
 
 </body>
 
