@@ -11,7 +11,7 @@
     <!-- Liên kết đến file CSS trong thư mục static/css -->
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/forgot_password.css') }}"
+      href="{{ url_for('static', filename='css/email_sent.css') }}"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
@@ -49,9 +49,11 @@
               required
             />
           </div>
+          <div class="email-sent-text">
+            A password reset link has been sent to your inbox
+          </div>
 
           <button type="submit" class="btn">Send a Verification Email</button>
-
           <div class="links">
             <a href="{{ url_for('auth.register') }}" class="create"
               >Create an account</a

@@ -11,7 +11,7 @@
     <!-- Liên kết đến file CSS trong thư mục static/css -->
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/forgot_password.css') }}"
+      href="{{ url_for('static', filename='css/email_not_found.css') }}"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&display=swap"
@@ -49,9 +49,11 @@
               required
             />
           </div>
+          <div class="not-found-text">
+            *This email address is not registered
+          </div>
 
           <button type="submit" class="btn">Send a Verification Email</button>
-
           <div class="links">
             <a href="{{ url_for('auth.register') }}" class="create"
               >Create an account</a
