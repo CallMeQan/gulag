@@ -4,6 +4,8 @@ from flask_socketio import join_room, emit
 
 import polars as pls
 
+import datetime
+
 from .. import socketio
 
 from ..modules.data_module import process_data, calculate_data
@@ -103,11 +105,16 @@ def interval_signal_to_server(message):
         namespace = getenv("SOCKETIO_PATH"))
     
     if total_distance >= User.get_goal(user_id = user_id):
+        time_start = datetime.datetime.fromtimestamp(time_start)
+        total_time = datetime.timedelta(seconds = total_time) # Seconds
+        
         run = Run_History(user_id = user_id, start_time = time_start, finish_goal = 1,
                           calorie = calorie, step = step_num, total_distance = total_distance,
                           total_time = total_time, pace = pace)
         db.session.add(run)
         db.session.commit()
+
+        print("\n\n\nFinished running\n\n\n")
 
         emit("finish_running",
             {"message": "success"},

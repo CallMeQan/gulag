@@ -107,7 +107,7 @@ class Run_History(db.Model):
         default=func.now()
     )
 
-    finish_goal: Mapped[bool] = mapped_column(nullable=False)
+    finish_goal: Mapped[int] = mapped_column(nullable=False)
     calorie: Mapped[float] = mapped_column(nullable=False)
     step: Mapped[int] = mapped_column(nullable=False)
     total_distance: Mapped[float] = mapped_column(nullable=False)
