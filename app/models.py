@@ -27,6 +27,16 @@ class User(db.Model, UserMixin):
         return db.session.query(self.user_id).filter(
             or_(self.username == username, self.email == email)
         ).first() is not None
+
+    @classmethod
+    def email_exist(self, email):
+        """
+        Check if the hashed email exist.
+        """
+        user = db.session.query(self.user_id).filter(
+            or_(self.email == email)
+        ).first() 
+        return True if user else False
     
     @classmethod
     def update_password(self, email: str, new_password: str) -> None:
@@ -67,6 +77,54 @@ class User(db.Model, UserMixin):
             first()
         return goal[0] if goal else None
 
+# Define user_login_check
+class User_Login_Check(db.Model):
+    __tablename__ = "user_login_check"
+    login_id: Mapped[int] = mapped_column("login_id", primary_key = True)
+    username: Mapped[str] = mapped_column(unique = True, nullable = False)
+    first_time: Mapped[datetime.datetime] = mapped_column(nullable = False)
+    login_attempts: Mapped[int] = mapped_column(nullable = False)
+
+    @classmethod
+    def record_attempt(self, username: str) -> bool:
+        """
+        Record a login attempt for `username`.
+        Returns True if login is allowed (<=5 attempts in window), False if denied.
+        """
+        tz = datetime.timezone(datetime.timedelta(seconds=25200))
+        now = datetime.datetime.now(tz = tz)
+        window = datetime.timedelta(minutes=30)
+
+        # Look up existing record
+        record = self.query.filter_by(username = username).first()
+
+        if record is None:
+            # First-ever login for this user
+            record = self(
+                username=username,
+                first_time=now,
+                login_attempts=1
+            )
+            db.session.add(record)
+            db.session.commit()
+            return True
+
+        # If window has expired, reset
+        if now - record.first_time > window:
+            record.first_time = now
+            record.login_attempts = 1
+            db.session.commit()
+            return True
+
+        # Within window: allow up to 5 attempts
+        if record.login_attempts < 5:
+            record.login_attempts += 1
+            db.session.commit()
+            return True
+
+        # 5 or more attempts already used up
+        return False
+    
 # Define sensor data table
 class Sensor_Data(db.Model):
     __tablename__ = "sensor_data"

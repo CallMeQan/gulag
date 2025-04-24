@@ -3,6 +3,7 @@ DROP TABLE forgot_password;
 DROP TABLE mobile_session;
 DROP TABLE personal_stat;
 DROP TABLE users;
+DROP TABLE user_login_check;
 DROP TABLE run_history;
 
 CREATE EXTENSION IF NOT EXISTS postgis;
@@ -15,6 +16,13 @@ CREATE TABLE users (
     name VARCHAR(25) NOT NULL,
     admin BOOLEAN,
     goal FLOAT DEFAULT 1
+);
+
+CREATE TABLE user_login_check (
+    login_id SERIAL PRIMARY KEY,
+    username VARCHAR NOT NULL UNIQUE,
+    first_time TIMESTAMPTZ NOT NULL,
+    login_attempts INTEGER NOT NULL
 );
 
 CREATE TABLE sensor_data (
@@ -69,7 +77,7 @@ INSERT INTO users (username, password, email, name, admin, goal) VALUES
 ('david_admin', 'hashed_password_4', 'david@example.com', 'David', TRUE, 2),
 ('eve_runner', 'hashed_password_5', 'eve@example.com', 'Eve', FALSE, 3),
 ('Ceenen', 'hashed_password_6', 'phuhn.a1.2124@gmail.com', 'Fuu', TRUE, 2),
-('cnn', '$2b$12$yikB/GYPtljv6lJDQd8OgO034wiNSWNO4Hl4kgpQ3phx/HqvmNudO', 'phu@gmail.com', 'cnn', True, 3);
+('cnn', '$2b$12$yikB/GYPtljv6lJDQd8OgO034wiNSWNO4Hl4kgpQ3phx/HqvmNudO', '983e17faf9d3284b0ea186f1f59a9723d4a4a731dcf529a256d90eedb7da5d34', 'cnn', True, 3);
 
 ------------------------------------------------------
 -- Insert samples into sensor_data records --

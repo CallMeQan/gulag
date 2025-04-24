@@ -77,45 +77,45 @@
           <li><a role="button" onclick="openModal()">Log out</a></li>
         </ul>
 
-        <!-- Modal -->
-        <div id="logoutModal" class="modal">
-          <div class="modal-content">
-            <div class="modal-icon">
-              <img
-                src="{{ url_for('static', filename='images/logout.png') }}"
-                alt="Logout Icon"
-              />
-            </div>
-            <h2>Oh no! You're leaving...</h2>
-            <h2>Are you sure?</h2>
-            <div class="modal-buttons">
-              <button class="btn_modal btn-cancel" onclick="closeModal()">
-                Nah, Just Kidding
-              </button>
-              <button class="btn_modal btn-danger" onclick="confirmLogout()">
-                Yes, Log Me Out
-              </button>
-            </div>
-          </div>
-        </div>
+<!-- Modal -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content" style="width: 40%;">
+    <div class="modal-icon">
+      <img
+        src="{{ url_for('static', filename='images/logout.png') }}"
+        alt="Logout Icon"
+      />
+    </div>
+    <h2>Oh no! You're leaving...</h2>
+    <h2>Are you sure?</h2>
+    <div class="modal-buttons">
+      <button class="btn_modal btn-cancel" onclick="closeModal()">
+        Nah, Just Kidding
+      </button>
+      <button class="btn_modal btn-danger" onclick="confirmLogout()">
+        Yes, Log Me Out
+      </button>
+    </div>
+  </div>
+</div>
 
-        <!-- Logout Success Modal -->
-        <div id="logoutSuccessModal" class="modal">
-          <div class="modal-content">
-            <div class="modal-icon">
-              <img
-                src="{{ url_for('static', filename='images/like.png') }}"
-                alt="Logout Icon"
-              />
-            </div>
-            <h2>You’ve successfully<br />Logged out.</h2>
-            <div class="modal-buttons">
-              <button class="btn_modal btn-danger" onclick="goToLogin()">
-                Back to Login
-              </button>
-            </div>
-          </div>
-        </div>
+<!-- Logout Success Modal -->
+<div id="logoutSuccessModal" class="modal">
+  <div class="modal-content" style="width: 40%;">
+    <div class="modal-icon">
+      <img
+        src="{{ url_for('static', filename='images/like.png') }}"
+        alt="Logout Icon"
+      />
+    </div>
+    <h2>You’ve successfully<br />Logged out.</h2>
+    <div class="modal-buttons">
+      <button class="btn_modal btn-danger" onclick="goToLogin()">
+        Back to Login
+      </button>
+    </div>
+  </div>
+</div>
       </nav>
     </div>
     <div class="main_background">
@@ -130,6 +130,7 @@
   <!-- Specific JS goes HERE --> 
   <script src="{{ url_for('static', filename='javascript/transition.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
+  <script src="{{ url_for('static', filename='javascript/logout.js') }}"></script>
   {% block javascripts %}{% endblock javascripts %}
   
 

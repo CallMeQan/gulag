@@ -6,13 +6,13 @@ import time, hmac, hashlib
 
 import datetime
 
-from ..models import User, Forgot_Password, Mobile_Session
+from ..models import User, User_Login_Check, Forgot_Password, Mobile_Session
 from ..extensions import db, bcrypt, login_manager
 from ..modules.forgot_module import send_email
 
 auth_bp = Blueprint('auth', __name__)
 
-def generate_token() -> str:
+def generate_timestamp_token() -> str:
     """
     Generate a reset token using HMAC with SHA256.
     The token is created by hashing the current timestamp with a secret key.
@@ -20,6 +20,17 @@ def generate_token() -> str:
     timestamp = str(int(time.time()))
     token = hmac.new(getenv("SECRET_KEY").encode(), timestamp.encode(), hashlib.sha256)
     return token.hexdigest()
+
+def generate_email_hash(email: str) -> str:
+    """
+    Generate a hash for email using HMAC with SHA256.
+    This is reversible so it's good as an alternative to B-Crypt to store email.
+    """
+    secret = getenv("SECRET_KEY")
+    if not secret:
+        raise ValueError("SECRET_KEY environment variable not set")
+    hashed_email = hmac.new(secret.encode(), str(email).encode(), hashlib.sha256)
+    return hashed_email.hexdigest()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -41,17 +52,23 @@ def register():
         password = request.form["password"]
         password_confirm = request.form["password_confirm"]
 
+        # Error handling
+        if "" in [username, email, password, password_confirm]:
+            return jsonify({"error": "Please input all the essential fields"}), 404
+        
+        # Hashing password
+        hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+        hashed_email = generate_email_hash(email)
+
         # Check if confirm password is correct
         if password != password_confirm:
             return render_template("auth/register-not-confirmed.html")
         
         # Check if username or email is duplicated
-        if User.is_duplicate(username = username, email = email):
+        if User.is_duplicate(username = username, email = hashed_email):
             return render_template("auth/register-duplicated.html")
 
-        # Hashing password
-        hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-        new_user = User(username = username, email = email, password = hashed_password, name = username, admin = False, goal = 1)
+        new_user = User(username = username, email = hashed_email, password = hashed_password, name = username, admin = False, goal = 1)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("auth.login"))
@@ -60,12 +77,23 @@ def register():
 # Log in
 @auth_bp.route("/login", methods = ["GET", "POST"])
 def login():
+    # Get user to homepage if already login
+    user = session.get("user")
+    if user is not None:
+        return redirect(url_for("home.homepage"))
+    
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        user = User.query.filter_by(username = username).first()
 
-        if user and bcrypt.check_password_hash(user.password, password):
+        # Error handling
+        if "" in [username, password]:
+            return jsonify({"error": "Please input all the essential fields"}), 404
+        
+        user = User.query.filter_by(username = username).first()
+        repeat_below_5 = User_Login_Check.record_attempt(username = username)
+
+        if repeat_below_5 and user and bcrypt.check_password_hash(user.password, password):
             # Save user data to session
             session["user"] = {
                 'user_id': user.user_id,
@@ -87,20 +115,27 @@ def forgot_password():
     if request.method == "POST":
         email = request.form["email"]
 
+        # Error handling
+        if email == "":
+            return jsonify({"error": "Please input all the essential fields"}), 404
+        hashed_email = generate_email_hash(email)
+
         # Check if email is valid
-        if not User.query.filter_by(email = email).first():
+        if not User.email_exist(email = hashed_email):
             return render_template("auth/register.html")
         
-        hashed_timestamp = generate_token()
+        hashed_timestamp = generate_timestamp_token()
 
         # Tạo link reset password, ví dụ: /recover-password?a=token
         reset_link = url_for('auth.recover_password', token = hashed_timestamp, _external = True)
 
         created_at = datetime.datetime.now()
-        new_request = Forgot_Password(email = email, created_at = created_at, hashed_timestamp = hashed_timestamp)
+        new_request = Forgot_Password(email = hashed_email, created_at = created_at, hashed_timestamp = hashed_timestamp)
         db.session.add(new_request)
         db.session.commit()
 
+        # Send email (not hashed)
+        print(f"\n\n\n\n===================={email}=================\n\n\n\n")
         send_email(restore_link = reset_link, client_email = email)
         return f"Reset link sent to your email: {email}"
     
@@ -114,9 +149,9 @@ def recover_password(token):
     The function takes a token as an argument, which is used to verify the user's identity.
     """
     # print(token)
-    email = Forgot_Password.take_email_from_hash(hashed_timestamp = token)
+    hashed_email = Forgot_Password.take_email_from_hash(hashed_timestamp = token)
 
-    if email is None:
+    if hashed_email is None:
         return "The link is not valid! Please come back again later."
 
     # Login
@@ -124,9 +159,9 @@ def recover_password(token):
         new_password = request.form["new_password"]
         hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
         
-        User.update_password(email = email, new_password = hashed_password)
+        User.update_password(email = hashed_email, new_password = hashed_password)
         return "Successfully changed password. Please log in!"
-    return render_template("auth/recover_password.html", email = email)
+    return render_template("auth/recover_password.html", email = hashed_email)
 
 @auth_bp.route("/mobile_check", methods = ["GET", "POST"])
 def mobile_check():
@@ -138,10 +173,15 @@ def mobile_check():
         email = request.form["email"]
         password = request.form["password"]
 
-        user = User.query.filter_by(email = email).first()
+        # Error handling
+        if "" in [email, password]:
+            return jsonify({"error": "Please input all the essential fields"}), 404
+        hashed_email = generate_email_hash(email)
+
+        user = User.email_exist(email = hashed_email)
 
         if user and bcrypt.check_password_hash(user.password, password):
-            hashed_timestamp = generate_token()
+            hashed_timestamp = generate_timestamp_token()
             created_at = datetime.datetime.now()
 
             # Create session or add them
