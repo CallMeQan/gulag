@@ -63,3 +63,25 @@ Vietnamese-German University Labor Camp for multi-disciplinary project
     |-- requirements.txt
     |-- run.py
 ```
+
+## Contributors
+
+### Châu Minh Quân (Leader)
+
+-   Worked on Android and backend Socket.IO
+
+### Hồ Nguyễn Phú (Lead backend)
+
+-   Worked on backend mainly
+
+### Phạm Trọng Quý (Frontend Designer)
+
+-   Frontend & Figma
+
+### Hồng Nguyên Phúc (Full-stack Dev)
+
+-   Mainly frontend & Figma, did on forgot-password function with Phú
+
+### Cao Tuệ Anh (Designer)
+
+-   Frontend & Figma
