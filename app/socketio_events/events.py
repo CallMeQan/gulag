@@ -81,7 +81,7 @@ def interval_signal_to_server(message):
         MET = 16
 
     # Calculating calorie
-    calorie = MET * weight * total_time / 3600 # MET * weight(kg) * time(hour)
+    calorie = MET * weight * total_time / 60 # MET * weight(kg) * time(hour)
 
     # Converting and rounding
     calorie = round(calorie, 1)
